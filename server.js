@@ -11,7 +11,6 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
-const fetch = require("node-fetch");
 
 const DDB_TABLE = process.env.DDB_TABLE;
 let ddbDoc = null;
@@ -53,19 +52,6 @@ function latestPerUser(array) {
   return Array.from(m.values());
 }
 
-const JSONBIN_BIN_URL = process.env.JSONBIN_BIN_URL; // e.g. https://api.jsonbin.io/v3/b/xxxxxxxx
-const JSONBIN_API_KEY = process.env.JSONBIN_API_KEY; // from jsonbin.io dashboard
-
-function assertJsonBinConfig() {
-  if (!JSONBIN_BIN_URL || !JSONBIN_API_KEY) {
-    console.warn(
-      "[state] JSONBin not configured (set JSONBIN_BIN_URL and JSONBIN_API_KEY). Falling back to in-memory only."
-    );
-    return false;
-  }
-  return true;
-}
-
 async function loadState() {
   if (!assertDdbConfig()) return; // fall back to items.json + in-memory submissions
 
@@ -97,10 +83,6 @@ async function loadState() {
     console.error("[state] DynamoDB load error:", e);
   }
 }
-
-// expects: JSONBIN_BIN_URL like "https://api.jsonbin.io/v3/b/<BIN_ID>"
-// expects: JSONBIN_API_KEY = your Master Key (from JSONBin account)
-// requires Node 18+ or node-fetch polyfill
 
 async function saveState() {
   if (!assertDdbConfig()) return;

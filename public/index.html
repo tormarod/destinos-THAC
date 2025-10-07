@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Priority Draft Allocator</title>
+    <title>LA RULETA DE LA MALA SUERTE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       :root {
@@ -93,27 +93,179 @@
       tr.top199 {
         background-color: #fffbe6; /* light blue highlight */
       }
+      /* BUENA SUERTE overlay styles */
+      #luckOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none; /* toggled by JS */
+      }
+      #luckOverlay .luck-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(5px);
+      }
+      #luckOverlay .luck-content {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+      #luckOverlay .luck-img {
+        width: 160px;
+        height: 160px;
+        object-fit: contain;
+        animation: luckSpinIn 800ms ease-out both;
+      }
+      #luckOverlay .luck-text {
+        margin-top: 2px;
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: 1px;
+        font-size: 48px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        animation: luckFadeIn 600ms 150ms ease-out both;
+      }
+
+      @keyframes luckSpinIn {
+        0% {
+          transform: scale(0) rotate(-360deg);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(3.1) rotate(-20deg);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(3) rotate(0deg);
+        }
+      }
+      @keyframes luckFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      /* Splash Screen */
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: none;
+      }
+      #splash .splash-backdrop {
+        position: absolute;
+        inset: 0;
+        /* more opaque: stronger dark + blue glow */
+        background: rgba(0, 0, 0, 0.95); /* solid dark layer */
+      }
+      #splash .splash-content {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 24px;
+      }
+      .splash-title {
+        color: #ffffff;
+        margin: 0;
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+        animation: splashPop 700ms ease-out both;
+      }
+      .splash-subtitle {
+        color: #e6e8ff;
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        opacity: 0.95;
+        animation: splashFadeUp 700ms 120ms ease-out both;
+      }
+
+      @keyframes splashPop {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.04);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes splashFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Fade out helper */
+      #splash.fadeout {
+        animation: splashFadeOut 450ms ease-in forwards;
+      }
+      @keyframes splashFadeOut {
+        to {
+          opacity: 0;
+        }
+      }
+      /* Splash GIF */
+      .splash-gif {
+        margin-top: 16px;
+        width: min(720px, 70vw);
+        height: auto;
+        border-radius: 12px; /* optional: soften edges */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* optional */
+        animation: splashGifIn 600ms 120ms ease-out both;
+      }
+
+      @keyframes splashGifIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
     </style>
   </head>
   <body>
-    <h1>Priority Draft Allocator</h1>
+    <h1>LA RULETA DE LA SUERTE</h1>
     <p class="muted">
-      Lower order number = higher priority. Each user’s
-      <strong>quota</strong> equals their order.
+      Menor número = Mayor prioridad. Selecciona tantas opciones como quieras.
     </p>
 
     <div class="card">
-      <h2>Available Items</h2>
+      <h2>Destinos disponibles</h2>
       <p class="muted">
-        Click “Add” to include items in your ranked list. You can select as many
-        as you want.
+        Haz click en “Añadir” para incluir el destino en tu lista. Puedes
+        seleccionar tantos como quieras.
+      </p>
+      <p class="muted">
+        Los destinos con fondo amarillo son del anexo 1 (reserva de provincia)
       </p>
 
       <div style="margin-bottom: 10px">
         <input
           id="itemSearch"
           type="text"
-          placeholder="Search items by any field..."
+          placeholder="Busca destinos por cualquier valor..."
           style="
             width: 60%;
             padding: 8px;
@@ -127,31 +279,37 @@
     </div>
 
     <form id="submitForm">
-      <h2>Submit / Update Your Ranking</h2>
+      <h2>Enviar / Actualizar tu ranking</h2>
       <div class="row">
-        <label for="name">Name</label>
-        <input id="name" type="text" required placeholder="e.g., User 1" />
-        <label for="order">Order (your quota)</label>
+        <label for="name">Nombre</label>
+        <input
+          id="name"
+          type="text"
+          required
+          placeholder="e.g., Fernando Alonso"
+        />
+        <label for="order">Orden (tu número en la oposición)</label>
         <input
           id="order"
           type="number"
           required
           min="1"
           step="1"
-          placeholder="1 = highest"
+          placeholder="1"
         />
       </div>
 
       <div class="card">
-        <h3>Your Quota & Picks</h3>
+        <h3>Tus selecciones y orden</h3>
         <div class="quota">
-          <div>Quota: <span id="quota" class="badge">0</span></div>
-          <div>Selected: <span id="selectedCount" class="badge">0</span></div>
-          <div>Remaining: <span id="remaining" class="badge">0</span></div>
+          <div>Posición: <span id="quota" class="badge">0</span></div>
+          <div>
+            Seleccionados: <span id="selectedCount" class="badge">0</span>
+          </div>
+          <div>Restantes: <span id="remaining" class="badge">0</span></div>
         </div>
         <p class="drag-hint">
-          You can select as many items as you want. During allocation, you’ll
-          receive up to your <strong>Order</strong> items.
+          Puedes seleccionar tantos como quieras. Arrastra para reordenar.
         </p>
         <div id="rankingTable"></div>
       </div>
@@ -161,27 +319,48 @@
       <div class="row" style="margin-top: 12px">
         <button class="primary" type="submit">Save my ranking</button>
         <button class="ghost" type="button" id="resetSelfBtn">
-          Clear my local ID
+          Borrar mi usuario
         </button>
       </div>
       <div class="muted">
-        Your local user ID is stored only in your browser to let you update your
-        submission.
+        El ID de tu usuario se guarda localmente en este navegador.
       </div>
     </form>
 
     <div class="card">
-      <h2>Run Allocation</h2>
+      <h2>Reparto de destinos</h2>
       <div class="row">
-        <button class="primary" id="allocateBtn">Allocate now</button>
-        <button class="ghost" id="resetAllBtn">Reset all submissions</button>
+        <button class="primary" id="allocateBtn">Repartir</button>
+        <button class="ghost" id="resetAllBtn">
+          Reiniciar todos mis destinos
+        </button>
       </div>
       <div id="allocationResult" style="margin-top: 12px"></div>
     </div>
 
     <div class="card">
-      <h2>Current Submissions</h2>
+      <h2>Destinos enviados</h2>
       <div id="subs"></div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div id="splash" style="display: none">
+      <div class="splash-backdrop"></div>
+      <div class="splash-content">
+        <h1 class="splash-title">Cómo evitar Catalunya:
+          <br />
+          El videojuego
+        </h1>
+
+        <!-- NEW: GIF below the title -->
+        <img
+          src="/explosive-explosion.webp"
+          alt="Splash animation"
+          class="splash-gif"
+        />
+
+        <p class="splash-subtitle">Hecho por Rodrigo Tortosa (y Gepeto)</p>
+      </div>
     </div>
 
     <script>
@@ -252,7 +431,7 @@
           .map((o) => {
             const id = String(o[state.idField]);
             const isActive = state.ranking.includes(id);
-            const btnLabel = isActive ? "Remove" : "Add";
+            const btnLabel = isActive ? "Eliminar" : "Añadir";
             const btnClass = isActive ? "primary" : "ghost";
             // Determine if this item's "Nº vacante" is between 1 and 200
             const num = parseInt(o[state.idField], 10);
@@ -282,12 +461,12 @@
         </table>
         ${
           state.items.length > items.length
-            ? `<div class="muted" style="margin-top:8px;">Showing ${items.length} of ${state.items.length} items for quick selection.</div>`
+            ? `<div class="muted" style="margin-top:8px;">Mostrando ${items.length} de ${state.items.length} destinos para elección rápida.</div>`
             : ""
         }
             ${
               filtered.length < state.items.length
-                ? `<div class="muted" style="margin-top:8px;">Filtered to ${filtered.length} matching items.</div>`
+                ? `<div class="muted" style="margin-top:8px;">Filtrado a ${filtered.length} destinos coincidentes.</div>`
                 : ""
             }
       `;
@@ -315,7 +494,7 @@
         const ids = state.ranking;
         if (!ids.length) {
           ct.innerHTML =
-            "<p class='muted'>No picks yet. Add items from the table above.</p>";
+            "<p class='muted'>No hay selecciones aún. Añade destinos de la tabla superior.</p>";
           return;
         }
 
@@ -330,7 +509,7 @@
             <td>${o ? o["Localidad"] || "" : ""}</td>
             <td>${o ? o["Provincia"] || "" : ""}</td>
             <td style="text-align:right;">
-              <button type="button" class="ghost" data-remove="${id}">Remove</button>
+              <button type="button" class="ghost" data-remove="${id}">Eliminar</button>
             </td>
           </tr>
         `;
@@ -415,14 +594,14 @@
 
         if (!localId) {
           ct.innerHTML =
-            "<p class='muted'>No local user ID yet. Submit your ranking to create one.</p>";
+            "<p class='muted'>No hay ID de usuario local. Envia tu ranking para crear un usuario.</p>";
           return;
         }
 
         const mine = subs.filter((s) => s.id === localId);
         if (!mine.length) {
           ct.innerHTML =
-            "<p class='muted'>No submissions for this browser’s user yet.</p>";
+            "<p class='muted'>No hay destinos para este usuario.</p>";
           return;
         }
 
@@ -456,7 +635,7 @@
 
         if (!localId) {
           ct.innerHTML =
-            "<p class='muted'>No local user ID yet. Submit your ranking to create one.</p>";
+            "<p class='muted'>No hay ID de usuario local. Envia tu ranking para crear un usuario.</p>";
           return;
         }
 
@@ -464,7 +643,7 @@
         const mine = payload.allocation.filter((r) => r.userId === localId);
         if (!mine.length) {
           ct.innerHTML =
-            "<p class='muted'>No allocation results yet for this user.</p>";
+            "<p class='muted'>No tienes destinos asignados aún.</p>";
           return;
         }
 
@@ -488,7 +667,7 @@
         ct.innerHTML = `
     <table>
       <thead>
-        <tr><th>Assigned Nº vacante</th></tr>
+        <tr><th>Destino asignado: Nº vacante</th></tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
@@ -568,9 +747,21 @@
       }
 
       async function runAllocation() {
-        const res = await fetch("/api/allocate", { method: "POST" });
-        const data = await res.json();
-        renderAllocation(data);
+        // Show the BUENA SUERTE splash
+        showLuckOverlay();
+
+        // Start the allocation request
+        const fetchPromise = (async () => {
+          const res = await fetch("/api/allocate", { method: "POST" });
+          const data = await res.json();
+          renderAllocation(data);
+        })();
+
+        // Ensure the splash is visible for at least 1.1s (feel free to tweak)
+        await Promise.all([fetchPromise, sleep(3000)]);
+
+        // Hide the splash
+        hideLuckOverlay();
       }
 
       async function resetAll() {
@@ -640,6 +831,58 @@
         state.quota = Math.max(0, Number($("order").value) || 0);
         updateQuotaIndicators();
       });
+
+      function showLuckOverlay() {
+        const el = document.getElementById("luckOverlay");
+        if (el) el.style.display = "block";
+      }
+      function hideLuckOverlay() {
+        const el = document.getElementById("luckOverlay");
+        if (el) el.style.display = "none";
+      }
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      // Splash controls
+      function showSplash() {
+        const el = document.getElementById("splash");
+        if (el) el.style.display = "block";
+      }
+      function hideSplash() {
+        const el = document.getElementById("splash");
+        if (!el) return;
+        el.classList.add("fadeout");
+        setTimeout(() => {
+          el.classList.remove("fadeout");
+          el.style.display = "none";
+        }, 480); // match CSS fade duration
+      }
+
+      // Auto-show on load and hide after a few seconds (adjust duration here)
+      document.addEventListener("DOMContentLoaded", async () => {
+        const minShowMs = 5000; // show splash for 3s; change as you like
+        showSplash();
+
+        // Optional: allow users to click to dismiss early
+        const el = document.getElementById("splash");
+        if (el) {
+          el.addEventListener("click", hideSplash, { once: true });
+        }
+
+        // Wait for minimum time; if you want to also wait for assets, you can await window 'load'
+        await new Promise((r) => setTimeout(r, minShowMs));
+        hideSplash();
+      });
     </script>
+    <!-- BUENA SUERTE overlay -->
+    <div id="luckOverlay" style="display: none">
+      <div class="luck-backdrop"></div>
+      <div class="luck-content">
+        <!-- Put your image file in /public as suerte.png or change the src -->
+        <img src="/pepe-pray.png" alt="Suerte" class="luck-img" />
+        <div class="luck-text">BUENA SUERTE</div>
+      </div>
+    </div>
   </body>
 </html>
