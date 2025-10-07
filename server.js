@@ -4,31 +4,36 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 
-const DATA_PATH = path.join(__dirname, "data.json");
+const fetch = require("node-fetch");
 
-function loadState() {
-  if (fs.existsSync(DATA_PATH)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(DATA_PATH, "utf-8"));
-      submissions = Array.isArray(data.submissions) ? data.submissions : [];
-    } catch (e) {
-      console.error("Error reading data.json:", e);
-      submissions = [];
-    }
-  } else {
-    submissions = [];
+async function loadState() {
+  try {
+    const r = await fetch(process.env.JSONBIN_BIN_URL, {
+      headers: { "X-Master-Key": process.env.JSONBIN_API_KEY }
+    });
+    const json = await r.json();
+    submissions = json.record?.submissions || [];
+    ITEMS = json.record?.items || ITEMS;
+    console.log("[state] Loaded from JSONBin");
+  } catch (e) {
+    console.error("[state] load error:", e);
   }
 }
 
-function saveState() {
+async function saveState() {
   try {
-    fs.writeFileSync(
-      DATA_PATH,
-      JSON.stringify({ submissions }, null, 2),
-      "utf-8"
-    );
+    const payload = { submissions, items: ITEMS, savedAt: Date.now() };
+    await fetch(process.env.JSONBIN_BIN_URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": process.env.JSONBIN_API_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+    console.log("[state] Saved to JSONBin");
   } catch (e) {
-    console.error("Error saving data.json:", e);
+    console.error("[state] save error:", e);
   }
 }
 

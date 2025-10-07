@@ -411,12 +411,22 @@
       // -------- Submissions & Allocation rendering --------
       function renderSubs(subs) {
         const ct = $("subs");
-        if (!subs.length) {
-          ct.innerHTML = "<p class='muted'>No submissions yet.</p>";
+        const localId = getLocalUserId();
+
+        if (!localId) {
+          ct.innerHTML =
+            "<p class='muted'>No local user ID yet. Submit your ranking to create one.</p>";
           return;
         }
 
-        const rows = subs
+        const mine = subs.filter((s) => s.id === localId);
+        if (!mine.length) {
+          ct.innerHTML =
+            "<p class='muted'>No submissions for this browser’s user yet.</p>";
+          return;
+        }
+
+        const rows = mine
           .sort((a, b) => a.order - b.order || a.submittedAt - b.submittedAt)
           .map(
             (s) => `
@@ -442,23 +452,33 @@
 
       function renderAllocation(payload) {
         const ct = $("allocationResult");
+        const localId = getLocalUserId();
 
-        const rows = payload.allocation
+        if (!localId) {
+          ct.innerHTML =
+            "<p class='muted'>No local user ID yet. Submit your ranking to create one.</p>";
+          return;
+        }
+
+        // Find only the current user's allocation
+        const mine = payload.allocation.filter((r) => r.userId === localId);
+        if (!mine.length) {
+          ct.innerHTML =
+            "<p class='muted'>No allocation results yet for this user.</p>";
+          return;
+        }
+
+        const rows = mine
           .map((r) => {
-            // Get first assigned ID (number)
             const firstAssigned =
               r.assignedItemIds && r.assignedItemIds.length > 0
                 ? r.assignedItemIds[0]
                 : "<span class='muted'>None</span>";
 
-            // Show only the numbers in the ranking
             const rankingNums = (r.rankedItems || []).join(" » ");
 
             return `
       <tr>
-        <td>${r.order}</td>
-        <td>${r.name}</td>
-        <td>${rankingNums}</td>
         <td><strong>${firstAssigned}</strong></td>
       </tr>
     `;
@@ -468,7 +488,7 @@
         ct.innerHTML = `
     <table>
       <thead>
-        <tr><th>Order/Quota</th><th>Name</th><th>Ranking (Nº vacante)</th><th>Assigned Nº vacante</th></tr>
+        <tr><th>Assigned Nº vacante</th></tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
@@ -479,15 +499,43 @@
       async function fetchState() {
         const res = await fetch("/api/state");
         const data = await res.json();
+
+        // Base state
         state.items = data.items || [];
         state.idField = data.idField || state.idField;
         state.itemsById = new Map(
           state.items.map((o) => [String(o[state.idField]), o])
         );
 
+        // Try to hydrate from local user's last submission
+        const localId = getLocalUserId();
+        let prefill = null;
+        if (localId && Array.isArray(data.submissions)) {
+          prefill = data.submissions.find((s) => s.id === localId) || null;
+        }
+
+        // If we have a saved submission, preload it into the UI/state
+        if (prefill) {
+          // Prefill inputs
+          $("name").value = prefill.name || "";
+          $("order").value = Number(prefill.order) || 0;
+
+          // Set quota and ranking (filter to existing items, keep order)
+          state.quota = Math.max(0, Number(prefill.order) || 0);
+          state.ranking = (prefill.rankedItems || [])
+            .map((id) => String(id))
+            .filter((id) => state.itemsById.has(id));
+        } else {
+          // No local submission yet: keep current input values
+          state.quota = Math.max(0, Number($("order").value) || 0);
+          // Do not wipe ranking here; user might have started selecting before fetch completes
+          state.ranking = state.ranking.filter((id) => state.itemsById.has(id));
+        }
+
+        // Render everything in correct order so buttons reflect selected items
         renderClickableItems();
         renderRankingTable();
-        renderSubs(data.submissions || []);
+        renderSubs(data.submissions || []); // this will already filter to local user in your updated version
         updateQuotaIndicators();
       }
 
