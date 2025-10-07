@@ -353,7 +353,7 @@
       <input type="hidden" id="userId" />
 
       <div class="row" style="margin-top: 12px">
-        <button class="primary" type="submit">Save my ranking</button>
+        <button class="primary" type="submit">Guardar mis destinos</button>
         <button class="ghost" type="button" id="resetSelfBtn">
           Borrar mi usuario
         </button>
@@ -668,7 +668,11 @@
         ct.innerHTML = `
     <table>
       <thead>
-        <tr><th>Order/Quota</th><th>Name</th><th>Ranking (Nº vacante)</th><th>Submitted</th></tr>
+        <tr>
+          <th>Tu posición</th>
+          <th>Nombre</th>
+          <th>Tus destinos</th>
+          <th>Fecha de envío</th></tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
@@ -681,15 +685,14 @@
 
         if (!localId) {
           ct.innerHTML =
-            "<p class='muted'>No hay ID de usuario local. Envia tu ranking para crear un usuario.</p>";
+            "<p class='muted'>No hay usuario local aún. Guarda tus destinos para crear uno.</p>";
           return;
         }
 
-        // Find only the current user's allocation
         const mine = payload.allocation.filter((r) => r.userId === localId);
         if (!mine.length) {
           ct.innerHTML =
-            "<p class='muted'>No tienes destinos asignados aún.</p>";
+            "<p class='muted'>No hay resultados para este usuario aún.</p>";
           return;
         }
 
@@ -701,10 +704,17 @@
                 : "<span class='muted'>None</span>";
 
             const rankingNums = (r.rankedItems || []).join(" » ");
+            const availableNums = (r.availableByPreference || []).join(" » ");
 
             return `
       <tr>
+        <td>${r.order}</td>
+        <td>${r.name}</td>
         <td><strong>${firstAssigned}</strong></td>
+        <td>${
+          availableNums ||
+          "<span class='muted'>No items available at your turn</span>"
+        }</td>
       </tr>
     `;
           })
@@ -713,7 +723,12 @@
         ct.innerHTML = `
     <table>
       <thead>
-        <tr><th>Destino asignado: Nº vacante</th></tr>
+        <tr>
+          <th>Tu posición</th>
+          <th>Nombre</th>
+          <th>Destino asignado</th>
+          <th>Disponibles (por preferencia)</th>
+        </tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
@@ -831,12 +846,6 @@
           alert(data.error || "Failed to reset your submissions.");
           return;
         }
-
-        // Clear local UI state
-        // (keep localId so future updates still map to same user unless you want to clear it)
-        // If you want to also clear the local ID, uncomment the next two lines:
-        // clearLocalUserId();
-        // $("userId").value = "";
 
         // Clear current picks and refresh from server
         state.ranking = [];

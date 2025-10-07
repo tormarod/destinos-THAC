@@ -159,49 +159,60 @@ const isValidRanking = (ranking) =>
   Array.isArray(ranking) && ranking.every((x) => itemIndex.has(String(x)));
 
 function allocate() {
-  // Multi-unit serial dictatorship (round-robin by priority):
-  // - Sort users by order number ascending (1 is highest), tie-break by submittedAt.
-  // - Each user has quota = 'order' items.
-  // - Loop passes; on each pass, give each user their highest-ranked available item,
-  //   until all quotas filled or items exhausted.
+  // Sort by priority: lower order first, then earlier submission time
   const users = [...submissions].sort((a, b) => {
     if (a.order !== b.order) return a.order - b.order;
     return a.submittedAt - b.submittedAt;
   });
 
-  const remaining = new Map(); // userId -> remaining quota
-  users.forEach((u) => remaining.set(u.id, Math.max(0, Number(u.order) || 0)));
+  const remainingQuota = new Map();
+  users.forEach((u) =>
+    remainingQuota.set(u.id, Math.max(0, Number(u.order) || 0))
+  );
 
-  const taken = new Set(); // set of item IDs already assigned
-  const assigned = new Map(users.map((u) => [u.id, []])); // userId -> array of item IDs
+  const takenFinal = new Set(); // items taken overall
+  const assigned = new Map(users.map((u) => [u.id, []])); // userId -> assigned array
 
+  // Round-robin assignment up to each user's quota
   let progress = true;
   while (progress) {
     progress = false;
-
     for (const u of users) {
-      if (remaining.get(u.id) <= 0) continue;
-
-      // find highest-ranked available item for this user
-      const choice = (u.rankedItems || []).find((id) => !taken.has(String(id)));
-      if (choice !== undefined) {
-        const id = String(choice);
-        taken.add(id);
+      if (remainingQuota.get(u.id) <= 0) continue;
+      const next = (u.rankedItems || []).find(
+        (id) => !takenFinal.has(String(id))
+      );
+      if (typeof next !== "undefined") {
+        const id = String(next);
+        takenFinal.add(id);
         assigned.get(u.id).push(id);
-        remaining.set(u.id, remaining.get(u.id) - 1);
+        remainingQuota.set(u.id, remainingQuota.get(u.id) - 1);
         progress = true;
-        // continue to next user in this pass
       }
     }
   }
 
+  // Compute "available by preference" for each user:
+  // items not taken by anyone *above* them in priority, preserving their ranking order.
+  const availableByPref = new Map();
+  const takenByHigher = new Set();
+  for (const u of users) {
+    const list = (u.rankedItems || [])
+      .map(String)
+      .filter((id) => !takenByHigher.has(id));
+    availableByPref.set(u.id, list);
+    // After computing current user's view, add their assigned items to the higher set
+    for (const id of assigned.get(u.id)) takenByHigher.add(id);
+  }
+
+  // Return full allocation info
   return users.map((u) => ({
     userId: u.id,
     name: u.name,
     order: u.order,
-    quota: u.order,
-    rankedItems: u.rankedItems, // array of IDs (Nº vacante values)
-    assignedItemIds: assigned.get(u.id) || [], // array of IDs actually assigned
+    rankedItems: u.rankedItems || [],
+    assignedItemIds: assigned.get(u.id) || [],
+    availableByPreference: availableByPref.get(u.id) || [],
   }));
 }
 
