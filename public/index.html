@@ -151,52 +151,93 @@
           transform: translateY(0);
         }
       }
-      /* Splash Screen */
+      /* Splash Screen (responsive + safe sizing) */
       #splash {
         position: fixed;
         inset: 0;
         z-index: 10000;
         display: none;
       }
+
       #splash .splash-backdrop {
         position: absolute;
         inset: 0;
-        /* more opaque: stronger dark + blue glow */
-        background: rgba(0, 0, 0, 0.95); /* solid dark layer */
+        /* opaque background with subtle blue glow */
+        background:rgba(0, 0, 0, 0.95);
       }
+
       #splash .splash-content {
         position: absolute;
         inset: 0;
         display: grid;
         place-items: center;
-        text-align: center;
-        padding: 24px;
+        padding: 4vh 4vw; /* breathing room on tiny screens */
+        overflow: hidden; /* prevents accidental scrollbars */
       }
+
+      /* The layout column that scales safely on any screen */
+      .splash-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        /* Constrain overall size to the viewport */
+        max-width: min(92vw, 900px);
+        max-height: 86vh;
+      }
+
+      /* Responsive typography with clamp() */
       .splash-title {
-        color: #ffffff;
+        color: #fff;
         margin: 0;
-        font-size: 42px;
         font-weight: 800;
         letter-spacing: 0.5px;
+        font-size: clamp(1.5rem, 5vw, 2.6rem);
+        text-align: center;
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
         animation: splashPop 700ms ease-out both;
       }
+
       .splash-subtitle {
         color: #e6e8ff;
-        margin-top: 10px;
-        font-size: 18px;
+        margin: 0;
         font-weight: 600;
         opacity: 0.95;
+        font-size: clamp(0.9rem, 2.6vw, 1.125rem);
+        text-align: center;
         animation: splashFadeUp 700ms 120ms ease-out both;
       }
 
+      /* Media (video or img) scales to viewport without overflow */
+      .splash-media {
+        width: min(80vw, 560px);
+        max-height: 48vh; /* key: stays within screen height */
+        height: auto;
+        object-fit: contain;
+        border-radius: 12px;
+        animation: splashGifIn 600ms 120ms ease-out both;
+      }
+
+      /* Extra safety on very short displays */
+      @media (max-height: 600px) {
+        .splash-inner {
+          gap: 0.9rem;
+        }
+        .splash-media {
+          max-height: 38vh;
+          width: min(82vw, 500px);
+        }
+      }
+
+      /* Animations */
       @keyframes splashPop {
         0% {
-          transform: scale(0.9);
+          transform: scale(0.95);
           opacity: 0;
         }
         60% {
-          transform: scale(1.04);
+          transform: scale(1.03);
           opacity: 1;
         }
         100% {
@@ -213,26 +254,6 @@
           transform: translateY(0);
         }
       }
-
-      /* Fade out helper */
-      #splash.fadeout {
-        animation: splashFadeOut 450ms ease-in forwards;
-      }
-      @keyframes splashFadeOut {
-        to {
-          opacity: 0;
-        }
-      }
-      /* Splash GIF */
-      .splash-gif {
-        margin-top: 16px;
-        width: min(720px, 70vw);
-        height: auto;
-        border-radius: 12px; /* optional: soften edges */
-        animation: splashGifIn 600ms 120ms ease-out both;
-        object-fit: contain;
-      }
-
       @keyframes splashGifIn {
         from {
           opacity: 0;
@@ -242,6 +263,21 @@
           opacity: 1;
           transform: translateY(0) scale(1);
         }
+      }
+
+      /* Fade-out helper */
+      #splash.fadeout {
+        animation: splashFadeOut 450ms ease-in forwards;
+      }
+      @keyframes splashFadeOut {
+        to {
+          opacity: 0;
+        }
+      }
+
+      /* Optional: prevent page scroll while splash is visible */
+      body.splashing {
+        overflow: hidden;
       }
     </style>
   </head>
@@ -346,24 +382,30 @@
     <!-- Splash Screen -->
     <div id="splash" style="display: none">
       <div class="splash-backdrop"></div>
+
+      <!-- The inner container centers and constrains content -->
       <div class="splash-content">
-        <h1 class="splash-title">
-          Cómo evitar Catalunya:
-          <br />
-          El videojuego
-        </h1>
+        <div class="splash-inner">
+          <h1 class="splash-title">
+            Cómo evitar Catalunya:
+            <br />
+            El videojuego
+          </h1>
 
-        <!-- NEW: GIF below the title -->
-        <video
-          id="splashVideo"
-          class="splash-gif"
-          src="/explosive-explosion.webm"
-          muted
-          playsinline
-          loop
-        ></video>
+          <!-- video or img fits within viewport safely -->
+          <video
+            id="splashVideo"
+            class="splash-media"
+            src="/explosive-explosion.webm"
+            muted
+            playsinline
+            autoplay
+            loop
+            poster="/splash_poster.jpg"
+          ></video>
 
-        <p class="splash-subtitle">Hecho por Rodrigo Tortosa (y Gepeto)</p>
+          <p class="splash-subtitle">Hecho por Rodrigo Tortosa (y Gepeto)</p>
+        </div>
       </div>
     </div>
 
@@ -849,29 +891,25 @@
       }
 
       // Adjust this to control splash length
-      const SPLASH_MIN_MS = 5000; // e.g., 3s
+      const SPLASH_MIN_MS = 5000; // adjust as you like
 
       function showSplash() {
+        document.body.classList.add("splashing");
         const el = document.getElementById("splash");
         if (!el) return;
         el.style.display = "block";
 
-        // Start video (in case autoplay was blocked)
         const v = document.getElementById("splashVideo");
-        if (v)
-          v.play().catch(() => {
-            /* ignore autoplay errors */
-          });
+        if (v) v.play().catch(() => {});
       }
 
       function hideSplash() {
         const el = document.getElementById("splash");
         if (!el) return;
 
-        // Graceful fade + stop video
+        // stop video and fade out
         const v = document.getElementById("splashVideo");
         if (v) {
-          // optional: pause and reset to first frame
           v.pause();
           try {
             v.currentTime = 0;
@@ -882,7 +920,8 @@
         setTimeout(() => {
           el.classList.remove("fadeout");
           el.style.display = "none";
-        }, 480); // match your CSS fade duration
+          document.body.classList.remove("splashing");
+        }, 480);
       }
 
       // Match video speed to splash duration
