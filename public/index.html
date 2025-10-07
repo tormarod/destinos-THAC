@@ -793,12 +793,12 @@
           return alert("Order must be a positive integer.");
         if (!rankedItems.length) return alert("Select at least one item.");
 
-        // ✅ Check DynamoDB for order conflicts right now
+        // Check DynamoDB for order conflicts right now
         try {
-          const { taken, by } = await isOrderTakenRemote(orderVal);
+          const { taken } = await isOrderTakenRemote(orderVal);
           if (taken) {
             const proceed = confirm(
-              `El orden ${orderVal} ya está siendo usado por ${by}.\n\n` +
+              `El orden ${orderVal} ya está siendo usado por otro usuario.\n\n` +
                 `Pulsa Aceptar para usarlo igualmente, o Cancelar para elegir otro número.`
             );
             if (!proceed) {
