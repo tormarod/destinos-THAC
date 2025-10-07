@@ -617,6 +617,7 @@
         renderClickableItems();
       });
       $("resetSelfBtn").addEventListener("click", () => {
+        resetAll();
         clearLocalUserId();
         $("userId").value = "";
         alert(
