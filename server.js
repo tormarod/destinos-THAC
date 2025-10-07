@@ -339,6 +339,49 @@ app.post("/api/reset-user", async (req, res) => {
   }
 });
 
+app.get("/api/orders", async (req, res) => {
+  try {
+    if (!assertDdbConfig()) {
+      return res.status(500).json({ error: "DynamoDB not configured" });
+    }
+
+    const ddb = getDdb();
+    const orders = [];
+    let ExclusiveStartKey;
+
+    do {
+      const resp = await ddb.send(
+        new QueryCommand({
+          TableName: DDB_TABLE,
+          KeyConditionExpression: "#t = :type",
+          ExpressionAttributeNames: {
+            "#t": "type",
+            "#o": "order",
+            "#n": "name",
+          },
+          ExpressionAttributeValues: { ":type": "SUBMISSION" },
+          ProjectionExpression: "id, #o, #n",
+          ExclusiveStartKey,
+        })
+      );
+
+      for (const it of resp.Items || []) {
+        orders.push({
+          id: it.id,
+          order: it.order,
+          name: it.name || "",
+        });
+      }
+      ExclusiveStartKey = resp.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+
+    res.json({ orders });
+  } catch (e) {
+    console.error("[/api/orders] error:", e);
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });

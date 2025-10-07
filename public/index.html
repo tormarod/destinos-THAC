@@ -781,29 +781,53 @@
 
       async function submitRanking(e) {
         e.preventDefault();
+
         const name = $("name").value.trim();
-        const orderVal = Number($("order").value);
+        const orderRaw = $("order").value;
+        const orderVal = normalizeOrder(orderRaw);
         const rankedItems = [...state.ranking];
         const id = $("userId").value || getLocalUserId() || undefined;
 
-        if (!name || !orderVal || !rankedItems.length) {
-          return alert(
-            "Please fill name, order, and select at least one item."
-          );
+        if (!name) return alert("Please enter your name.");
+        if (orderVal === null)
+          return alert("Order must be a positive integer.");
+        if (!rankedItems.length) return alert("Select at least one item.");
+
+        // ✅ Check DynamoDB for order conflicts right now
+        try {
+          const { taken, by } = await isOrderTakenRemote(orderVal);
+          if (taken) {
+            const proceed = confirm(
+              `El orden ${orderVal} ya está siendo usado por ${by}.\n\n` +
+                `Pulsa Aceptar para usarlo igualmente, o Cancelar para elegir otro número.`
+            );
+            if (!proceed) {
+              $("order").value = "";
+              state.quota = 0;
+              updateQuotaIndicators();
+              renderClickableItems();
+              return; // abort submit
+            }
+          }
+        } catch {
+          // If the check fails for any reason, we let the submit continue.
         }
 
+        // Proceed with save
         const res = await fetch("/api/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, order: orderVal, rankedItems, id }),
         });
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         if (!res.ok) return alert(data.error || "Submission failed.");
+
         if (data.id) {
           setLocalUserId(data.id);
           $("userId").value = data.id;
         }
-        await fetchState();
+
+        await fetchState(); // refresh local UI (submissions still only show this user)
         alert("Saved!");
       }
 
@@ -970,6 +994,31 @@
         await new Promise((r) => setTimeout(r, SPLASH_MIN_MS));
         hideSplash();
       });
+
+      function normalizeOrder(v) {
+        if (v === null || v === undefined) return null;
+        const n = parseInt(String(v).trim(), 10);
+        return Number.isFinite(n) && n > 0 ? n : null;
+      }
+
+      // Ask the server (DynamoDB) for all orders and check for a conflict
+      async function isOrderTakenRemote(order) {
+        const desired = normalizeOrder(order);
+        if (desired === null) return { taken: false };
+
+        const localId = getLocalUserId() || $("userId").value || "";
+        const res = await fetch("/api/orders");
+        if (!res.ok) return { taken: false }; // fail-open (no block if network hiccup)
+        const data = await res.json();
+        const list = Array.isArray(data.orders) ? data.orders : [];
+
+        const conflict = list.find(
+          (o) => normalizeOrder(o.order) === desired && o.id !== localId
+        );
+        return conflict
+          ? { taken: true, by: conflict.name || conflict.id }
+          : { taken: false };
+      }
     </script>
     <!-- BUENA SUERTE overlay -->
     <div id="luckOverlay" style="display: none">
