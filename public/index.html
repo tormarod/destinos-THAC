@@ -90,7 +90,7 @@
         font-size: 0.9em;
         color: #555;
       }
-      tr.top200 {
+      tr.top199 {
         background-color: #fffbe6; /* light blue highlight */
       }
     </style>
@@ -194,7 +194,7 @@
         ranking: [], // array of IDs (Nº vacante)
         quota: 0,
         maxClickable: 9999999, // render subset for performance
-        maxItemsTable: 100, // preview subset in Items table
+        maxItemsTable: 9999999, // preview subset in Items table
         searchTerm: "",
       };
 
@@ -257,7 +257,7 @@
             // Determine if this item's "Nº vacante" is between 1 and 200
             const num = parseInt(o[state.idField], 10);
             const highlight =
-              !isNaN(num) && num >= 1 && num <= 200 ? "top200" : "";
+              !isNaN(num) && num >= 1 && num <= 199 ? "top199" : "";
 
             return `
   <tr class="${highlight}">
