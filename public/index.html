@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Priority Draft Allocator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      body {
+        margin: 24px;
+      }
+      form,
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      label {
+        font-weight: 600;
+      }
+      input[type="text"],
+      input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      button.primary {
+        background: #2f6fed;
+        color: white;
+      }
+      button.ghost {
+        background: #e5e7eb;
+      }
+      .muted {
+        color: #666;
+        font-size: 0.9em;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        padding: 8px;
+      }
+      td button.primary {
+        background: #2f6fed;
+        color: #fff;
+        padding: 6px 10px;
+      }
+      td button.ghost {
+        background: #e5e7eb;
+        padding: 6px 10px;
+      }
+      td button {
+        border-radius: 6px;
+      }
+      .quota {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .badge {
+        background: #eef2ff;
+        padding: 4px 8px;
+        border-radius: 999px;
+      }
+      .drag-table tbody tr.dragging {
+        opacity: 0.6;
+        outline: 2px dashed #aaa;
+      }
+      .drag-hint {
+        font-size: 0.9em;
+        color: #555;
+      }
+      tr.top200 {
+        background-color: #fffbe6; /* light blue highlight */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Priority Draft Allocator</h1>
+    <p class="muted">
+      Lower order number = higher priority. Each user’s
+      <strong>quota</strong> equals their order.
+    </p>
+
+    <div class="card">
+      <h2>Available Items</h2>
+      <p class="muted">
+        Click “Add” to include items in your ranked list. You can select as many
+        as you want.
+      </p>
+
+      <div style="margin-bottom: 10px">
+        <input
+          id="itemSearch"
+          type="text"
+          placeholder="Search items by any field..."
+          style="
+            width: 60%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+          "
+        />
+      </div>
+
+      <div id="clickItems"></div>
+    </div>
+
+    <form id="submitForm">
+      <h2>Submit / Update Your Ranking</h2>
+      <div class="row">
+        <label for="name">Name</label>
+        <input id="name" type="text" required placeholder="e.g., User 1" />
+        <label for="order">Order (your quota)</label>
+        <input
+          id="order"
+          type="number"
+          required
+          min="1"
+          step="1"
+          placeholder="1 = highest"
+        />
+      </div>
+
+      <div class="card">
+        <h3>Your Quota & Picks</h3>
+        <div class="quota">
+          <div>Quota: <span id="quota" class="badge">0</span></div>
+          <div>Selected: <span id="selectedCount" class="badge">0</span></div>
+          <div>Remaining: <span id="remaining" class="badge">0</span></div>
+        </div>
+        <p class="drag-hint">
+          You can select as many items as you want. During allocation, you’ll
+          receive up to your <strong>Order</strong> items.
+        </p>
+        <div id="rankingTable"></div>
+      </div>
+
+      <input type="hidden" id="userId" />
+
+      <div class="row" style="margin-top: 12px">
+        <button class="primary" type="submit">Save my ranking</button>
+        <button class="ghost" type="button" id="resetSelfBtn">
+          Clear my local ID
+        </button>
+      </div>
+      <div class="muted">
+        Your local user ID is stored only in your browser to let you update your
+        submission.
+      </div>
+    </form>
+
+    <div class="card">
+      <h2>Run Allocation</h2>
+      <div class="row">
+        <button class="primary" id="allocateBtn">Allocate now</button>
+        <button class="ghost" id="resetAllBtn">Reset all submissions</button>
+      </div>
+      <div id="allocationResult" style="margin-top: 12px"></div>
+    </div>
+
+    <div class="card">
+      <h2>Current Submissions</h2>
+      <div id="subs"></div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        idField: "Nº vacante",
+        items: [],
+        itemsById: new Map(), // id -> object
+        ranking: [], // array of IDs (Nº vacante)
+        quota: 0,
+        maxClickable: 9999999, // render subset for performance
+        maxItemsTable: 100, // preview subset in Items table
+        searchTerm: "",
+      };
+
+      // Local ID storage
+      const LOCAL_KEY = "allocator:userId";
+      const getLocalUserId = () => localStorage.getItem(LOCAL_KEY) || "";
+      const setLocalUserId = (id) => localStorage.setItem(LOCAL_KEY, id);
+      const clearLocalUserId = () => localStorage.removeItem(LOCAL_KEY);
+
+      // Label for a row
+      function labelFor(o) {
+        if (!o) return "(unknown)";
+        const id = o[state.idField];
+        const parts = [];
+        if (o["Centro de destino"]) parts.push(o["Centro de destino"]);
+        if (o["Localidad"]) parts.push(o["Localidad"]);
+        if (o["Provincia"]) parts.push(o["Provincia"]);
+        return `#${id} · ${parts.join(" · ")}`.replace(/ · $/, "");
+      }
+
+      // -------- Clickable items table (Add/Remove with quota) --------
+      function renderClickableItems() {
+        const ct = $("clickItems");
+        ct.innerHTML = "";
+        // Filter items based on search term (case-insensitive)
+        const filtered = state.searchTerm
+          ? state.items.filter((o) =>
+              Object.values(o).some(
+                (v) =>
+                  v &&
+                  String(v)
+                    .toLowerCase()
+                    .includes(state.searchTerm.toLowerCase())
+              )
+            )
+          : state.items;
+
+        const items = filtered.slice(0, state.maxClickable);
+        if (!items.length) {
+          ct.innerHTML = "<p class='muted'>No items loaded.</p>";
+          return;
+        }
+
+        const cols = [
+          state.idField,
+          "Centro de destino",
+          "Localidad",
+          "Provincia",
+          "Horario/ATF",
+        ].filter(
+          (c) => items[0] && Object.prototype.hasOwnProperty.call(items[0], c)
+        );
+
+        const rows = items
+          .map((o) => {
+            const id = String(o[state.idField]);
+            const isActive = state.ranking.includes(id);
+            const btnLabel = isActive ? "Remove" : "Add";
+            const btnClass = isActive ? "primary" : "ghost";
+            // Determine if this item's "Nº vacante" is between 1 and 200
+            const num = parseInt(o[state.idField], 10);
+            const highlight =
+              !isNaN(num) && num >= 1 && num <= 200 ? "top200" : "";
+
+            return `
+  <tr class="${highlight}">
+    ${cols.map((c) => `<td>${o[c] != null ? o[c] : ""}</td>`).join("")}
+    <td style="text-align:right;">
+      <button type="button" class="${btnClass}" data-id="${id}">${btnLabel}</button>
+    </td>
+  </tr>
+`;
+          })
+          .join("");
+
+        ct.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              ${cols.map((c) => `<th>${c}</th>`).join("")}
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        ${
+          state.items.length > items.length
+            ? `<div class="muted" style="margin-top:8px;">Showing ${items.length} of ${state.items.length} items for quick selection.</div>`
+            : ""
+        }
+            ${
+              filtered.length < state.items.length
+                ? `<div class="muted" style="margin-top:8px;">Filtered to ${filtered.length} matching items.</div>`
+                : ""
+            }
+      `;
+
+        // Wire buttons
+        ct.querySelectorAll("button[data-id]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            const idx = state.ranking.indexOf(id);
+            if (idx >= 0) {
+              state.ranking.splice(idx, 1);
+            } else {
+              if (state.quota > 0 && state.ranking.length >= state.quota) {
+                // Enforce limit
+                return;
+              }
+              state.ranking.push(id);
+            }
+            renderClickableItems();
+            renderRankingTable();
+            updateQuotaIndicators();
+          });
+        });
+      }
+
+      // -------- Drag & drop ranking (table) --------
+      function renderRankingTable() {
+        const ct = $("rankingTable");
+        const ids = state.ranking;
+        if (!ids.length) {
+          ct.innerHTML =
+            "<p class='muted'>No picks yet. Add items from the table above.</p>";
+          return;
+        }
+
+        const rows = ids
+          .map((id, idx) => {
+            const o = state.itemsById.get(String(id));
+            return `
+          <tr draggable="true" data-index="${idx}">
+            <td style="width:40px;cursor:grab;">↕</td>
+            <td><strong>${id}</strong></td>
+            <td>${o ? o["Centro de destino"] || "" : ""}</td>
+            <td>${o ? o["Localidad"] || "" : ""}</td>
+            <td>${o ? o["Provincia"] || "" : ""}</td>
+            <td style="text-align:right;">
+              <button type="button" class="ghost" data-remove="${id}">Remove</button>
+            </td>
+          </tr>
+        `;
+          })
+          .join("");
+
+        ct.innerHTML = `
+        <table class="drag-table">
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>${state.idField}</th>
+              <th>Centro de destino</th>
+              <th>Localidad</th>
+              <th>Provincia</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+
+        // Remove buttons
+        ct.querySelectorAll("button[data-remove]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.dataset.remove;
+            const idx = state.ranking.indexOf(id);
+            if (idx >= 0) state.ranking.splice(idx, 1);
+            renderClickableItems();
+            renderRankingTable();
+            updateQuotaIndicators();
+          });
+        });
+
+        // Drag logic
+        const tbody = ct.querySelector("tbody");
+        let dragIndex = null;
+
+        tbody.querySelectorAll("tr").forEach((tr) => {
+          tr.addEventListener("dragstart", (e) => {
+            dragIndex = Number(tr.dataset.index);
+            tr.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "move";
+          });
+          tr.addEventListener("dragend", () => {
+            tr.classList.remove("dragging");
+          });
+          tr.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            const over = e.currentTarget;
+            const overIndex = Number(over.dataset.index);
+            if (overIndex === dragIndex) return;
+          });
+          tr.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const overIndex = Number(e.currentTarget.dataset.index);
+            if (dragIndex === null || overIndex === dragIndex) return;
+            // Reorder array
+            const moved = state.ranking.splice(dragIndex, 1)[0];
+            state.ranking.splice(overIndex, 0, moved);
+            // Re-render with new indexes
+            renderRankingTable();
+            updateQuotaIndicators();
+          });
+        });
+      }
+
+      function updateQuotaIndicators() {
+        const selected = state.ranking.length;
+        const quota = state.quota;
+        const remaining = quota - selected; // may be negative; purely informative
+        $("quota").textContent = String(quota);
+        $("selectedCount").textContent = String(selected);
+        $("remaining").textContent = String(remaining);
+      }
+
+      // -------- Submissions & Allocation rendering --------
+      function renderSubs(subs) {
+        const ct = $("subs");
+        if (!subs.length) {
+          ct.innerHTML = "<p class='muted'>No submissions yet.</p>";
+          return;
+        }
+
+        const rows = subs
+          .sort((a, b) => a.order - b.order || a.submittedAt - b.submittedAt)
+          .map(
+            (s) => `
+      <tr>
+        <td>${s.order}</td>
+        <td>${s.name}</td>
+        <td>${(s.rankedItems || []).join(" » ")}</td>
+        <td class="muted">${new Date(s.submittedAt).toLocaleString()}</td>
+      </tr>
+    `
+          )
+          .join("");
+
+        ct.innerHTML = `
+    <table>
+      <thead>
+        <tr><th>Order/Quota</th><th>Name</th><th>Ranking (Nº vacante)</th><th>Submitted</th></tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+      }
+
+      function renderAllocation(payload) {
+        const ct = $("allocationResult");
+
+        const rows = payload.allocation
+          .map((r) => {
+            // Get first assigned ID (number)
+            const firstAssigned =
+              r.assignedItemIds && r.assignedItemIds.length > 0
+                ? r.assignedItemIds[0]
+                : "<span class='muted'>None</span>";
+
+            // Show only the numbers in the ranking
+            const rankingNums = (r.rankedItems || []).join(" » ");
+
+            return `
+      <tr>
+        <td>${r.order}</td>
+        <td>${r.name}</td>
+        <td>${rankingNums}</td>
+        <td><strong>${firstAssigned}</strong></td>
+      </tr>
+    `;
+          })
+          .join("");
+
+        ct.innerHTML = `
+    <table>
+      <thead>
+        <tr><th>Order/Quota</th><th>Name</th><th>Ranking (Nº vacante)</th><th>Assigned Nº vacante</th></tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+      }
+
+      // -------- API --------
+      async function fetchState() {
+        const res = await fetch("/api/state");
+        const data = await res.json();
+        state.items = data.items || [];
+        state.idField = data.idField || state.idField;
+        state.itemsById = new Map(
+          state.items.map((o) => [String(o[state.idField]), o])
+        );
+
+        renderClickableItems();
+        renderRankingTable();
+        renderSubs(data.submissions || []);
+        updateQuotaIndicators();
+      }
+
+      async function submitRanking(e) {
+        e.preventDefault();
+        const name = $("name").value.trim();
+        const orderVal = Number($("order").value);
+        const rankedItems = [...state.ranking];
+        const id = $("userId").value || getLocalUserId() || undefined;
+
+        if (!name || !orderVal || !rankedItems.length) {
+          return alert(
+            "Please fill name, order, and select at least one item."
+          );
+        }
+
+        const res = await fetch("/api/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, order: orderVal, rankedItems, id }),
+        });
+        const data = await res.json();
+        if (!res.ok) return alert(data.error || "Submission failed.");
+        if (data.id) {
+          setLocalUserId(data.id);
+          $("userId").value = data.id;
+        }
+        await fetchState();
+        alert("Saved!");
+      }
+
+      async function runAllocation() {
+        const res = await fetch("/api/allocate", { method: "POST" });
+        const data = await res.json();
+        renderAllocation(data);
+      }
+
+      async function resetAll() {
+        if (!confirm("Reset all submissions?")) return;
+        await fetch("/api/reset", { method: "POST" });
+        await fetchState();
+        $("allocationResult").innerHTML = "";
+      }
+
+      // Wire up
+      $("submitForm").addEventListener("submit", submitRanking);
+      $("allocateBtn").addEventListener("click", runAllocation);
+      $("resetAllBtn").addEventListener("click", resetAll);
+      $("itemSearch").addEventListener("input", (e) => {
+        state.searchTerm = e.target.value.trim();
+        renderClickableItems();
+      });
+      $("resetSelfBtn").addEventListener("click", () => {
+        clearLocalUserId();
+        $("userId").value = "";
+        alert(
+          "Cleared your local user ID. Future submissions will create a new one."
+        );
+      });
+
+      // Keep quota indicators in sync with the Order input
+      $("order").addEventListener("input", () => {
+        state.quota = Math.max(0, Number($("order").value) || 0);
+        renderClickableItems();
+        updateQuotaIndicators();
+      });
+
+      // Prefill local user id if present
+      $("userId").value = getLocalUserId();
+
+      // Initialize
+      fetchState().then(() => {
+        state.quota = Math.max(0, Number($("order").value) || 0);
+        updateQuotaIndicators();
+      });
+    </script>
+  </body>
+</html>

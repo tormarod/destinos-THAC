@@ -1,0 +1,26 @@
+{
+  "submissions": [
+    {
+      "id": "u_mgqq78e1nqo",
+      "name": "Rodrigo",
+      "order": 100,
+      "rankedItems": [
+        "680",
+        "681",
+        "678"
+      ],
+      "submittedAt": 1759833727680
+    },
+    {
+      "id": "u_73t4dx4ron8",
+      "name": "Rocio",
+      "order": 160,
+      "rankedItems": [
+        "680",
+        "681",
+        "678"
+      ],
+      "submittedAt": 1759833774865
+    }
+  ]
+}
