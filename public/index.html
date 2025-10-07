@@ -507,14 +507,9 @@
         </table>
         ${
           state.items.length > items.length
-            ? `<div class="muted" style="margin-top:8px;">Mostrando ${items.length} de ${state.items.length} destinos para elección rápida.</div>`
+            ? `<div class="muted" style="margin-top:8px;">Mostrando ${items.length} de ${state.items.length} destinos.</div>`
             : ""
         }
-            ${
-              filtered.length < state.items.length
-                ? `<div class="muted" style="margin-top:8px;">Filtrado a ${filtered.length} destinos coincidentes.</div>`
-                : ""
-            }
       `;
 
         // Wire buttons
