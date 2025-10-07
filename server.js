@@ -1,39 +1,113 @@
 // server.js
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
-
 const fetch = require("node-fetch");
 
+const JSONBIN_BIN_URL = process.env.JSONBIN_BIN_URL; // e.g. https://api.jsonbin.io/v3/b/xxxxxxxx
+const JSONBIN_API_KEY = process.env.JSONBIN_API_KEY; // from jsonbin.io dashboard
+
+function assertJsonBinConfig() {
+  if (!JSONBIN_BIN_URL || !JSONBIN_API_KEY) {
+    console.warn(
+      "[state] JSONBin not configured (set JSONBIN_BIN_URL and JSONBIN_API_KEY). Falling back to in-memory only."
+    );
+    return false;
+  }
+  return true;
+}
+
 async function loadState() {
+  if (!assertJsonBinConfig()) return;
+
   try {
     const r = await fetch(process.env.JSONBIN_BIN_URL, {
-      headers: { "X-Master-Key": process.env.JSONBIN_API_KEY }
+      headers: { "X-Master-Key": process.env.JSONBIN_API_KEY },
     });
-    const json = await r.json();
-    submissions = json.record?.submissions || [];
-    ITEMS = json.record?.items || ITEMS;
-    console.log("[state] Loaded from JSONBin");
+    if (!r.ok) {
+      console.warn(`[state] JSONBin GET failed: ${r.status} ${r.statusText}`);
+      return;
+    }
+    const payload = await r.json();
+    const record = payload.record || payload;
+
+    // Only load submissions from JSONBin; keep ITEMS from items.json
+    submissions = Array.isArray(record.submissions) ? record.submissions : [];
+    console.log(
+      `[state] Loaded ${submissions.length} submissions from JSONBin`
+    );
   } catch (e) {
-    console.error("[state] load error:", e);
+    console.error("[state] load error from JSONBin:", e);
   }
 }
 
+// expects: JSONBIN_BIN_URL like "https://api.jsonbin.io/v3/b/<BIN_ID>"
+// expects: JSONBIN_API_KEY = your Master Key (from JSONBin account)
+// requires Node 18+ or node-fetch polyfill
+
 async function saveState() {
+  if (!assertJsonBinConfig()) return;
+
+  // Optional compaction: keep only the latest submission per userId
+  const latestByUser = new Map();
+  for (const s of submissions) {
+    const prev = latestByUser.get(s.id);
+    if (!prev || (s.submittedAt || 0) > (prev.submittedAt || 0)) {
+      latestByUser.set(s.id, {
+        id: s.id,
+        name: s.name,
+        order: s.order,
+        rankedItems: s.rankedItems,
+        submittedAt: s.submittedAt,
+      });
+    }
+  }
+  const compactSubs = Array.from(latestByUser.values());
+
+  const record = { submissions: compactSubs, savedAt: Date.now() };
+  const body = JSON.stringify(record);
+
+  // Quick size meter to help stay < 100 KB
+  const bytes = Buffer.byteLength(body, "utf8");
+  const kb = Math.round((bytes / 1024) * 10) / 10;
+  if (bytes > 95 * 1024) {
+    console.warn(
+      `[state] Warning: payload ~${kb} KB (close to JSONBin free limit 100 KB). Consider pruning old submissions.`
+    );
+  }
+
+  // Ensure we PUT to /v3/b/<id> (not /latest)
+  const putUrl = process.env.JSONBIN_BIN_URL.replace(
+    /\/latest\/?$/i,
+    ""
+  ).replace(/\/$/, "");
+
   try {
-    const payload = { submissions, items: ITEMS, savedAt: Date.now() };
-    await fetch(process.env.JSONBIN_BIN_URL, {
+    const r = await fetch(putUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "X-Master-Key": process.env.JSONBIN_API_KEY
+        "X-Master-Key": process.env.JSONBIN_API_KEY,
       },
-      body: JSON.stringify(payload)
+      body,
     });
-    console.log("[state] Saved to JSONBin");
+
+    if (!r.ok) {
+      const text = await r.text().catch(() => "");
+      console.warn(
+        `[state] JSONBin PUT failed: ${r.status} ${r.statusText} — ${text}`
+      );
+      return;
+    }
+
+    console.log(
+      `[state] Saved ${compactSubs.length} submissions to JSONBin (${kb} KB)`
+    );
   } catch (e) {
-    console.error("[state] save error:", e);
+    console.error("[state] save error to JSONBin:", e);
   }
 }
 
@@ -217,12 +291,14 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  console.log(
-    "Accessible from your network at: http://" + getLocalIp() + ":" + PORT
-  );
-});
+async function start() {
+  await loadState(); // hydrate from JSONBin before serving traffic
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Local network IP: http://${getLocalIp()}:${PORT}`);
+  });
+}
 
 function getLocalIp() {
   const os = require("os");
@@ -234,3 +310,5 @@ function getLocalIp() {
   }
   return "localhost";
 }
+
+start();
