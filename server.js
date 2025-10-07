@@ -367,9 +367,7 @@ app.get("/api/orders", async (req, res) => {
 
       for (const it of resp.Items || []) {
         orders.push({
-          id: it.id,
           order: it.order,
-          name: it.name || "",
         });
       }
       ExclusiveStartKey = resp.LastEvaluatedKey;
