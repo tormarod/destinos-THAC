@@ -6,6 +6,7 @@ const {
   BatchWriteCommand,
   QueryCommand,
   DeleteCommand,
+  PutCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const express = require("express");
 const path = require("path");
@@ -50,6 +51,37 @@ function latestPerUser(array) {
     if (!prev || (s.submittedAt || 0) > (prev.submittedAt || 0)) m.set(s.id, s);
   }
   return Array.from(m.values());
+}
+
+async function ddbFetchAllSubmissions() {
+  if (!assertDdbConfig()) return [];
+  const ddb = getDdb();
+
+  const all = [];
+  let ExclusiveStartKey;
+  do {
+    const resp = await ddb.send(
+      new QueryCommand({
+        TableName: DDB_TABLE,
+        KeyConditionExpression: "#t = :type",
+        ExpressionAttributeNames: { "#t": "type" },
+        ExpressionAttributeValues: { ":type": "SUBMISSION" },
+        ExclusiveStartKey,
+      })
+    );
+    (resp.Items || []).forEach((it) => {
+      all.push({
+        id: it.id,
+        name: it.name,
+        order: it.order,
+        rankedItems: it.rankedItems,
+        submittedAt: it.submittedAt,
+      });
+    });
+    ExclusiveStartKey = resp.LastEvaluatedKey;
+  } while (ExclusiveStartKey);
+
+  return all;
 }
 
 async function loadState() {
@@ -219,8 +251,17 @@ function allocate() {
 // ---- API ----
 
 // Current state
-app.get("/api/state", (req, res) => {
-  res.json({ items: ITEMS, submissions, idField: ID_FIELD });
+app.get("/api/state", async (req, res) => {
+  try {
+    // Always refresh from DynamoDB so the server mirrors reality
+    if (assertDdbConfig()) {
+      submissions = await ddbFetchAllSubmissions();
+    }
+    res.json({ items: ITEMS, submissions, idField: ID_FIELD });
+  } catch (e) {
+    console.error("/api/state error:", e);
+    res.status(500).json({ error: "Failed to load state" });
+  }
 });
 
 // Replace items with new array of objects (must contain the ID_FIELD)
@@ -251,47 +292,65 @@ app.post("/api/items", (req, res) => {
 });
 
 // Submit or update ranking
-app.post("/api/submit", (req, res) => {
-  const { name, order, rankedItems, id } = req.body || {};
+app.post("/api/submit", async (req, res) => {
+  try {
+    const { name, order, rankedItems, id } = req.body || {};
+    if (!name || typeof name !== "string") {
+      return res.status(400).json({ error: "Name is required." });
+    }
+    const parsedOrder = Number(order);
+    if (!Number.isInteger(parsedOrder) || parsedOrder <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Order must be a positive integer." });
+    }
+    // validate ranked items against ITEMS
+    const validIds = new Set(ITEMS.map((o) => String(o[ID_FIELD])));
+    const uniqueRanking = Array.from(
+      new Set((rankedItems || []).map((x) => String(x)))
+    ).filter((x) => validIds.has(x));
 
-  if (!name || typeof name !== "string") {
-    return res.status(400).json({ error: "Name is required." });
+    const userId =
+      id && typeof id === "string"
+        ? id
+        : `u_${Math.random().toString(36).slice(2)}`;
+    const now = Date.now();
+
+    // Update in-memory copy (for immediate responses)
+    const idx = submissions.findIndex((s) => s.id === userId);
+    const payload = {
+      id: userId,
+      name: name.trim(),
+      order: parsedOrder,
+      rankedItems: uniqueRanking,
+      submittedAt: idx >= 0 ? submissions[idx].submittedAt : now,
+    };
+    if (idx >= 0) submissions[idx] = payload;
+    else submissions.push(payload);
+
+    // Write ONLY this user to DynamoDB
+    if (assertDdbConfig()) {
+      const ddb = getDdb();
+      await ddb.send(
+        new PutCommand({
+          TableName: DDB_TABLE,
+          Item: {
+            type: "SUBMISSION",
+            id: userId,
+            name: payload.name,
+            order: payload.order,
+            rankedItems: payload.rankedItems,
+            submittedAt: payload.submittedAt,
+          },
+        })
+      );
+    }
+
+    res.json({ ok: true, id: userId, submission: payload });
+  } catch (e) {
+    console.error("/api/submit error:", e);
+    res.status(500).json({ error: "Internal error" });
   }
-  const parsedOrder = Number(order);
-  if (!Number.isInteger(parsedOrder) || parsedOrder <= 0) {
-    return res.status(400).json({ error: "Order must be a positive integer." });
-  }
-  if (!isValidRanking(rankedItems)) {
-    return res.status(400).json({
-      error: `rankedItems must be an array of valid "${ID_FIELD}" values.`,
-    });
-  }
-
-  const userId =
-    id && typeof id === "string"
-      ? id
-      : `u_${Math.random().toString(36).slice(2)}`;
-
-  // Keep the user's full ranking (deduplicated), no cap here
-  const uniqueRanking = Array.from(
-    new Set(rankedItems.map((x) => String(x)))
-  ).filter((x) => itemIndex.has(x));
-
-  const existingIdx = submissions.findIndex((s) => s.id === userId);
-  const payload = {
-    id: userId,
-    name: name.trim(),
-    order: parsedOrder, // QUOTA (used only by allocator)
-    rankedItems: uniqueRanking, // keep full preference list
-    submittedAt:
-      existingIdx >= 0 ? submissions[existingIdx].submittedAt : Date.now(),
-  };
-
-  if (existingIdx >= 0) submissions[existingIdx] = payload;
-  else submissions.push(payload);
-  saveState();
-
-  res.json({ ok: true, id: userId, submission: payload });
 });
 
 // Run allocation
@@ -314,11 +373,9 @@ app.post("/api/reset-user", async (req, res) => {
       return res.status(400).json({ error: "userId is required" });
     }
 
-    // Remove from in-memory
     const before = submissions.length;
     submissions = submissions.filter((s) => s.id !== userId);
 
-    // Remove from DynamoDB if configured
     if (assertDdbConfig()) {
       const ddb = getDdb();
       await ddb.send(
@@ -329,13 +386,10 @@ app.post("/api/reset-user", async (req, res) => {
       );
     }
 
-    // Persist remaining
-    if (typeof saveState === "function") await saveState();
-
-    return res.json({ ok: true, removed: before - submissions.length });
+    res.json({ ok: true, removed: before - submissions.length });
   } catch (e) {
-    console.error("reset-user error:", e);
-    return res.status(500).json({ error: "Internal error" });
+    console.error("/api/reset-user error:", e);
+    res.status(500).json({ error: "Internal error" });
   }
 });
 
