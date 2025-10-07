@@ -574,10 +574,38 @@
       }
 
       async function resetAll() {
-        if (!confirm("Reset all submissions?")) return;
-        await fetch("/api/reset", { method: "POST" });
+        const localId = getLocalUserId();
+        if (!localId) {
+          alert(
+            "No local user ID found. Submit once to create your user first."
+          );
+          return;
+        }
+        if (!confirm("Remove ONLY this browser user’s submissions?")) return;
+
+        const res = await fetch("/api/reset-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: localId }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alert(data.error || "Failed to reset your submissions.");
+          return;
+        }
+
+        // Clear local UI state
+        // (keep localId so future updates still map to same user unless you want to clear it)
+        // If you want to also clear the local ID, uncomment the next two lines:
+        // clearLocalUserId();
+        // $("userId").value = "";
+
+        // Clear current picks and refresh from server
+        state.ranking = [];
         await fetchState();
         $("allocationResult").innerHTML = "";
+        alert(`Removed ${data.removed ?? 0} submission(s) for this user.`);
       }
 
       // Wire up

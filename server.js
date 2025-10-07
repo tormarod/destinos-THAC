@@ -286,6 +286,24 @@ app.post("/api/reset", (req, res) => {
   res.json({ ok: true });
 });
 
+app.post("/api/reset-user", async (req, res) => {
+  try {
+    const { userId } = req.body || {};
+    if (!userId || typeof userId !== "string") {
+      return res.status(400).json({ error: "userId is required" });
+    }
+    const before = submissions.length;
+    submissions = submissions.filter((s) => s.id !== userId);
+    if (typeof saveState === "function") {
+      await saveState();
+    }
+    return res.json({ ok: true, removed: before - submissions.length });
+  } catch (e) {
+    console.error("reset-user error:", e);
+    return res.status(500).json({ error: "Internal error" });
+  }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
