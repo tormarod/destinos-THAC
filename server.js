@@ -1,11 +1,57 @@
 // server.js
 require("dotenv").config();
-
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const {
+  DynamoDBDocumentClient,
+  BatchWriteCommand,
+  QueryCommand,
+  DeleteCommand,
+} = require("@aws-sdk/lib-dynamodb");
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const fetch = require("node-fetch");
+
+const DDB_TABLE = process.env.DDB_TABLE;
+let ddbDoc = null;
+
+function assertDdbConfig() {
+  if (
+    !process.env.AWS_REGION ||
+    !process.env.AWS_ACCESS_KEY_ID ||
+    !process.env.AWS_SECRET_ACCESS_KEY ||
+    !DDB_TABLE
+  ) {
+    console.warn(
+      "[state] DynamoDB not configured: set AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DDB_TABLE"
+    );
+    return false;
+  }
+  return true;
+}
+
+function getDdb() {
+  if (ddbDoc) return ddbDoc;
+  const ddb = new DynamoDBClient({ region: process.env.AWS_REGION });
+  ddbDoc = DynamoDBDocumentClient.from(ddb, {
+    marshallOptions: {
+      removeUndefinedValues: true,
+      convertClassInstanceToMap: true,
+    },
+  });
+  return ddbDoc;
+}
+
+// Keep only latest submission per user (same as before)
+function latestPerUser(array) {
+  const m = new Map();
+  for (const s of array || []) {
+    const prev = m.get(s.id);
+    if (!prev || (s.submittedAt || 0) > (prev.submittedAt || 0)) m.set(s.id, s);
+  }
+  return Array.from(m.values());
+}
 
 const JSONBIN_BIN_URL = process.env.JSONBIN_BIN_URL; // e.g. https://api.jsonbin.io/v3/b/xxxxxxxx
 const JSONBIN_API_KEY = process.env.JSONBIN_API_KEY; // from jsonbin.io dashboard
@@ -21,26 +67,34 @@ function assertJsonBinConfig() {
 }
 
 async function loadState() {
-  if (!assertJsonBinConfig()) return;
+  if (!assertDdbConfig()) return; // fall back to items.json + in-memory submissions
 
   try {
-    const r = await fetch(process.env.JSONBIN_BIN_URL, {
-      headers: { "X-Master-Key": process.env.JSONBIN_API_KEY },
-    });
-    if (!r.ok) {
-      console.warn(`[state] JSONBin GET failed: ${r.status} ${r.statusText}`);
-      return;
-    }
-    const payload = await r.json();
-    const record = payload.record || payload;
+    const ddb = getDdb();
+    // Query all items with type = "SUBMISSION"
+    const resp = await ddb.send(
+      new QueryCommand({
+        TableName: DDB_TABLE,
+        KeyConditionExpression: "#t = :type",
+        ExpressionAttributeNames: { "#t": "type" },
+        ExpressionAttributeValues: { ":type": "SUBMISSION" },
+      })
+    );
 
-    // Only load submissions from JSONBin; keep ITEMS from items.json
-    submissions = Array.isArray(record.submissions) ? record.submissions : [];
+    // Each item stores the latest submission for that user
+    submissions = (resp.Items || []).map((it) => ({
+      id: it.id,
+      name: it.name,
+      order: it.order,
+      rankedItems: it.rankedItems,
+      submittedAt: it.submittedAt,
+    }));
+
     console.log(
-      `[state] Loaded ${submissions.length} submissions from JSONBin`
+      `[state] Loaded ${submissions.length} submissions from DynamoDB`
     );
   } catch (e) {
-    console.error("[state] load error from JSONBin:", e);
+    console.error("[state] DynamoDB load error:", e);
   }
 }
 
@@ -49,65 +103,39 @@ async function loadState() {
 // requires Node 18+ or node-fetch polyfill
 
 async function saveState() {
-  if (!assertJsonBinConfig()) return;
-
-  // Optional compaction: keep only the latest submission per userId
-  const latestByUser = new Map();
-  for (const s of submissions) {
-    const prev = latestByUser.get(s.id);
-    if (!prev || (s.submittedAt || 0) > (prev.submittedAt || 0)) {
-      latestByUser.set(s.id, {
-        id: s.id,
-        name: s.name,
-        order: s.order,
-        rankedItems: s.rankedItems,
-        submittedAt: s.submittedAt,
-      });
-    }
-  }
-  const compactSubs = Array.from(latestByUser.values());
-
-  const record = { submissions: compactSubs, savedAt: Date.now() };
-  const body = JSON.stringify(record);
-
-  // Quick size meter to help stay < 100 KB
-  const bytes = Buffer.byteLength(body, "utf8");
-  const kb = Math.round((bytes / 1024) * 10) / 10;
-  if (bytes > 95 * 1024) {
-    console.warn(
-      `[state] Warning: payload ~${kb} KB (close to JSONBin free limit 100 KB). Consider pruning old submissions.`
-    );
-  }
-
-  // Ensure we PUT to /v3/b/<id> (not /latest)
-  const putUrl = process.env.JSONBIN_BIN_URL.replace(
-    /\/latest\/?$/i,
-    ""
-  ).replace(/\/$/, "");
+  if (!assertDdbConfig()) return;
 
   try {
-    const r = await fetch(putUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": process.env.JSONBIN_API_KEY,
-      },
-      body,
-    });
+    const ddb = getDdb();
+    const compact = latestPerUser(submissions);
 
-    if (!r.ok) {
-      const text = await r.text().catch(() => "");
-      console.warn(
-        `[state] JSONBin PUT failed: ${r.status} ${r.statusText} — ${text}`
-      );
-      return;
+    // BatchWrite supports 25 items per batch
+    const chunks = [];
+    for (let i = 0; i < compact.length; i += 25) {
+      chunks.push(compact.slice(i, i + 25));
     }
 
-    console.log(
-      `[state] Saved ${compactSubs.length} submissions to JSONBin (${kb} KB)`
-    );
+    for (const chunk of chunks) {
+      const RequestItems = {
+        [DDB_TABLE]: chunk.map((s) => ({
+          PutRequest: {
+            Item: {
+              type: "SUBMISSION",
+              id: s.id,
+              name: s.name,
+              order: s.order,
+              rankedItems: s.rankedItems,
+              submittedAt: s.submittedAt ?? Date.now(),
+            },
+          },
+        })),
+      };
+      await ddb.send(new BatchWriteCommand({ RequestItems }));
+    }
+
+    console.log(`[state] Saved ${compact.length} submissions to DynamoDB`);
   } catch (e) {
-    console.error("[state] save error to JSONBin:", e);
+    console.error("[state] DynamoDB save error:", e);
   }
 }
 
@@ -292,11 +320,25 @@ app.post("/api/reset-user", async (req, res) => {
     if (!userId || typeof userId !== "string") {
       return res.status(400).json({ error: "userId is required" });
     }
+
+    // Remove from in-memory
     const before = submissions.length;
     submissions = submissions.filter((s) => s.id !== userId);
-    if (typeof saveState === "function") {
-      await saveState();
+
+    // Remove from DynamoDB if configured
+    if (assertDdbConfig()) {
+      const ddb = getDdb();
+      await ddb.send(
+        new DeleteCommand({
+          TableName: DDB_TABLE,
+          Key: { type: "SUBMISSION", id: userId },
+        })
+      );
     }
+
+    // Persist remaining
+    if (typeof saveState === "function") await saveState();
+
     return res.json({ ok: true, removed: before - submissions.length });
   } catch (e) {
     console.error("reset-user error:", e);
@@ -308,16 +350,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-const PORT = process.env.PORT || 3000;
-async function start() {
-  await loadState(); // hydrate from JSONBin before serving traffic
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-    console.log(`Local network IP: http://${getLocalIp()}:${PORT}`);
-  });
-}
-
 function getLocalIp() {
   const os = require("os");
   const interfaces = os.networkInterfaces();
@@ -327,6 +359,16 @@ function getLocalIp() {
     }
   }
   return "localhost";
+}
+
+const PORT = process.env.PORT || 3000;
+async function start() {
+  await loadState(); // hydrate from JSONBin before serving traffic
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Local network IP: http://${getLocalIp()}:${PORT}`);
+  });
 }
 
 start();
