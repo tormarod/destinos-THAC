@@ -1,14 +1,37 @@
 // src/routes/state.js
 const express = require("express");
 
-module.exports = function ({ ddb, items, idField }) {
+module.exports = function ({ ddb, idField, getItemsForSeason }) {
   const router = express.Router();
 
   router.get("/state", async (req, res) => {
+    const season = String(req.query.season || new Date().getFullYear());
     try {
-      // Always read fresh from DynamoDB so server mirrors reality
-      const submissions = ddb.enabled ? await ddb.fetchAllSubmissions() : [];
-      res.json({ items, submissions, idField });
+      let items = [];
+      let notFound = false;
+
+      try {
+        items = await getItemsForSeason(season);
+      } catch (e) {
+        // If the season JSON is missing in S3, return an empty list (not a 500)
+        const msg = String(e && (e.name || e.code || e.message || e));
+        const status = e && e.$metadata && e.$metadata.httpStatusCode;
+        if (
+          msg.includes("NoSuchKey") ||
+          msg.includes("NotFound") ||
+          status === 404
+        ) {
+          items = [];
+          notFound = true;
+        } else {
+          throw e; // real error -> 500
+        }
+      }
+
+      const allSubs = ddb.enabled ? await ddb.fetchAllSubmissions() : [];
+      const submissions = allSubs.filter((s) => String(s.season || "") === season);
+
+      res.json({ items, submissions, idField, season, notFound });
     } catch (e) {
       console.error("[/api/state] error:", e);
       res.status(500).json({ error: "Failed to load state" });

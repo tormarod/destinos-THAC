@@ -1,9 +1,10 @@
-// ===== DOM utils =====
+// public/app.js
+
 const $ = (id) => document.getElementById(id);
 
-// ===== Global state =====
 const state = {
   idField: "Nº vacante",
+  season: null,
   items: [],
   itemsById: new Map(),
   ranking: [],
@@ -13,13 +14,43 @@ const state = {
   searchTerm: "",
 };
 
-// ===== Local user ID helpers =====
 const LOCAL_KEY = "allocator:userId";
+const SEASON_KEY = "allocator:season";
 const getLocalUserId = () => localStorage.getItem(LOCAL_KEY) || "";
 const setLocalUserId = (id) => localStorage.setItem(LOCAL_KEY, id);
 const clearLocalUserId = () => localStorage.removeItem(LOCAL_KEY);
 
-// ===== Small helpers =====
+function getSeason() {
+  return localStorage.getItem(SEASON_KEY) || String(new Date().getFullYear());
+}
+function setSeason(s) {
+  localStorage.setItem(SEASON_KEY, String(s));
+  state.season = String(s);
+}
+
+// Populate season select (current year ± 4)
+function populateSeasonSelect() {
+  const sel = $("seasonSelect");
+  const current = Number(new Date().getFullYear());
+  const chosen = Number(getSeason());
+  const years = [];
+  for (let y = current + 1; y >= current - 4; y--) years.push(y);
+  sel.innerHTML = years
+    .map(
+      (y) =>
+        `<option value="${y}" ${y === chosen ? "selected" : ""}>${y}</option>`
+    )
+    .join("");
+  state.season = String(chosen);
+  sel.addEventListener("change", async (e) => {
+    const s = e.target.value;
+    setSeason(s);
+    // reset local UI selection when switching seasons (optional)
+    state.ranking = [];
+    await fetchState();
+  });
+}
+
 function labelFor(o) {
   if (!o) return "(unknown)";
   const id = o[state.idField];
@@ -36,13 +67,12 @@ function normalizeOrder(v) {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
-// Remote order check against DynamoDB (server-side)
 async function isOrderTakenRemote(order) {
   const desired = normalizeOrder(order);
   if (desired === null) return { taken: false };
 
   const localId = getLocalUserId() || $("userId").value || "";
-  const data = await api.getOrders().catch(() => ({ orders: [] }));
+  const data = await api.getOrders(state.season).catch(() => ({ orders: [] }));
   const list = Array.isArray(data.orders) ? data.orders : [];
 
   const conflict = list.find(
@@ -53,10 +83,16 @@ async function isOrderTakenRemote(order) {
     : { taken: false };
 }
 
-// ===== Renderers (items, ranking, submissions) =====
 function renderClickableItems() {
   const ct = $("clickItems");
   ct.innerHTML = "";
+
+  // If no items for this season, show a friendly note and exit
+  if (!Array.isArray(state.items) || state.items.length === 0) {
+    ct.innerHTML = `<p class="muted">No hay destinos para la temporada ${state.season}.</p>`;
+    return;
+  }
+
   const filtered = state.searchTerm
     ? state.items.filter((o) =>
         Object.values(o).some(
@@ -69,7 +105,7 @@ function renderClickableItems() {
 
   const items = filtered.slice(0, state.maxClickable);
   if (!items.length) {
-    ct.innerHTML = "<p class='muted'>No items loaded.</p>";
+    ct.innerHTML = "<p class='muted'>No hay resultados con ese filtro.</p>";
     return;
   }
 
@@ -265,11 +301,22 @@ function renderSubs(subs) {
 </table>`;
 }
 
-// ===== Data loading =====
 async function fetchState() {
-  const data = await api.getState();
+  // Try to load; if the request fails hard, fall back to an "empty" state
+  let data;
+  try {
+    data = await api.getState(state.season);
+  } catch {
+    data = {
+      items: [],
+      submissions: [],
+      idField: state.idField,
+      season: state.season,
+      notFound: true,
+    };
+  }
 
-  state.items = data.items || [];
+  state.items = Array.isArray(data.items) ? data.items : [];
   state.idField = data.idField || state.idField;
   state.itemsById = new Map(
     state.items.map((o) => [String(o[state.idField]), o])
@@ -281,7 +328,10 @@ async function fetchState() {
     prefill = data.submissions.find((s) => s.id === localId) || null;
   }
 
-  if (prefill) {
+  if (state.items.length === 0) {
+    // No catalog for this season → clear selection to avoid mismatches
+    state.ranking = [];
+  } else if (prefill) {
     $("name").value = prefill.name || "";
     $("order").value = Number(prefill.order) || 0;
 
@@ -300,7 +350,6 @@ async function fetchState() {
   updateQuotaIndicators();
 }
 
-// ===== Actions =====
 async function submitRanking(e) {
   e.preventDefault();
 
@@ -315,17 +364,10 @@ async function submitRanking(e) {
   if (!rankedItems.length) return alert("Select at least one item.");
 
   try {
-    const { taken } = await (async () => {
-      try {
-        return await (async () => await (await api.getOrders()).orders,
-        await isOrderTakenRemote(orderVal))();
-      } catch {
-        return { taken: false };
-      }
-    })();
+    const { taken } = await isOrderTakenRemote(orderVal);
     if (taken) {
       const proceed = confirm(
-        `El orden ${orderVal} ya está siendo usado por otro usuario.\n\n` +
+        `El orden ${orderVal} ya está siendo usado por otro usuario en ${state.season}.\n\n` +
           `Pulsa Aceptar para usarlo igualmente, o Cancelar para elegir otro número.`
       );
       if (!proceed) {
@@ -338,7 +380,14 @@ async function submitRanking(e) {
     }
   } catch {}
 
-  const data = await api.submit({ name, order: orderVal, rankedItems, id });
+  const data = await api.submit({
+    name,
+    order: orderVal,
+    rankedItems,
+    id,
+    season: state.season, // ✅ include season
+  });
+
   if (data.id) {
     setLocalUserId(data.id);
     $("userId").value = data.id;
@@ -363,13 +412,14 @@ async function resetAll() {
   alert(`Removed ${data.removed ?? 0} submission(s) for this user.`);
 }
 
-// ===== Event wiring =====
 document.addEventListener("DOMContentLoaded", () => {
+  populateSeasonSelect();
+
   $("submitForm").addEventListener("submit", submitRanking);
-  $("allocateBtn").addEventListener(
-    "click",
-    () => window.runAllocation && window.runAllocation()
-  );
+  $("allocateBtn").addEventListener("click", async () => {
+    const data = await api.allocate(state.season);
+    if (window.renderAllocation) window.renderAllocation(data);
+  });
   $("resetAllBtn").addEventListener("click", resetAll);
   $("itemSearch").addEventListener("input", (e) => {
     state.searchTerm = e.target.value.trim();
@@ -390,6 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   $("userId").value = getLocalUserId();
+  setSeason(getSeason()); // initialize
 
   fetchState().then(() => {
     state.quota = Math.max(0, Number($("order").value) || 0);

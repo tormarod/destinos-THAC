@@ -1,6 +1,4 @@
 // public/api.js
-// Lightweight API wrapper (no framework). Attaches `window.api`.
-
 (function () {
   async function jsonOrThrow(res, fallbackMsg) {
     const data = await res.json().catch(() => ({}));
@@ -9,19 +7,14 @@
   }
 
   const api = {
-    // Load full app state (items + this-user submissions list)
-    async getState() {
-      const res = await fetch("/api/state");
+    async getState(season) {
+      const res = await fetch(`/api/state?season=${encodeURIComponent(season)}`);
       return jsonOrThrow(res, "Failed to load state");
     },
-
-    // Get all orders (for conflict check against DynamoDB)
-    async getOrders() {
-      const res = await fetch("/api/orders");
+    async getOrders(season) {
+      const res = await fetch(`/api/orders?season=${encodeURIComponent(season)}`);
       return jsonOrThrow(res, "Failed to load orders");
     },
-
-    // Submit or update a user's ranking
     async submit(payload) {
       const res = await fetch("/api/submit", {
         method: "POST",
@@ -30,8 +23,6 @@
       });
       return jsonOrThrow(res, "Submission failed");
     },
-
-    // Delete only this user's submissions
     async resetUser(userId) {
       const res = await fetch("/api/reset-user", {
         method: "POST",
@@ -40,10 +31,12 @@
       });
       return jsonOrThrow(res, "Failed to reset your submissions");
     },
-
-    // Run allocation
-    async allocate() {
-      const res = await fetch("/api/allocate", { method: "POST" });
+    async allocate(season) {
+      const res = await fetch("/api/allocate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ season }),
+      });
       return jsonOrThrow(res, "Allocation failed");
     },
   };
