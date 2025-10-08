@@ -1,0 +1,212 @@
+const { allocate } = require("./allocate");
+
+function byUser(a, id) {
+  return a.find((x) => x.userId === id);
+}
+
+describe("allocate()", () => {
+  test("basic two users: earlier order gets first choice; second gets next", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "User 1",
+        order: 1,
+        rankedItems: ["A", "B"],
+        submittedAt: 1000,
+      },
+      {
+        id: "u2",
+        name: "User 2",
+        order: 2,
+        rankedItems: ["A", "B"],
+        submittedAt: 1001,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    // assignments
+    expect(byUser(out, "u1").assignedItemIds).toEqual(["A"]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["B"]);
+
+    // available-by-preference
+    expect(byUser(out, "u1").availableByPreference).toEqual(["A", "B"]); // no one before them
+    expect(byUser(out, "u2").availableByPreference).toEqual(["B"]); // A taken by u1
+  });
+
+  test("round-robin honors quota = order; stops when no more choices", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "U1",
+        order: 2,
+        rankedItems: [1, 2, 3],
+        submittedAt: 1,
+      },
+      {
+        id: "u2",
+        name: "U2",
+        order: 1,
+        rankedItems: [1, 3, 2],
+        submittedAt: 2,
+      },
+      {
+        id: "u3",
+        name: "U3",
+        order: 3,
+        rankedItems: [2, 3, 1],
+        submittedAt: 3,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    // Priority by order ASC: u2 (1), u1 (2), u3 (3)
+    // Round 1: u2->1, u1->2, u3->3
+    // Round 2: quotas remain but nothing left that matches
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["1"]);
+    expect(byUser(out, "u1").assignedItemIds).toEqual(["2"]);
+    expect(byUser(out, "u3").assignedItemIds).toEqual(["3"]);
+  });
+
+  test("tie on order breaks by submittedAt (earlier wins)", () => {
+    const submissions = [
+      // same order, different submittedAt
+      {
+        id: "early",
+        name: "Early",
+        order: 1,
+        rankedItems: ["X", "Y"],
+        submittedAt: 10,
+      },
+      {
+        id: "late",
+        name: "Late",
+        order: 1,
+        rankedItems: ["X", "Y"],
+        submittedAt: 20,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    expect(byUser(out, "early").assignedItemIds).toEqual(["X"]);
+    expect(byUser(out, "late").assignedItemIds).toEqual(["Y"]);
+    expect(byUser(out, "late").availableByPreference).toEqual(["Y"]); // X taken by higher priority (earlier submit)
+  });
+
+  test("handles string/number IDs consistently", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "U1",
+        order: 1,
+        rankedItems: [101, "102"],
+        submittedAt: 1,
+      },
+      {
+        id: "u2",
+        name: "U2",
+        order: 2,
+        rankedItems: ["101", 102],
+        submittedAt: 2,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    // u1 takes "101" first; u2 then gets "102"
+    expect(byUser(out, "u1").assignedItemIds).toEqual(["101"]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["102"]);
+  });
+
+  test("zero/negative quota (order) assigns nothing", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "U1",
+        order: 0,
+        rankedItems: ["A", "B"],
+        submittedAt: 1,
+      },
+      {
+        id: "u2",
+        name: "U2",
+        order: -3,
+        rankedItems: ["A", "B"],
+        submittedAt: 2,
+      },
+      {
+        id: "u3",
+        name: "U3",
+        order: 1,
+        rankedItems: ["A", "B"],
+        submittedAt: 3,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    expect(byUser(out, "u1").assignedItemIds).toEqual([]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual([]);
+    expect(byUser(out, "u3").assignedItemIds).toEqual(["A"]);
+  });
+
+  test("availableByPreference lists remaining prefs after higher-priority picks", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "U1",
+        order: 1,
+        rankedItems: ["A", "B", "C"],
+        submittedAt: 1,
+      },
+      {
+        id: "u2",
+        name: "U2",
+        order: 2,
+        rankedItems: ["B", "C", "A"],
+        submittedAt: 2,
+      },
+      {
+        id: "u3",
+        name: "U3",
+        order: 3,
+        rankedItems: ["C", "B", "A"],
+        submittedAt: 3,
+      },
+    ];
+
+    const out = allocate(submissions);
+
+    // Assignments with priority by order: u1->A, u2->B, u3->C
+    // availableByPreference excludes items taken by anyone ABOVE you:
+    expect(byUser(out, "u1").availableByPreference).toEqual(["A", "B", "C"]); // nobody above
+    expect(byUser(out, "u2").availableByPreference).toEqual(["B", "C"]); // A taken by u1
+    expect(byUser(out, "u3").availableByPreference).toEqual(["C"]); // A,B taken by higher (u1,u2)
+  });
+
+  test("gracefully handles users with empty rankedItems", () => {
+    const submissions = [
+      { id: "u1", name: "U1", order: 1, rankedItems: [], submittedAt: 1 },
+      { id: "u2", name: "U2", order: 2, rankedItems: ["A"], submittedAt: 2 },
+    ];
+
+    const out = allocate(submissions);
+
+    expect(byUser(out, "u1").assignedItemIds).toEqual([]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["A"]);
+  });
+
+  test("when preferences run out before quota, assignment stops (no duplicate picks)", () => {
+    const submissions = [
+      { id: "u1", name: "U1", order: 5, rankedItems: ["A"], submittedAt: 1 }, // wants many, only has A
+      { id: "u2", name: "U2", order: 5, rankedItems: ["B"], submittedAt: 2 },
+    ];
+
+    const out = allocate(submissions);
+
+    expect(byUser(out, "u1").assignedItemIds).toEqual(["A"]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["B"]);
+  });
+});

@@ -1,0 +1,284 @@
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+body {
+  margin: 24px;
+}
+
+form,
+.card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.row--mt {
+  margin-top: 12px;
+}
+.mt-12 {
+  margin-top: 12px;
+}
+
+label {
+  font-weight: 600;
+}
+input[type="text"],
+input[type="number"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+button.primary {
+  background: #2f6fed;
+  color: white;
+}
+button.ghost {
+  background: #e5e7eb;
+}
+.muted {
+  color: #666;
+  font-size: 0.9em;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+}
+td button.primary {
+  background: #2f6fed;
+  color: #fff;
+  padding: 6px 10px;
+}
+td button.ghost {
+  background: #e5e7eb;
+  padding: 6px 10px;
+}
+td button {
+  border-radius: 6px;
+}
+
+.quota {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.badge {
+  background: #eef2ff;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.drag-table tbody tr.dragging {
+  opacity: 0.6;
+  outline: 2px dashed #aaa;
+}
+.drag-hint {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Highlight 1..199 */
+tr.top199 {
+  background-color: #fffbe6;
+}
+
+/* Search input wrapper */
+.search-wrap {
+  margin-bottom: 10px;
+}
+.search-input {
+  width: 60%;
+}
+
+/* BUENA SUERTE overlay */
+#luckOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none; /* toggled by JS */
+}
+#luckOverlay .luck-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
+}
+#luckOverlay .luck-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+#luckOverlay .luck-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  animation: luckSpinIn 800ms ease-out both;
+}
+#luckOverlay .luck-text {
+  margin-top: 2px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 48px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  animation: luckFadeIn 600ms 150ms ease-out both;
+}
+@keyframes luckSpinIn {
+  0% {
+    transform: scale(0) rotate(-360deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(3.1) rotate(-20deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3) rotate(0deg);
+  }
+}
+@keyframes luckFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Splash Screen (responsive + safe sizing) */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+}
+#splash .splash-backdrop {
+  position: absolute;
+  inset: 0;
+  /* opaque background */
+  background: rgba(0, 0, 0, 0.95);
+}
+#splash .splash-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 4vh 4vw;
+  overflow: hidden;
+}
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: min(92vw, 900px);
+  max-height: 86vh;
+}
+/* Responsive typography */
+.splash-title {
+  color: #fff;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: clamp(1.5rem, 5vw, 2.6rem);
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  animation: splashPop 700ms ease-out both;
+}
+.splash-subtitle {
+  color: #e6e8ff;
+  margin: 0;
+  font-weight: 600;
+  opacity: 0.95;
+  font-size: clamp(0.9rem, 2.6vw, 1.125rem);
+  text-align: center;
+  animation: splashFadeUp 700ms 120ms ease-out both;
+}
+/* Media (video/img) */
+.splash-media {
+  width: min(80vw, 560px);
+  max-height: 48vh;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  animation: splashGifIn 600ms 120ms ease-out both;
+}
+@media (max-height: 600px) {
+  .splash-inner {
+    gap: 0.9rem;
+  }
+  .splash-media {
+    max-height: 38vh;
+    width: min(82vw, 500px);
+  }
+}
+/* Animations */
+@keyframes splashPop {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes splashFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes splashGifIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* Fade-out helper */
+#splash.fadeout {
+  animation: splashFadeOut 450ms ease-in forwards;
+}
+@keyframes splashFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+/* Prevent page scroll while splash is visible */
+body.splashing {
+  overflow: hidden;
+}
