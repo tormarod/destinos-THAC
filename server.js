@@ -26,6 +26,16 @@ const ddb = createDdb({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
+app.use("/api", (req, _res, next) => {
+  console.log(`[api] ${req.method} ${req.path} body=`, req.body);
+  next();
+});
+
+app.post("/api/reset-user/_probe", (req, res) => {
+  console.log("[probe] body =", req.body);
+  res.json({ ok: true, got: req.body });
+});
+
 // Routes (now season-aware and S3-backed for items)
 app.use(
   "/api",
@@ -34,6 +44,7 @@ app.use(
 app.use("/api", require("./src/routes/orders")({ ddb }));
 app.use("/api", require("./src/routes/submit")({ ddb, idField: ID_FIELD }));
 app.use("/api", require("./src/routes/allocate")({ ddb, idField: ID_FIELD }));
+app.use("/api", require("./src/routes/resetUser")({ ddb, idField: ID_FIELD }));
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${PORT}`);

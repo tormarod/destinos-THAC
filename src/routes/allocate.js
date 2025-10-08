@@ -1,4 +1,3 @@
-// src/routes/allocate.js
 const express = require("express");
 const { allocate } = require("../lib/allocate");
 
@@ -7,9 +6,10 @@ module.exports = function ({ ddb }) {
 
   router.post("/allocate", async (req, res) => {
     try {
-      const season = String((req.body && req.body.season) || new Date().getFullYear());
-      const allSubs = ddb.enabled ? await ddb.fetchAllSubmissions() : [];
-      const subs = allSubs.filter((s) => String(s.season || "") === season);
+      const season = String(
+        (req.body && req.body.season) || new Date().getFullYear()
+      );
+      const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
       const allocation = allocate(subs);
       res.json({ allocation, season });
     } catch (e) {

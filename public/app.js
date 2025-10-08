@@ -403,13 +403,21 @@ async function resetAll() {
     alert("No local user ID found. Submit once to create your user first.");
     return;
   }
-  if (!confirm("Remove ONLY this browser user’s submissions?")) return;
+  if (
+    !confirm(`Remove ONLY this browser user’s submissions for ${state.season}?`)
+  )
+    return;
 
-  const data = await api.resetUser(localId);
-  state.ranking = [];
-  await fetchState();
-  $("allocationResult").innerHTML = "";
-  alert(`Removed ${data.removed ?? 0} submission(s) for this user.`);
+  try {
+    const data = await api.resetUser(localId, state.season); // send season
+    state.ranking = [];
+    await fetchState();
+    $("allocationResult").innerHTML = "";
+    alert(`Removed ${data.removed ?? 0} submission(s) for this user.`);
+  } catch (e) {
+    console.error("/api/reset-user failed:", e.status, e.body || e);
+    alert(e.message || "Failed to reset your submissions");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,4 +1,3 @@
-// src/routes/state.js
 const express = require("express");
 
 module.exports = function ({ ddb, idField, getItemsForSeason }) {
@@ -13,7 +12,6 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
       try {
         items = await getItemsForSeason(season);
       } catch (e) {
-        // If the season JSON is missing in S3, return an empty list (not a 500)
         const msg = String(e && (e.name || e.code || e.message || e));
         const status = e && e.$metadata && e.$metadata.httpStatusCode;
         if (
@@ -24,13 +22,13 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
           items = [];
           notFound = true;
         } else {
-          throw e; // real error -> 500
+          throw e;
         }
       }
 
-      const allSubs = ddb.enabled ? await ddb.fetchAllSubmissions() : [];
-      const submissions = allSubs.filter((s) => String(s.season || "") === season);
-
+      const submissions = ddb.enabled
+        ? await ddb.fetchAllSubmissions(season)
+        : [];
       res.json({ items, submissions, idField, season, notFound });
     } catch (e) {
       console.error("[/api/state] error:", e);

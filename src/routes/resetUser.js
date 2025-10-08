@@ -1,4 +1,3 @@
-// src/routes/resetUser.js
 const express = require("express");
 
 module.exports = function ({ ddb }) {
@@ -6,16 +5,16 @@ module.exports = function ({ ddb }) {
 
   router.post("/reset-user", async (req, res) => {
     try {
-      const { userId } = req.body || {};
+      const { userId, season } = req.body || {};
       if (!userId || typeof userId !== "string") {
         return res.status(400).json({ error: "userId is required" });
       }
+      const seasonStr = String(season || new Date().getFullYear());
 
       if (ddb.enabled) {
-        await ddb.deleteSubmission(userId);
+        await ddb.deleteSubmission(seasonStr, userId);
       }
 
-      // Response mirrors previous contract (we don't keep server cache)
       return res.json({ ok: true, removed: 1 });
     } catch (e) {
       console.error("[/api/reset-user] error:", e);

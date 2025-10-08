@@ -40,7 +40,10 @@ function createDdb(cfg) {
     });
   }
 
-  async function fetchAllSubmissions() {
+  const makePk = (season) => `SUBMISSION#${String(season)}`;
+
+  /** Get ALL submissions for a season (one query, paginated) */
+  async function fetchAllSubmissions(season) {
     if (!enabled) return [];
     const out = [];
     let ExclusiveStartKey;
@@ -48,19 +51,21 @@ function createDdb(cfg) {
       const resp = await doc.send(
         new QueryCommand({
           TableName: tableName,
-          KeyConditionExpression: "#t = :type",
-          ExpressionAttributeNames: { "#t": "type" },
-          ExpressionAttributeValues: { ":type": "SUBMISSION" },
+          KeyConditionExpression: "#pk = :pk",
+          ExpressionAttributeNames: { "#pk": "pk" },
+          ExpressionAttributeValues: { ":pk": makePk(season) },
           ExclusiveStartKey,
         })
       );
       (resp.Items || []).forEach((it) =>
         out.push({
-          id: it.id,
+          // expose plain userId in results:
+          id: it.sk,
           name: it.name,
           order: it.order,
           rankedItems: it.rankedItems,
           submittedAt: it.submittedAt,
+          season: it.season,
         })
       );
       ExclusiveStartKey = resp.LastEvaluatedKey;
@@ -68,7 +73,8 @@ function createDdb(cfg) {
     return out;
   }
 
-  async function fetchAllOrders() {
+  /** Get orders for a season (project minimal fields) */
+  async function fetchAllOrders(season) {
     if (!enabled) return [];
     const out = [];
     let ExclusiveStartKey;
@@ -76,59 +82,101 @@ function createDdb(cfg) {
       const resp = await doc.send(
         new QueryCommand({
           TableName: tableName,
-          KeyConditionExpression: "#t = :type",
+          KeyConditionExpression: "#pk = :pk",
           ExpressionAttributeNames: {
-            "#t": "type",
+            "#pk": "pk",
             "#o": "order",
             "#n": "name",
+            "#s": "season",
+            "#sk": "sk",
           },
-          ExpressionAttributeValues: { ":type": "SUBMISSION" },
-          ProjectionExpression: "id, #o, #n",
+          ExpressionAttributeValues: { ":pk": makePk(season) },
+          ProjectionExpression: "#sk, #o, #n, #s",
           ExclusiveStartKey,
         })
       );
       (resp.Items || []).forEach((it) =>
-        out.push({ id: it.id, order: it.order, name: it.name || "" })
+        out.push({
+          id: it.sk,
+          order: it.order,
+          name: it.name || "",
+          season: it.season,
+        })
       );
       ExclusiveStartKey = resp.LastEvaluatedKey;
     } while (ExclusiveStartKey);
     return out;
   }
 
-  async function upsertSubmission(sub) {
+  /** FAST order-exists check via GSI1 (optional helper) */
+  async function orderExists(season, orderValue) {
+    if (!enabled) return false;
+    const resp = await doc.send(
+      new QueryCommand({
+        TableName: tableName,
+        IndexName: "GSI1",
+        KeyConditionExpression: "#pk = :pk AND #o = :o",
+        ExpressionAttributeNames: { "#pk": "pk", "#o": "order" },
+        ExpressionAttributeValues: {
+          ":pk": makePk(season),
+          ":o": Number(orderValue),
+        },
+        Limit: 1,
+      })
+    );
+    return (resp.Count || 0) > 0;
+  }
+
+  /** Upsert one submission for (season, userId) */
+  async function upsertSubmission({
+    season,
+    userId,
+    name,
+    order,
+    rankedItems,
+    submittedAt,
+  }) {
     if (!enabled) return;
     await doc.send(
       new PutCommand({
         TableName: tableName,
         Item: {
-          type: "SUBMISSION",
-          id: sub.id,
-          name: sub.name,
-          order: sub.order,
-          rankedItems: sub.rankedItems,
-          submittedAt: sub.submittedAt,
+          pk: makePk(season),
+          sk: String(userId),
+          season: String(season),
+          name,
+          order: Number(order),
+          rankedItems,
+          submittedAt,
         },
       })
     );
   }
 
-  async function deleteSubmission(userId) {
-    if (!enabled) return;
-    await doc.send(
+  /** Delete one submission for (season, userId) */
+  async function deleteSubmission(season, userId) {
+    if (!enabled) {
+      console.warn("[ddb] deleteSubmission skipped: DDB not enabled");
+      return false;
+    }
+    const resp = await doc.send(
       new DeleteCommand({
         TableName: tableName,
-        Key: { type: "SUBMISSION", id: userId },
+        Key: { pk: `SUBMISSION#${String(season)}`, sk: String(userId) },
+        ReturnValues: "ALL_OLD",
       })
     );
+    return !!(resp.Attributes && Object.keys(resp.Attributes).length);
   }
 
   return {
     enabled,
     tableName,
     fetchAllSubmissions,
+    fetchAllOrders,
     upsertSubmission,
     deleteSubmission,
-    fetchAllOrders,
+    orderExists, // optional faster check
   };
 }
 
