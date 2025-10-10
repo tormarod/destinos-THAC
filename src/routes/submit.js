@@ -24,8 +24,6 @@ module.exports = function ({ ddb }) {
           : `u_${Math.random().toString(36).slice(2)}`;
 
       const now = Date.now();
-      // Ideally, fetch prior record just for this userId/season; since it's a Put, we just preserve submittedAt if you want:
-      // If you want to preserve first submission time, you can look it up quickly:
       let submittedAt = now;
       const existing = (await ddb.fetchAllSubmissions(seasonStr)).find(
         (s) => s.id === userId

@@ -359,9 +359,9 @@ async function submitRanking(e) {
   const rankedItems = [...state.ranking];
   const id = $("userId").value || getLocalUserId() || undefined;
 
-  if (!name) return alert("Please enter your name.");
-  if (orderVal === null) return alert("Order must be a positive integer.");
-  if (!rankedItems.length) return alert("Select at least one item.");
+  if (!name) return alert("Por favor, introduce tu nombre.");
+  if (orderVal === null) return alert("El orden debe ser un número entero positivo.");
+  if (!rankedItems.length) return alert("Selecciona al menos un destino.");
 
   try {
     const { taken } = await isOrderTakenRemote(orderVal);
@@ -394,17 +394,17 @@ async function submitRanking(e) {
   }
 
   await fetchState();
-  alert("Saved!");
+  alert("¡Guardado correctamente!");
 }
 
 async function resetAll() {
   const localId = getLocalUserId();
   if (!localId) {
-    alert("No local user ID found. Submit once to create your user first.");
+    alert("No se encontró un ID de usuario local. Envía tu ranking una vez para crear tu usuario primero.");
     return;
   }
   if (
-    !confirm(`Remove ONLY this browser user’s submissions for ${state.season}?`)
+    !confirm(`¿Eliminar SOLO las solicitudes de este usuario local para la temporada ${state.season}?`)
   )
     return;
 
@@ -413,10 +413,10 @@ async function resetAll() {
     state.ranking = [];
     await fetchState();
     $("allocationResult").innerHTML = "";
-    alert(`Removed ${data.removed ?? 0} submission(s) for this user.`);
+    alert(`Se eliminaron ${data.removed ?? 0} solicitud(es) para este usuario.`);
   } catch (e) {
     console.error("/api/reset-user failed:", e.status, e.body || e);
-    alert(e.message || "Failed to reset your submissions");
+    alert(e.message || "No se pudo restablecer tus solicitudes");
   }
 }
 
@@ -437,11 +437,11 @@ document.addEventListener("DOMContentLoaded", () => {
   $("resetSelfBtn").addEventListener("click", async () => {
     const uid = getLocalUserId();
     if (!uid) {
-      alert("No local user ID found.");
+      alert("No se encontró un ID de usuario local.");
       return;
     }
     const ok = confirm(
-      "This will delete ALL your submissions across ALL seasons and clear your local ID. Continue?"
+      "Esto eliminará TODAS tus solicitudes en TODAS las temporadas y borrará tu ID local. ¿Continuar?"
     );
     if (!ok) return;
 
@@ -455,13 +455,13 @@ document.addEventListener("DOMContentLoaded", () => {
       $("userId").value = "";
 
       alert(
-        `Deleted ${
+        `Se eliminaron ${
           data.removed ?? 0
-        } record(s) in DynamoDB and cleared your local ID.`
+        } registro(s) en DynamoDB y se borró tu ID local.`
       );
     } catch (e) {
       console.error("resetUserEverywhere failed:", e);
-      alert(e.message || "Failed to delete your submissions.");
+      alert(e.message || "No se pudo eliminar tus solicitudes.");
     }
   });
 
