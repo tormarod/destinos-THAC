@@ -282,3 +282,141 @@ tr.top199 {
 body.splashing {
   overflow: hidden;
 }
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0 0;
+  flex-wrap: wrap; /* allow wrapping on small screens */
+  max-width: 100%;
+}
+
+.pager-left {
+  flex: 0 1 auto;
+}
+.pager-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 auto;
+  flex-wrap: wrap; /* buttons & select can wrap instead of overflow */
+}
+
+.pager-btn {
+  border: 1px solid var(--border, #e5e7eb);
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.pager-btn[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.pager-status {
+  margin: 0 6px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.pager-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap; /* keep label with the select on wide screens */
+}
+.pager-size select {
+  margin-left: 6px;
+}
+/* Wrapper adds safe horizontal scroll on very small screens */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Make cells wrap nicely */
+.items-table,
+.drag-table {
+  table-layout: fixed; /* prevents columns from growing beyond width */
+  width: 100%;
+}
+
+.items-table th,
+.items-table td,
+.drag-table th,
+.drag-table td {
+  white-space: normal; /* allow wrapping */
+  word-break: break-word; /* long words split */
+  overflow-wrap: anywhere; /* modern safe wrap */
+}
+
+/* Action column keeps buttons tidy */
+td.action {
+  white-space: nowrap;
+}
+
+/* Compact button style inside tables */
+.table-btn {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 640px) {
+  .pager {
+    gap: 10px;
+  }
+
+  /* Stack left/right rows */
+  .pager-left,
+  .pager-right {
+    flex: 1 1 100%;
+  }
+
+  /* Make buttons compact */
+  .pager-btn {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Put the status and page-size on their own lines if needed */
+  .pager-status {
+    flex: 1 1 100%;
+    min-width: 0; /* allow shrinking */
+    order: 3; /* move below buttons */
+    margin: 4px 0 0;
+  }
+
+  .pager-size {
+    flex: 1 1 100%;
+    order: 4; /* below status */
+    justify-content: flex-start;
+    white-space: normal; /* allow wrap */
+  }
+  .pager-size select {
+    flex: 1 1 auto; /* expand to available width */
+    min-width: 0;
+    width: 100%; /* full width on phones */
+    margin-left: 0;
+  }
+
+  /* Hide less-critical buttons on very small phones to save space */
+  .pager-btn[data-page="first"],
+  .pager-btn[data-page="last"] {
+    display: none;
+  }
+}
+/* Ultra-narrow screens: keep things readable */
+@media (max-width: 400px) {
+  .pager-status {
+    font-size: 0.9rem;
+  }
+  .pager-btn {
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+}
