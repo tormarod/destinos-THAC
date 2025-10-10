@@ -13,7 +13,9 @@ const state = {
   maxItemsTable: 9999999,
   searchTerm: "",
   page: 1,
-  pageSize: 10, // default page size
+  pageSize: 10, // default page size,
+  yearsAbove: 0, // years above current year to allow
+  yearsBelow: 0, // years below current year to allow
 };
 
 const LOCAL_KEY = "allocator:userId";
@@ -36,7 +38,7 @@ function populateSeasonSelect() {
   const current = Number(new Date().getFullYear());
   const chosen = Number(getSeason());
   const years = [];
-  for (let y = current + 1; y >= current - 4; y--) years.push(y);
+  for (let y = current + state.yearsAbove; y >= current - state.yearsBelow; y--) years.push(y);
   sel.innerHTML = years
     .map(
       (y) =>
