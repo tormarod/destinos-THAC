@@ -12,6 +12,17 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, "public");
 const ID_FIELD = process.env.ID_FIELD || "Nº vacante";
 
+const { requireEnv } = require("./src/lib/requireEnv");
+
+requireEnv([
+  "AWS_REGION",
+  "AWS_ACCESS_KEY_ID",
+  "AWS_SECRET_ACCESS_KEY",
+  "S3_BUCKET",
+  "S3_PREFIX",
+  "DDB_TABLE",
+]);
+
 const app = express();
 
 // --- core middleware (must be BEFORE routes) ---
