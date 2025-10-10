@@ -70,16 +70,17 @@ function renderAllocation(payload) {
 }
 
 // Run allocation with a short “Buena Suerte” splash
-async function runAllocation() {
+async function runAllocation(season) {
   showLuckOverlay();
 
-  const fetchPromise = (async () => {
-    const data = await window.api.allocate();
+  try {
+    const data = await window.api.allocate(season);
     renderAllocation(data);
-  })();
-
-  await Promise.all([fetchPromise, sleep(3000)]);
-  hideLuckOverlay();
+  } finally {
+    // keep the overlay visible a bit so the animation is noticeable
+    await sleep(3000);
+    hideLuckOverlay();
+  }
 }
 
 // Expose globals (used by app.js event wiring)

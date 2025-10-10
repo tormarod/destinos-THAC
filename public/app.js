@@ -425,8 +425,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("submitForm").addEventListener("submit", submitRanking);
   $("allocateBtn").addEventListener("click", async () => {
-    const data = await api.allocate(state.season);
-    if (window.renderAllocation) window.renderAllocation(data);
+    if (window.runAllocation) {
+      await window.runAllocation(state.season);
+    }
   });
   $("resetAllBtn").addEventListener("click", resetAll);
   $("itemSearch").addEventListener("input", (e) => {
