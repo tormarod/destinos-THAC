@@ -433,14 +433,37 @@ document.addEventListener("DOMContentLoaded", () => {
     state.searchTerm = e.target.value.trim();
     renderClickableItems();
   });
-  $("resetSelfBtn").addEventListener("click", () => {
-    resetAll();
-    clearLocalUserId();
-    $("userId").value = "";
-    alert(
-      "Cleared your local user ID. Future submissions will create a new one."
+  $("resetSelfBtn").addEventListener("click", async () => {
+    const uid = getLocalUserId();
+    if (!uid) {
+      alert("No local user ID found.");
+      return;
+    }
+    const ok = confirm(
+      "This will delete ALL your submissions across ALL seasons and clear your local ID. Continue?"
     );
+    if (!ok) return;
+
+    try {
+      const data = await api.resetUserEverywhere(uid); // delete across seasons
+      // Also clear any local state for the current season
+      state.ranking = [];
+      await fetchState();
+
+      clearLocalUserId();
+      $("userId").value = "";
+
+      alert(
+        `Deleted ${
+          data.removed ?? 0
+        } record(s) in DynamoDB and cleared your local ID.`
+      );
+    } catch (e) {
+      console.error("resetUserEverywhere failed:", e);
+      alert(e.message || "Failed to delete your submissions.");
+    }
   });
+
   $("order").addEventListener("input", () => {
     state.quota = Math.max(0, Number($("order").value) || 0);
     renderClickableItems();

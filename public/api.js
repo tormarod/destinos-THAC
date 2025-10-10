@@ -50,6 +50,17 @@
       });
       return jsonOrThrow(res, "Failed to reset your submissions");
     },
+    async resetUserEverywhere(userId) {
+      const res = await fetch("/api/reset-user-all", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      return jsonOrThrow(
+        res,
+        "Failed to reset your submissions across all seasons"
+      );
+    },
     async allocate(season) {
       const res = await fetch("/api/allocate", {
         method: "POST",

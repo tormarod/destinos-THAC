@@ -1,11 +1,11 @@
-// server.js (only the routes wiring changed)
+// server.js
 require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
 
-const { createDdb } = require("./src/lib/ddb");
+const { createDdb } = require("./src/lib/ddb"); // season-aware v2 helper
 const { getItemsForSeason } = require("./src/lib/s3Items");
 
 const PORT = process.env.PORT || 3000;
@@ -13,38 +13,45 @@ const PUBLIC_DIR = path.join(__dirname, "public");
 const ID_FIELD = process.env.ID_FIELD || "Nº vacante";
 
 const app = express();
+
+// --- core middleware (must be BEFORE routes) ---
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: false }));
+
+// serve static
 app.use(express.static(PUBLIC_DIR));
 
-// DynamoDB (submissions)
-const ddb = createDdb({
-  region: process.env.AWS_REGION,
-  tableName: process.env.DDB_TABLE,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
-
+// tiny API logger to confirm route hits & payloads
 app.use("/api", (req, _res, next) => {
   console.log(`[api] ${req.method} ${req.path} body=`, req.body);
   next();
 });
 
-app.post("/api/reset-user/_probe", (req, res) => {
-  console.log("[probe] body =", req.body);
-  res.json({ ok: true, got: req.body });
+// (optional) quick probe to diagnose routing; remove after things work
+// app.post("/api/reset-user/_probe", (req, res) => res.json({ ok: true, got: req.body }));
+
+// --- DynamoDB client ---
+const ddb = createDdb({
+  region: process.env.AWS_REGION,
+  tableName: process.env.DDB_TABLE, // e.g. thac-submissions-v2
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-// Routes (now season-aware and S3-backed for items)
+// --- Mount routes (NOTE: each require(...) is CALLED with deps) ---
 app.use(
   "/api",
   require("./src/routes/state")({ ddb, idField: ID_FIELD, getItemsForSeason })
 );
 app.use("/api", require("./src/routes/orders")({ ddb }));
-app.use("/api", require("./src/routes/submit")({ ddb, idField: ID_FIELD }));
-app.use("/api", require("./src/routes/allocate")({ ddb, idField: ID_FIELD }));
-app.use("/api", require("./src/routes/resetUser")({ ddb, idField: ID_FIELD }));
+app.use("/api", require("./src/routes/submit")({ ddb })); // POST /submit
+app.use("/api", require("./src/routes/resetUser")({ ddb })); // POST /reset-user
+app.use("/api", require("./src/routes/allocate")({ ddb })); // POST /allocate
+app.use("/api", require("./src/routes/resetUserAll")({ ddb })); // POST /reset-user-all
+
+// (optional) catch-all for SPA front-end—ensure this is AFTER /api routes
+// app.get("*", (_req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${PORT}`);

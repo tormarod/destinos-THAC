@@ -169,6 +169,46 @@ function createDdb(cfg) {
     return !!(resp.Attributes && Object.keys(resp.Attributes).length);
   }
 
+  /** Delete ALL submissions for a given userId across ALL seasons.
+   *  Uses a Scan + per-item Delete (OK at your scale).
+   *  Returns how many rows were removed.
+   */
+  async function deleteAllByUser(userId) {
+    if (!enabled) {
+      console.warn("[ddb] deleteAllByUser skipped: DDB not enabled");
+      return 0;
+    }
+    const sk = String(userId);
+    let removed = 0;
+
+    // Scan for all items where sk == userId
+    let ExclusiveStartKey;
+    do {
+      const r = await doc.send(
+        new (require("@aws-sdk/lib-dynamodb").ScanCommand)({
+          TableName: tableName,
+          FilterExpression: "#sk = :sk",
+          ExpressionAttributeNames: { "#sk": "sk" },
+          ExpressionAttributeValues: { ":sk": sk },
+          ExclusiveStartKey,
+        })
+      );
+      const items = r.Items || [];
+      for (const it of items) {
+        await doc.send(
+          new (require("@aws-sdk/lib-dynamodb").DeleteCommand)({
+            TableName: tableName,
+            Key: { pk: it.pk, sk: it.sk },
+          })
+        );
+        removed++;
+      }
+      ExclusiveStartKey = r.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+
+    return removed;
+  }
+
   return {
     enabled,
     tableName,
@@ -177,6 +217,7 @@ function createDdb(cfg) {
     upsertSubmission,
     deleteSubmission,
     orderExists, // optional faster check
+    deleteAllByUser,
   };
 }
 
