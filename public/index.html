@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -38,13 +38,10 @@
       <h2>Enviar / Actualizar tu ranking</h2>
       <div class="row">
         <label for="name">Nombre</label>
-        <input
-          id="name"
-          type="text"
-          required
-          placeholder="Fernando Alonso"
-        />
-        <label for="order">Orden <i class="muted">(tu posición del BOE + 34)</i></label>
+        <input id="name" type="text" required placeholder="Fernando Alonso" />
+        <label for="order"
+          >Orden <i class="muted">(tu posición del BOE + 34)</i></label
+        >
         <input
           id="order"
           type="number"
@@ -81,13 +78,24 @@
       <div class="muted">
         El ID de tu usuario se guarda localmente en este navegador.
       </div>
-      <p class="muted" style="color: red;">Recuerda volver a acceder desde el mismo navegador y dispositivo para obtener tus destinos guardados y continuar donde lo dejaste, de lo contrario tendrás que volver a enviar tu ranking y se creará un registro duplicado.</p>
+      <p class="muted" style="color: red">
+        Recuerda volver a acceder desde el mismo navegador y dispositivo para
+        obtener tus destinos guardados y continuar donde lo dejaste, de lo
+        contrario tendrás que volver a enviar tu ranking y se creará un registro
+        duplicado.
+      </p>
     </form>
 
     <div class="card">
       <h2>Reparto de destinos</h2>
       <div class="row">
-        <label for="xParameter">Simulación de competencia <i class="muted">(si los <span id="xValue">1</span> primeros destinos de todos los usuarios por encima de tí estuviesen "ocupados")</i></label>
+        <label for="xParameter"
+          >Simulación de competencia
+          <i class="muted"
+            >(si los <span id="xValue">1</span> primeros destinos de todos los
+            usuarios por encima de tí estuviesen "ocupados")</i
+          ></label
+        >
         <input
           id="xParameter"
           type="number"
@@ -98,8 +106,10 @@
           placeholder="1"
         />
       </div>
-      <p class="muted" style="margin-top: 8px; font-size: 14px;">
-        <strong>1-20</strong> = Simula mayor competencia: cuanto más alto el número, más destinos populares elegidos por personas por encima de tí se consideran "ocupados" y menos opciones te quedarán disponibles
+      <p class="muted" style="margin-top: 8px; font-size: 14px">
+        <strong>1-20</strong> = Simula mayor competencia: cuanto más alto el
+        número, más destinos populares elegidos por personas por encima de tí se
+        consideran "ocupados" y menos opciones te quedarán disponibles
       </p>
       <div class="row">
         <button class="primary" id="allocateBtn">Repartir</button>
@@ -107,9 +117,16 @@
           Reiniciar todos mis destinos
         </button>
       </div>
-      <div id="cacheTimer" class="cache-timer" style="display: none;">
-        <span class="cache-timer-icon">⏱️</span>
-        <span class="cache-timer-text">Próxima actualización en: <span id="timerCountdown">--:--</span></span>
+      <div
+        id="rateLimitCountdown"
+        class="rate-limit-countdown"
+        style="display: none"
+      >
+        <span class="rate-limit-icon">⏳</span>
+        <span class="rate-limit-text"
+          >Puedes ejecutar otra asignación en:
+          <span id="countdownTimer">--</span> segundos</span
+        >
       </div>
       <div id="allocationResult" class="mt-12"></div>
     </div>

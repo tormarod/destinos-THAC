@@ -26,7 +26,7 @@ module.exports = function ({ ddb }) {
       const now = Date.now();
       let submittedAt = now;
       const existing = (await ddb.fetchAllSubmissions(seasonStr)).find(
-        (s) => s.id === userId
+        (s) => s.id === userId,
       );
       if (existing) submittedAt = existing.submittedAt || now;
 

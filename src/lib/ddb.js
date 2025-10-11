@@ -16,7 +16,7 @@ function assertConfig(cfg) {
     cfg.secretAccessKey;
   if (!ok) {
     console.warn(
-      "[ddb] Missing AWS/DynamoDB env. Set AWS_REGION, DDB_TABLE, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY"
+      "[ddb] Missing AWS/DynamoDB env. Set AWS_REGION, DDB_TABLE, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY",
     );
   }
   return ok;
@@ -55,7 +55,7 @@ function createDdb(cfg) {
           ExpressionAttributeNames: { "#pk": "pk" },
           ExpressionAttributeValues: { ":pk": makePk(season) },
           ExclusiveStartKey,
-        })
+        }),
       );
       (resp.Items || []).forEach((it) =>
         out.push({
@@ -66,7 +66,7 @@ function createDdb(cfg) {
           rankedItems: it.rankedItems,
           submittedAt: it.submittedAt,
           season: it.season,
-        })
+        }),
       );
       ExclusiveStartKey = resp.LastEvaluatedKey;
     } while (ExclusiveStartKey);
@@ -93,7 +93,7 @@ function createDdb(cfg) {
           ExpressionAttributeValues: { ":pk": makePk(season) },
           ProjectionExpression: "#sk, #o, #n, #s",
           ExclusiveStartKey,
-        })
+        }),
       );
       (resp.Items || []).forEach((it) =>
         out.push({
@@ -101,7 +101,7 @@ function createDdb(cfg) {
           order: it.order,
           name: it.name || "",
           season: it.season,
-        })
+        }),
       );
       ExclusiveStartKey = resp.LastEvaluatedKey;
     } while (ExclusiveStartKey);
@@ -122,7 +122,7 @@ function createDdb(cfg) {
           ":o": Number(orderValue),
         },
         Limit: 1,
-      })
+      }),
     );
     return (resp.Count || 0) > 0;
   }
@@ -149,7 +149,7 @@ function createDdb(cfg) {
           rankedItems,
           submittedAt,
         },
-      })
+      }),
     );
   }
 
@@ -164,7 +164,7 @@ function createDdb(cfg) {
         TableName: tableName,
         Key: { pk: `SUBMISSION#${String(season)}`, sk: String(userId) },
         ReturnValues: "ALL_OLD",
-      })
+      }),
     );
     return !!(resp.Attributes && Object.keys(resp.Attributes).length);
   }
@@ -191,7 +191,7 @@ function createDdb(cfg) {
           ExpressionAttributeNames: { "#sk": "sk" },
           ExpressionAttributeValues: { ":sk": sk },
           ExclusiveStartKey,
-        })
+        }),
       );
       const items = r.Items || [];
       for (const it of items) {
@@ -199,7 +199,7 @@ function createDdb(cfg) {
           new (require("@aws-sdk/lib-dynamodb").DeleteCommand)({
             TableName: tableName,
             Key: { pk: it.pk, sk: it.sk },
-          })
+          }),
         );
         removed++;
       }

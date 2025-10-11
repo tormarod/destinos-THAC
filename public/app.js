@@ -38,11 +38,12 @@ function populateSeasonSelect() {
   const current = Number(new Date().getFullYear());
   const chosen = Number(getSeason());
   const years = [];
-  for (let y = current + state.yearsAbove; y >= current - state.yearsBelow; y--) years.push(y);
+  for (let y = current + state.yearsAbove; y >= current - state.yearsBelow; y--)
+    years.push(y);
   sel.innerHTML = years
     .map(
       (y) =>
-        `<option value="${y}" ${y === chosen ? "selected" : ""}>${y}</option>`
+        `<option value="${y}" ${y === chosen ? "selected" : ""}>${y}</option>`,
     )
     .join("");
   state.season = String(chosen);
@@ -80,7 +81,7 @@ async function isOrderTakenRemote(order) {
   const list = Array.isArray(data.orders) ? data.orders : [];
 
   const conflict = list.find(
-    (o) => normalizeOrder(o.order) === desired && o.id !== localId
+    (o) => normalizeOrder(o.order) === desired && o.id !== localId,
   );
   return conflict
     ? { taken: true, by: conflict.name || conflict.id }
@@ -101,8 +102,8 @@ function renderClickableItems() {
         Object.values(o).some(
           (v) =>
             v &&
-            String(v).toLowerCase().includes(state.searchTerm.toLowerCase())
-        )
+            String(v).toLowerCase().includes(state.searchTerm.toLowerCase()),
+        ),
       )
     : state.items;
 
@@ -118,7 +119,7 @@ function renderClickableItems() {
     "Provincia",
     "Horario/ATF",
   ].filter(
-    (c) => filtered[0] && Object.prototype.hasOwnProperty.call(filtered[0], c)
+    (c) => filtered[0] && Object.prototype.hasOwnProperty.call(filtered[0], c),
   );
 
   // Pagination (kept from previous step)
@@ -190,7 +191,7 @@ function renderClickableItems() {
             (opt) =>
               `<option value="${opt}" ${
                 opt === pageSize ? "selected" : ""
-              }>${opt}</option>`
+              }>${opt}</option>`,
           )
           .join("")}
       </select>
@@ -240,7 +241,7 @@ function renderClickableItems() {
     renderClickableItems();
   };
   ct.querySelectorAll(".pager-btn[data-page]").forEach((b) =>
-    b.addEventListener("click", () => setPage(b.dataset.page))
+    b.addEventListener("click", () => setPage(b.dataset.page)),
   );
   const sel = ct.querySelector("#pageSizeSelect");
   if (sel) {
@@ -368,7 +369,7 @@ function renderSubs(subs) {
   <td>${s.name}</td>
   <td>${(s.rankedItems || []).join(" » ")}</td>
   <td class="muted">${new Date(s.submittedAt).toLocaleString()}</td>
-</tr>`
+</tr>`,
     )
     .join("");
 
@@ -403,7 +404,7 @@ async function fetchState() {
   state.items = Array.isArray(data.items) ? data.items : [];
   state.idField = data.idField || state.idField;
   state.itemsById = new Map(
-    state.items.map((o) => [String(o[state.idField]), o])
+    state.items.map((o) => [String(o[state.idField]), o]),
   );
 
   state.page = 1; // reset to first page on new data load
@@ -455,7 +456,7 @@ async function submitRanking(e) {
     if (taken) {
       const proceed = confirm(
         `El orden ${orderVal} ya está siendo usado por otro usuario en ${state.season}.\n\n` +
-          `Pulsa Aceptar para usarlo igualmente, o Cancelar para elegir otro número.`
+          `Pulsa Aceptar para usarlo igualmente, o Cancelar para elegir otro número.`,
       );
       if (!proceed) {
         $("order").value = "";
@@ -488,13 +489,13 @@ async function resetAll() {
   const localId = getLocalUserId();
   if (!localId) {
     alert(
-      "No se encontró un ID de usuario local. Envía tu ranking una vez para crear tu usuario primero."
+      "No se encontró un ID de usuario local. Envía tu ranking una vez para crear tu usuario primero.",
     );
     return;
   }
   if (
     !confirm(
-      `¿Eliminar SOLO las solicitudes de este usuario local para la temporada ${state.season}?`
+      `¿Eliminar SOLO las solicitudes de este usuario local para la temporada ${state.season}?`,
     )
   )
     return;
@@ -505,7 +506,7 @@ async function resetAll() {
     await fetchState();
     $("allocationResult").innerHTML = "";
     alert(
-      `Se eliminaron ${data.removed ?? 0} solicitud(es) para este usuario.`
+      `Se eliminaron ${data.removed ?? 0} solicitud(es) para este usuario.`,
     );
   } catch (e) {
     console.error("/api/reset-user failed:", e.status, e.body || e);
@@ -535,7 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     const ok = confirm(
-      "Esto eliminará TODAS tus solicitudes en TODAS las temporadas y borrará tu ID local. ¿Continuar?"
+      "Esto eliminará TODAS tus solicitudes en TODAS las temporadas y borrará tu ID local. ¿Continuar?",
     );
     if (!ok) return;
 
@@ -551,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(
         `Se eliminaron ${
           data.removed ?? 0
-        } registro(s) en DynamoDB y se borró tu ID local.`
+        } registro(s) en DynamoDB y se borró tu ID local.`,
       );
     } catch (e) {
       console.error("resetUserEverywhere failed:", e);
@@ -562,28 +563,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update X parameter display when input changes
   $("xParameter").addEventListener("input", (e) => {
     let xValue = parseInt(e.target.value) || 1;
-    
+
     // Clamp value to valid range (1-20)
     if (xValue < 1) xValue = 1;
     if (xValue > 20) xValue = 20;
-    
+
     // Update the input field if it was clamped
     if (parseInt(e.target.value) !== xValue) {
       e.target.value = xValue;
     }
-    
+
     const xValueElement = $("xValue");
     const xValue2Element = $("xValue2");
-    
+
     if (xValueElement) xValueElement.textContent = xValue;
     if (xValue2Element) xValue2Element.textContent = xValue;
   });
-  
+
   // Initialize X parameter display on page load
   const initialXValue = $("xParameter").value || "1";
   const xValueElement = $("xValue");
   const xValue2Element = $("xValue2");
-  
+
   if (xValueElement) xValueElement.textContent = initialXValue;
   if (xValue2Element) xValue2Element.textContent = initialXValue;
 

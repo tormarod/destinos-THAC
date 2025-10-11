@@ -3,7 +3,8 @@ const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 const DEFAULT_TTL = Number(process.env.ITEMS_CACHE_TTL_MS || 15 * 60 * 1000); // 15 min
 const BUCKET = process.env.S3_BUCKET;
-const PREFIX = (process.env.S3_PREFIX || "items/").replace(/^\/+|\/+$/g, "") + "/";
+const PREFIX =
+  (process.env.S3_PREFIX || "items/").replace(/^\/+|\/+$/g, "") + "/";
 
 let s3 = null;
 function getS3() {

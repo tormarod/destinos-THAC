@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         v.play().catch(() => {});
       },
-      { once: true }
+      { once: true },
     );
   }
 

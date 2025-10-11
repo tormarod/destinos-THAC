@@ -15,7 +15,7 @@ function allocate(submissions, x = 0) {
   // Allocate exactly 1 item per user in priority order
   for (const u of users) {
     const next = (u.rankedItems || []).find(
-      (id) => !takenFinal.has(String(id))
+      (id) => !takenFinal.has(String(id)),
     );
     if (typeof next !== "undefined") {
       const id = String(next);
@@ -26,14 +26,14 @@ function allocate(submissions, x = 0) {
 
   // Available-by-preference: show what user would get if first X preferences of users above were already taken
   const availableByPref = new Map();
-  
+
   for (const u of users) {
     const userRankedItems = u.rankedItems || [];
     if (userRankedItems.length === 0) {
       availableByPref.set(u.id, []);
       continue;
     }
-    
+
     // Collect all first X preferences from users above this user
     const takenByUsersAbove = new Set();
     for (const otherUser of users) {
@@ -45,28 +45,35 @@ function allocate(submissions, x = 0) {
         }
       }
     }
-    
+
     // Find what this user would get if their first few preferences were also unavailable
     const backupItems = [];
     const maxBackupItems = 20;
-    
-    for (let skipCount = 1; skipCount <= maxBackupItems && skipCount < userRankedItems.length; skipCount++) {
+
+    for (
+      let skipCount = 1;
+      skipCount <= maxBackupItems && skipCount < userRankedItems.length;
+      skipCount++
+    ) {
       // Find the first available item after skipping the first 'skipCount' preferences
-      const availableItem = userRankedItems.slice(skipCount).find(
-        (id) => !takenByUsersAbove.has(String(id))
-      );
-      
+      const availableItem = userRankedItems
+        .slice(skipCount)
+        .find((id) => !takenByUsersAbove.has(String(id)));
+
       if (availableItem) {
         const itemStr = String(availableItem);
         // Only add if it's different from their actual assigned item
         const actualAssigned = assigned.get(u.id);
-        const actualItem = actualAssigned && actualAssigned.length > 0 ? String(actualAssigned[0]) : null;
+        const actualItem =
+          actualAssigned && actualAssigned.length > 0
+            ? String(actualAssigned[0])
+            : null;
         if (itemStr !== actualItem && !backupItems.includes(itemStr)) {
           backupItems.push(itemStr);
         }
       }
     }
-    
+
     availableByPref.set(u.id, backupItems.slice(0, maxBackupItems));
   }
 

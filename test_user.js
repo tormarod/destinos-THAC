@@ -1,18 +1,27 @@
 #!/usr/bin/env node
 
 // Simple script to test user allocation from DynamoDB
-const { testUserAllocationFromDB, listAllUsers } = require('./test_user_allocation');
+const {
+  testUserAllocationFromDB,
+  listAllUsers,
+} = require("./test_user_allocation");
 
 async function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.length === 0) {
     console.log("Usage:");
-    console.log("  node test_user.js list [season]                    - List all users");
-    console.log("  node test_user.js test <userId> [season] [x]       - Test specific user");
+    console.log(
+      "  node test_user.js list [season]                    - List all users",
+    );
+    console.log(
+      "  node test_user.js test <userId> [season] [x]       - Test specific user",
+    );
     console.log("");
     console.log("Parameters:");
-    console.log("  x: Number of first preferences of users above to mark unavailable (default: 0)");
+    console.log(
+      "  x: Number of first preferences of users above to mark unavailable (default: 0)",
+    );
     console.log("");
     console.log("Examples:");
     console.log("  node test_user.js list");
@@ -24,21 +33,21 @@ async function main() {
   }
 
   const command = args[0];
-  
-  if (command === 'list') {
+
+  if (command === "list") {
     const season = args[1] || null;
     await listAllUsers(season);
-  } else if (command === 'test') {
+  } else if (command === "test") {
     const userId = args[1];
     const season = args[2] || null;
     const x = parseInt(args[3]) || 0;
-    
+
     if (!userId) {
       console.error("❌ Please provide a user ID");
       console.log("Usage: node test_user.js test <userId> [season] [x]");
       return;
     }
-    
+
     await testUserAllocationFromDB(userId, season, x);
   } else {
     console.error(`❌ Unknown command: ${command}`);

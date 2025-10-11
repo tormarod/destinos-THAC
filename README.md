@@ -5,6 +5,7 @@ A web application for managing and allocating destinations for public service po
 ## 🎯 Overview
 
 This application is designed for managing destination assignments where:
+
 - Users have a specific order/position (determined by BOE + 34)
 - Users can select and rank their preferred destinations
 - The system allocates destinations using a round-robin algorithm based on user priority
@@ -13,12 +14,14 @@ This application is designed for managing destination assignments where:
 ## 🏗️ Architecture
 
 ### Backend (Node.js/Express)
+
 - **Server**: Express.js server with RESTful API
 - **Database**: AWS DynamoDB for storing user submissions
 - **Storage**: AWS S3 for storing destination catalogs by season/year
 - **Authentication**: Environment-based AWS credentials
 
 ### Frontend (Vanilla JavaScript)
+
 - **UI**: Single-page application with modern CSS
 - **Features**: Drag-and-drop ranking, search/filter, pagination
 - **Storage**: Local storage for user session management
@@ -65,17 +68,20 @@ destinos-THAC/
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd destinos-THAC
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
+
 ```bash
 # Create .env file with the following variables:
 AWS_REGION=your-aws-region
@@ -95,6 +101,7 @@ PORT=3000
    - Upload destination data as JSON files named `{year}.json` (e.g., `2024.json`)
 
 5. Start the server:
+
 ```bash
 npm start
 ```
@@ -104,6 +111,7 @@ npm start
 ## 📊 Data Format
 
 ### Destination Catalog (S3 JSON files)
+
 ```json
 [
   {
@@ -117,6 +125,7 @@ npm start
 ```
 
 ### User Submission (DynamoDB)
+
 ```json
 {
   "pk": "SUBMISSION#2024",
@@ -132,9 +141,11 @@ npm start
 ## 🔧 API Endpoints
 
 ### GET `/api/state?season=2024`
+
 Retrieves the current application state including available destinations and user submissions.
 
 **Response:**
+
 ```json
 {
   "items": [...],
@@ -146,9 +157,11 @@ Retrieves the current application state including available destinations and use
 ```
 
 ### POST `/api/submit`
+
 Submits or updates a user's destination preferences.
 
 **Request Body:**
+
 ```json
 {
   "name": "Fernando Alonso",
@@ -160,9 +173,11 @@ Submits or updates a user's destination preferences.
 ```
 
 ### POST `/api/allocate`
+
 Runs the allocation algorithm for the specified season.
 
 **Request Body:**
+
 ```json
 {
   "season": "2024"
@@ -170,6 +185,7 @@ Runs the allocation algorithm for the specified season.
 ```
 
 **Response:**
+
 ```json
 {
   "allocation": [
@@ -187,12 +203,15 @@ Runs the allocation algorithm for the specified season.
 ```
 
 ### POST `/api/reset-user`
+
 Deletes a specific user's submissions for a season.
 
 ### POST `/api/reset-user-all`
+
 Deletes all submissions for a user across all seasons.
 
 ### GET `/api/orders?season=2024`
+
 Retrieves all user orders for a season.
 
 ## 🎲 Allocation Algorithm
@@ -206,6 +225,7 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 5. **Backup Allocations**: Users can see their next 20 backup allocations in different scenarios, with configurable simulation of unavailable preferences from higher priority users
 
 ### Algorithm Steps:
+
 1. Sort users by order (ascending) and submission time (ascending)
 2. For each user in priority order:
    - Find their highest-ranked available destination
@@ -213,19 +233,23 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 3. Return allocation results with assigned items and available preferences
 
 ### Key Features:
+
 - **Fair Distribution**: Everyone gets exactly 1 item, ensuring equal opportunity
 - **Priority Respect**: Higher priority users get their top choices first
 - **Backup Visibility**: Users can see their next 20 backup allocations in different scenarios
 - **Configurable Simulation**: The `availableByPreference` calculation can simulate scenarios where the first X preferences of all users above are unavailable, providing more realistic backup options
 
 ### AvailableByPreference Parameter:
+
 The `allocate(submissions, x)` function accepts an optional second parameter `x`:
+
 - **x = 0 (default)**: Standard backup calculation - only the user's own preferences are marked unavailable in scenarios
 - **x > 0**: The first X preferences of all users above the current user are marked as unavailable in the simulation, providing more realistic backup scenarios that account for potential competition from higher priority users
 
 ## 🎨 Frontend Features
 
 ### User Interface
+
 - **Season Selection**: Choose from available years
 - **Destination Browser**: Searchable, paginated table of available destinations
 - **Drag & Drop Ranking**: Reorder selected destinations by dragging
@@ -233,6 +257,7 @@ The `allocate(submissions, x)` function accepts an optional second parameter `x`
 - **Submission Management**: View and update your submissions
 
 ### Key Components
+
 - **Splash Screen**: Animated introduction with video
 - **Search & Filter**: Real-time filtering of destinations
 - **Pagination**: Efficient browsing of large destination lists
@@ -241,6 +266,7 @@ The `allocate(submissions, x)` function accepts an optional second parameter `x`
 ## 🧪 Testing
 
 Run the test suite:
+
 ```bash
 npm test
 ```
@@ -257,12 +283,14 @@ The project includes Jest tests for the allocation algorithm and core functional
 ## 🚀 Deployment
 
 ### Environment Setup
+
 1. Set up AWS infrastructure (DynamoDB table, S3 bucket)
 2. Configure IAM roles with minimal required permissions
 3. Set environment variables in your deployment platform
 4. Upload destination catalogs to S3
 
 ### Production Considerations
+
 - Use a reverse proxy (nginx) for static file serving
 - Implement proper logging and monitoring
 - Set up automated backups for DynamoDB
@@ -271,6 +299,7 @@ The project includes Jest tests for the allocation algorithm and core functional
 ## 📝 Configuration
 
 ### Environment Variables
+
 - `AWS_REGION`: AWS region for services
 - `AWS_ACCESS_KEY_ID`: AWS access key
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
@@ -278,6 +307,7 @@ The project includes Jest tests for the allocation algorithm and core functional
 - `S3_PREFIX`: S3 prefix for catalog files
 - `DDB_TABLE`: DynamoDB table name
 - `ID_FIELD`: Field name for destination ID (default: "Nº vacante")
+- `ALLOCATION_RATE_LIMIT_SECONDS`: Rate limit for allocation requests in seconds (default: 30)
 - `ITEMS_CACHE_TTL_MS`: Cache TTL for S3 items (default: 15 minutes)
 - `PORT`: Server port (default: 3000)
 
@@ -296,6 +326,7 @@ This project is licensed under the ISC License.
 ## 🆘 Support
 
 For issues and questions:
+
 1. Check the existing issues in the repository
 2. Create a new issue with detailed information
 3. Include steps to reproduce any bugs

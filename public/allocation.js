@@ -34,9 +34,10 @@ function renderAllocation(payload) {
   }
 
   const x = payload.x || 0;
-  const simulationText = x > 0 
-    ? ` (Simulación: primeras ${x} preferencias de usuarios por encima marcadas como no disponibles)`
-    : " (Simulación estándar)";
+  const simulationText =
+    x > 0
+      ? ` (Simulación: primeras ${x} preferencias de usuarios por encima marcadas como no disponibles)`
+      : " (Simulación estándar)";
 
   const rows = mine
     .map((r) => {
@@ -58,9 +59,6 @@ function renderAllocation(payload) {
     .join("");
 
   ct.innerHTML = `
-<div class="muted" style="margin-bottom: 12px;">
-  <strong>Parámetro de simulación:</strong> ${x}${simulationText}
-</div>
 <table>
   <thead>
     <tr>
@@ -76,24 +74,75 @@ function renderAllocation(payload) {
 
 // Run allocation with a short "Buena Suerte" splash
 async function runAllocation(season) {
+  // Check if user is currently rate-limited (button disabled)
+  const allocateBtn = document.getElementById("allocateBtn");
+  if (allocateBtn && allocateBtn.disabled) {
+    // User is rate-limited, don't show animation or make request
+    return;
+  }
+
   showLuckOverlay();
 
   try {
     // Get the X parameter from the input field
     const xInput = document.getElementById("xParameter");
     const x = xInput ? parseInt(xInput.value) || 0 : 0;
-    
+
     const data = await window.api.allocate(season, x);
     renderAllocation(data);
+
+    // Start countdown after successful allocation to prevent immediate second request
+    const config = await window.api.getConfig();
+    startRateLimitCountdown(config.allocationRateLimitSeconds);
   } catch (error) {
     console.error("Allocation failed:", error);
     const ct = document.getElementById("allocationResult");
-    ct.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+
+    // Handle rate limiting specifically
+    if (error.status === 429 && error.body && error.body.retryAfter) {
+      // Don't show error message, just start the countdown timer
+      startRateLimitCountdown(error.body.retryAfter);
+    } else {
+      ct.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+    }
   } finally {
     // keep the overlay visible a bit so the animation is noticeable
     await sleep(3000);
     hideLuckOverlay();
   }
+}
+
+// Rate limit countdown functionality
+function startRateLimitCountdown(seconds) {
+  const countdownElement = document.getElementById("rateLimitCountdown");
+  const timerElement = document.getElementById("countdownTimer");
+  const allocateBtn = document.getElementById("allocateBtn");
+
+  if (!countdownElement || !timerElement || !allocateBtn) return;
+
+  // Show countdown and disable button
+  countdownElement.style.display = "flex";
+  allocateBtn.disabled = true;
+  allocateBtn.textContent = "Esperando...";
+
+  let remaining = seconds;
+
+  function updateCountdown() {
+    timerElement.textContent = remaining;
+
+    if (remaining <= 0) {
+      // Countdown finished
+      countdownElement.style.display = "none";
+      allocateBtn.disabled = false;
+      allocateBtn.textContent = "Repartir";
+      return;
+    }
+
+    remaining--;
+    setTimeout(updateCountdown, 1000);
+  }
+
+  updateCountdown();
 }
 
 // Expose globals (used by app.js event wiring)
