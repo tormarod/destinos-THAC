@@ -3,7 +3,7 @@ require("dotenv").config();
 const { allocate } = require('./src/lib/allocate');
 const { createDdb } = require('./src/lib/ddb');
 
-async function testUserAllocationFromDB(targetUserId, season = null) {
+async function testUserAllocationFromDB(targetUserId, season = null, x = 0) {
   console.log("=== Real DynamoDB User Allocation Test ===\n");
   
   // Set up DynamoDB connection
@@ -59,7 +59,10 @@ async function testUserAllocationFromDB(targetUserId, season = null) {
 
     // Run allocation with all real data
     console.log("🔄 Running allocation algorithm...\n");
-    const result = allocate(allSubmissions);
+    if (x > 0) {
+      console.log(`📊 Using X=${x} (first ${x} preferences of users above marked unavailable)\n`);
+    }
+    const result = allocate(allSubmissions, x);
 
     // Find the target user's result
     const targetResult = result.find(r => r.userId === targetUserId);

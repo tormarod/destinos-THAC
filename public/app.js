@@ -559,6 +559,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Update X parameter display when input changes
+  $("xParameter").addEventListener("input", (e) => {
+    let xValue = parseInt(e.target.value) || 1;
+    
+    // Clamp value to valid range (1-20)
+    if (xValue < 1) xValue = 1;
+    if (xValue > 20) xValue = 20;
+    
+    // Update the input field if it was clamped
+    if (parseInt(e.target.value) !== xValue) {
+      e.target.value = xValue;
+    }
+    
+    const xValueElement = $("xValue");
+    const xValue2Element = $("xValue2");
+    
+    if (xValueElement) xValueElement.textContent = xValue;
+    if (xValue2Element) xValue2Element.textContent = xValue;
+  });
+  
+  // Initialize X parameter display on page load
+  const initialXValue = $("xParameter").value || "1";
+  const xValueElement = $("xValue");
+  const xValue2Element = $("xValue2");
+  
+  if (xValueElement) xValueElement.textContent = initialXValue;
+  if (xValue2Element) xValue2Element.textContent = initialXValue;
+
   $("order").addEventListener("input", () => {
     state.quota = Math.max(0, Number($("order").value) || 0);
     renderClickableItems();

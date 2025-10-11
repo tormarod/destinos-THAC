@@ -1,8 +1,9 @@
 // src/lib/allocate.js
 
 // Round-robin allocation with exactly 1 item per user.
-// Returns per-user: assignedItemIds and availableByPreference (next 20 backup allocations).
-function allocate(submissions) {
+// Returns per-user: assignedItemIds and availableByPreference (backup allocations).
+// x: number of first preferences of users above to mark as unavailable (default: 0)
+function allocate(submissions, x = 0) {
   const users = [...submissions].sort((a, b) => {
     if (a.order !== b.order) return a.order - b.order;
     return (a.submittedAt || 0) - (b.submittedAt || 0);
@@ -23,7 +24,7 @@ function allocate(submissions) {
     }
   }
 
-  // Available-by-preference: show next 20 items user would get in different scenarios
+  // Available-by-preference: show what user would get if first X preferences of users above were already taken
   const availableByPref = new Map();
   
   for (const u of users) {
@@ -33,39 +34,40 @@ function allocate(submissions) {
       continue;
     }
     
-    const backupItems = [];
-    const maxBackupItems = 20;
-    
-    // Simulate different scenarios by progressively marking more items as unavailable
-    for (let scenario = 1; scenario <= maxBackupItems && scenario < userRankedItems.length; scenario++) {
-      const simulatedTaken = new Set();
-      const simulatedAssigned = new Map();
-      
-      // Mark the first 'scenario' items from this user's preferences as unavailable
-      for (let i = 0; i < scenario; i++) {
-        simulatedTaken.add(String(userRankedItems[i]));
-      }
-      
-      // Run the allocation simulation
-      for (const otherUser of users) {
-        const userPick = (otherUser.rankedItems || []).find(
-          (id) => !simulatedTaken.has(String(id))
-        );
-        
-        if (userPick) {
-          simulatedTaken.add(String(userPick));
-          simulatedAssigned.set(otherUser.id, String(userPick));
+    // Collect all first X preferences from users above this user
+    const takenByUsersAbove = new Set();
+    for (const otherUser of users) {
+      if (otherUser.order < u.order) {
+        const otherUserItems = otherUser.rankedItems || [];
+        // Mark the first X preferences of this user above as taken
+        for (let i = 0; i < Math.min(x, otherUserItems.length); i++) {
+          takenByUsersAbove.add(String(otherUserItems[i]));
         }
-      }
-      
-      // Get what this user would get in this scenario
-      const backupPick = simulatedAssigned.get(u.id);
-      if (backupPick) {
-        backupItems.push(backupPick);
       }
     }
     
-    availableByPref.set(u.id, backupItems);
+    // Find what this user would get if their first few preferences were also unavailable
+    const backupItems = [];
+    const maxBackupItems = 20;
+    
+    for (let skipCount = 1; skipCount <= maxBackupItems && skipCount < userRankedItems.length; skipCount++) {
+      // Find the first available item after skipping the first 'skipCount' preferences
+      const availableItem = userRankedItems.slice(skipCount).find(
+        (id) => !takenByUsersAbove.has(String(id))
+      );
+      
+      if (availableItem) {
+        const itemStr = String(availableItem);
+        // Only add if it's different from their actual assigned item
+        const actualAssigned = assigned.get(u.id);
+        const actualItem = actualAssigned && actualAssigned.length > 0 ? String(actualAssigned[0]) : null;
+        if (itemStr !== actualItem && !backupItems.includes(itemStr)) {
+          backupItems.push(itemStr);
+        }
+      }
+    }
+    
+    availableByPref.set(u.id, backupItems.slice(0, maxBackupItems));
   }
 
   return users.map((u) => ({

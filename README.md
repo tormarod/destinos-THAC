@@ -203,7 +203,7 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 2. **Tie Breaking**: If orders are equal, earlier submission time wins
 3. **Single Item**: Each user receives exactly 1 destination (if available)
 4. **Preference Matching**: Each user gets their highest-ranked available destination
-5. **Backup Allocations**: Users can see their next 20 backup allocations in different scenarios
+5. **Backup Allocations**: Users can see their next 20 backup allocations in different scenarios, with configurable simulation of unavailable preferences from higher priority users
 
 ### Algorithm Steps:
 1. Sort users by order (ascending) and submission time (ascending)
@@ -216,6 +216,12 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 - **Fair Distribution**: Everyone gets exactly 1 item, ensuring equal opportunity
 - **Priority Respect**: Higher priority users get their top choices first
 - **Backup Visibility**: Users can see their next 20 backup allocations in different scenarios
+- **Configurable Simulation**: The `availableByPreference` calculation can simulate scenarios where the first X preferences of all users above are unavailable, providing more realistic backup options
+
+### AvailableByPreference Parameter:
+The `allocate(submissions, x)` function accepts an optional second parameter `x`:
+- **x = 0 (default)**: Standard backup calculation - only the user's own preferences are marked unavailable in scenarios
+- **x > 0**: The first X preferences of all users above the current user are marked as unavailable in the simulation, providing more realistic backup scenarios that account for potential competition from higher priority users
 
 ## 🎨 Frontend Features
 

@@ -8,14 +8,18 @@ async function main() {
   
   if (args.length === 0) {
     console.log("Usage:");
-    console.log("  node test_user.js list [season]           - List all users");
-    console.log("  node test_user.js test <userId> [season]  - Test specific user");
+    console.log("  node test_user.js list [season]                    - List all users");
+    console.log("  node test_user.js test <userId> [season] [x]       - Test specific user");
+    console.log("");
+    console.log("Parameters:");
+    console.log("  x: Number of first preferences of users above to mark unavailable (default: 0)");
     console.log("");
     console.log("Examples:");
     console.log("  node test_user.js list");
     console.log("  node test_user.js list 2024");
     console.log("  node test_user.js test u_73t4dx4ron8");
     console.log("  node test_user.js test u_73t4dx4ron8 2024");
+    console.log("  node test_user.js test u_73t4dx4ron8 2024 1");
     return;
   }
 
@@ -27,14 +31,15 @@ async function main() {
   } else if (command === 'test') {
     const userId = args[1];
     const season = args[2] || null;
+    const x = parseInt(args[3]) || 0;
     
     if (!userId) {
       console.error("❌ Please provide a user ID");
-      console.log("Usage: node test_user.js test <userId> [season]");
+      console.log("Usage: node test_user.js test <userId> [season] [x]");
       return;
     }
     
-    await testUserAllocationFromDB(userId, season);
+    await testUserAllocationFromDB(userId, season, x);
   } else {
     console.error(`❌ Unknown command: ${command}`);
     console.log("Use 'list' or 'test'");

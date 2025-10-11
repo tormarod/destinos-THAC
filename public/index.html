@@ -87,10 +87,29 @@
     <div class="card">
       <h2>Reparto de destinos</h2>
       <div class="row">
+        <label for="xParameter">Simulación de competencia <i class="muted">(si los <span id="xValue">1</span> primeros destinos de todos los usuarios por encima de tí estuviesen "ocupados")</i></label>
+        <input
+          id="xParameter"
+          type="number"
+          min="1"
+          max="20"
+          step="1"
+          value="1"
+          placeholder="1"
+        />
+      </div>
+      <p class="muted" style="margin-top: 8px; font-size: 14px;">
+        <strong>1-20</strong> = Simula mayor competencia: cuanto más alto el número, más destinos populares elegidos por personas por encima de tí se consideran "ocupados" y menos opciones te quedarán disponibles
+      </p>
+      <div class="row">
         <button class="primary" id="allocateBtn">Repartir</button>
         <button class="ghost" id="resetAllBtn">
           Reiniciar todos mis destinos
         </button>
+      </div>
+      <div id="cacheTimer" class="cache-timer" style="display: none;">
+        <span class="cache-timer-icon">⏱️</span>
+        <span class="cache-timer-text">Próxima actualización en: <span id="timerCountdown">--:--</span></span>
       </div>
       <div id="allocationResult" class="mt-12"></div>
     </div>

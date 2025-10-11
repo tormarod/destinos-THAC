@@ -154,7 +154,7 @@ describe("allocate()", () => {
     expect(byUser(out, "u3").assignedItemIds).toEqual([]);
   });
 
-  test("availableByPreference shows next 20 backup allocations", () => {
+  test("availableByPreference shows backup allocations with X=0 (default)", () => {
     const submissions = [
       {
         id: "u1",
@@ -182,10 +182,46 @@ describe("allocate()", () => {
     const out = allocate(submissions);
 
     // Assignments with priority by order: u1->A, u2->B, u3->C
-    // availableByPreference shows next 20 backup allocations:
+    // availableByPreference shows next 20 backup allocations (X=0, no preferences of users above marked unavailable):
     expect(byUser(out, "u1").availableByPreference).toEqual(["B", "C"]); // if A unavailable→B, if A,B unavailable→C
     expect(byUser(out, "u2").availableByPreference).toEqual(["C"]); // if B unavailable, would get C
     expect(byUser(out, "u3").availableByPreference).toEqual([]); // if C unavailable, would get nothing
+  });
+
+  test("availableByPreference shows backup allocations with X=1 (first preference of users above unavailable)", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "U1",
+        order: 1,
+        rankedItems: ["A", "B", "C"],
+        submittedAt: 1,
+      },
+      {
+        id: "u2",
+        name: "U2",
+        order: 2,
+        rankedItems: ["B", "C", "A"],
+        submittedAt: 2,
+      },
+      {
+        id: "u3",
+        name: "U3",
+        order: 3,
+        rankedItems: ["C", "B", "A"],
+        submittedAt: 3,
+      },
+    ];
+
+    const out = allocate(submissions, 1);
+
+    // With X=1, first preference of users above each user are marked unavailable
+    // u1: if A unavailable→B, if A,B unavailable→C (same as before since no users above u1)
+    // u2: if B unavailable→C (u1's A is marked unavailable, so u1 gets B, leaving C for u2)
+    // u3: if C unavailable→A (u1's A and u2's B are marked unavailable, so u1 gets B, u2 gets C, leaving A for u3)
+    expect(byUser(out, "u1").availableByPreference).toEqual(["B", "C"]);
+    expect(byUser(out, "u2").availableByPreference).toEqual(["C", "A"]);
+    expect(byUser(out, "u3").availableByPreference).toEqual(["A"]);
   });
 
   test("gracefully handles users with empty rankedItems", () => {

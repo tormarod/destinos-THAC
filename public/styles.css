@@ -134,6 +134,33 @@ tr.top199 {
   object-fit: contain;
   animation: luckSpinIn 800ms ease-out both;
 }
+
+/* Cache timer styling */
+.cache-timer {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cache-timer-icon {
+  font-size: 16px;
+}
+
+.cache-timer-text {
+  font-weight: 500;
+}
+
+#timerCountdown {
+  color: #2f6fed;
+  font-weight: 600;
+}
 #luckOverlay .luck-text {
   margin-top: 2px;
   color: #fff;
