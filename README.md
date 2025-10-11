@@ -17,7 +17,7 @@ This application is designed for managing destination assignments where:
 
 - **Server**: Express.js server with RESTful API
 - **Database**: AWS DynamoDB for storing user submissions
-- **Storage**: AWS S3 for storing destination catalogs by season/year
+- **Storage**: Local JSON files for destination catalogs by season/year
 - **Authentication**: Environment-based AWS credentials
 
 ### Frontend (Vanilla JavaScript)
@@ -303,12 +303,10 @@ The project includes Jest tests for the allocation algorithm and core functional
 - `AWS_REGION`: AWS region for services
 - `AWS_ACCESS_KEY_ID`: AWS access key
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
-- `S3_BUCKET`: S3 bucket name for destination catalogs
-- `S3_PREFIX`: S3 prefix for catalog files
 - `DDB_TABLE`: DynamoDB table name
 - `ID_FIELD`: Field name for destination ID (default: "Nº vacante")
 - `ALLOCATION_RATE_LIMIT_SECONDS`: Rate limit for allocation requests in seconds (default: 30)
-- `ITEMS_CACHE_TTL_MS`: Cache TTL for S3 items (default: 15 minutes)
+- `ITEMS_CACHE_TTL_MS`: Cache TTL for local items (default: 15 minutes)
 - `PORT`: Server port (default: 3000)
 
 ## 🤝 Contributing
