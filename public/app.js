@@ -437,8 +437,27 @@ async function fetchState() {
   updateQuotaIndicators();
 }
 
+// Prevent rapid form submissions
+let isSubmitting = false;
+let lastSubmitTime = 0;
+const SUBMIT_DEBOUNCE_MS = 10000; // 10 seconds
+
 async function submitRanking(e) {
   e.preventDefault();
+
+  // Check if we're already submitting
+  if (isSubmitting) {
+    alert("Por favor espera, ya se está enviando tu solicitud...");
+    return;
+  }
+
+  // Check if too soon since last submission
+  const now = Date.now();
+  if (now - lastSubmitTime < SUBMIT_DEBOUNCE_MS) {
+    const remaining = Math.ceil((SUBMIT_DEBOUNCE_MS - (now - lastSubmitTime)) / 1000);
+    alert(`Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.`);
+    return;
+  }
 
   const name = $("name").value.trim();
   const orderRaw = $("order").value;
@@ -468,21 +487,49 @@ async function submitRanking(e) {
     }
   } catch {}
 
-  const data = await api.submit({
-    name,
-    order: orderVal,
-    rankedItems,
-    id,
-    season: state.season, // ✅ include season
-  });
+  // Set submitting state
+  isSubmitting = true;
+  lastSubmitTime = now;
+  
+  // Disable submit button and show loading state
+  const submitBtn = $("submitForm").querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Enviando...";
 
-  if (data.id) {
-    setLocalUserId(data.id);
-    $("userId").value = data.id;
+  try {
+    const data = await api.submit({
+      name,
+      order: orderVal,
+      rankedItems,
+      id,
+      season: state.season, // ✅ include season
+    });
+
+    if (data.id) {
+      setLocalUserId(data.id);
+      $("userId").value = data.id;
+    }
+
+    await fetchState();
+    alert("¡Guardado correctamente!");
+  } catch (error) {
+    console.error("Submit error:", error);
+    
+    // Handle specific error cases
+    if (error.status === 429) {
+      // Rate limited - show specific message
+      alert(error.body?.message || error.message);
+    } else {
+      // Generic error
+      alert(`Error al enviar: ${error.message}`);
+    }
+  } finally {
+    // Re-enable submit button
+    isSubmitting = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
   }
-
-  await fetchState();
-  alert("¡Guardado correctamente!");
 }
 
 async function resetAll() {
