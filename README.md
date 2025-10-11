@@ -197,23 +197,25 @@ Retrieves all user orders for a season.
 
 ## 🎲 Allocation Algorithm
 
-The allocation system uses a round-robin algorithm with the following rules:
+The allocation system uses a fair, single-item allocation algorithm with the following rules:
 
 1. **Priority Order**: Users are sorted by their `order` field (lower number = higher priority)
 2. **Tie Breaking**: If orders are equal, earlier submission time wins
-3. **Quota System**: Each user can receive up to `order` number of destinations
-4. **Round-Robin**: The algorithm cycles through users in priority order
-5. **Preference Matching**: Each user gets their highest-ranked available destination
+3. **Single Item**: Each user receives exactly 1 destination (if available)
+4. **Preference Matching**: Each user gets their highest-ranked available destination
+5. **Backup Allocations**: Users can see their next 20 backup allocations in different scenarios
 
 ### Algorithm Steps:
 1. Sort users by order (ascending) and submission time (ascending)
-2. Initialize quota tracking for each user
-3. While there's progress:
-   - For each user with remaining quota:
-     - Find their highest-ranked available destination
-     - Assign it if not already taken
-     - Decrease their quota
-4. Return allocation results with assigned items and available preferences
+2. For each user in priority order:
+   - Find their highest-ranked available destination
+   - Assign it if not already taken
+3. Return allocation results with assigned items and available preferences
+
+### Key Features:
+- **Fair Distribution**: Everyone gets exactly 1 item, ensuring equal opportunity
+- **Priority Respect**: Higher priority users get their top choices first
+- **Backup Visibility**: Users can see their next 20 backup allocations in different scenarios
 
 ## 🎨 Frontend Features
 

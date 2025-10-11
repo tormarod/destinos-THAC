@@ -1,50 +1,71 @@
 // src/lib/allocate.js
 
-// Round-robin allocation up to each user's quota (quota = their `order`).
-// Returns per-user: assignedItemIds and availableByPreference.
+// Round-robin allocation with exactly 1 item per user.
+// Returns per-user: assignedItemIds and availableByPreference (next 20 backup allocations).
 function allocate(submissions) {
   const users = [...submissions].sort((a, b) => {
     if (a.order !== b.order) return a.order - b.order;
     return (a.submittedAt || 0) - (b.submittedAt || 0);
   });
 
-  // quota = numeric order (min 0)
-  const remainingQuota = new Map(
-    users.map((u) => [u.id, Math.max(0, Number(u.order) || 0)])
-  );
-
   const takenFinal = new Set();
   const assigned = new Map(users.map((u) => [u.id, []]));
 
-  // Round-robin until no progress
-  let progress = true;
-  while (progress) {
-    progress = false;
-    for (const u of users) {
-      if (remainingQuota.get(u.id) <= 0) continue;
-      const next = (u.rankedItems || []).find(
-        (id) => !takenFinal.has(String(id))
-      );
-      if (typeof next !== "undefined") {
-        const id = String(next);
-        takenFinal.add(id);
-        assigned.get(u.id).push(id);
-        remainingQuota.set(u.id, remainingQuota.get(u.id) - 1);
-        progress = true;
-      }
+  // Allocate exactly 1 item per user in priority order
+  for (const u of users) {
+    const next = (u.rankedItems || []).find(
+      (id) => !takenFinal.has(String(id))
+    );
+    if (typeof next !== "undefined") {
+      const id = String(next);
+      takenFinal.add(id);
+      assigned.get(u.id).push(id);
     }
   }
 
-  // Available-by-preference: hide items taken by higher-priority users
+  // Available-by-preference: show next 20 items user would get in different scenarios
   const availableByPref = new Map();
-  const takenByHigher = new Set();
+  
   for (const u of users) {
-    const list = (u.rankedItems || [])
-      .map(String)
-      .filter((id) => !takenByHigher.has(id));
-    availableByPref.set(u.id, list);
-    // update higher set by the items the current user actually got
-    for (const id of assigned.get(u.id)) takenByHigher.add(id);
+    const userRankedItems = u.rankedItems || [];
+    if (userRankedItems.length === 0) {
+      availableByPref.set(u.id, []);
+      continue;
+    }
+    
+    const backupItems = [];
+    const maxBackupItems = 20;
+    
+    // Simulate different scenarios by progressively marking more items as unavailable
+    for (let scenario = 1; scenario <= maxBackupItems && scenario < userRankedItems.length; scenario++) {
+      const simulatedTaken = new Set();
+      const simulatedAssigned = new Map();
+      
+      // Mark the first 'scenario' items from this user's preferences as unavailable
+      for (let i = 0; i < scenario; i++) {
+        simulatedTaken.add(String(userRankedItems[i]));
+      }
+      
+      // Run the allocation simulation
+      for (const otherUser of users) {
+        const userPick = (otherUser.rankedItems || []).find(
+          (id) => !simulatedTaken.has(String(id))
+        );
+        
+        if (userPick) {
+          simulatedTaken.add(String(userPick));
+          simulatedAssigned.set(otherUser.id, String(userPick));
+        }
+      }
+      
+      // Get what this user would get in this scenario
+      const backupPick = simulatedAssigned.get(u.id);
+      if (backupPick) {
+        backupItems.push(backupPick);
+      }
+    }
+    
+    availableByPref.set(u.id, backupItems);
   }
 
   return users.map((u) => ({

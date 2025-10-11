@@ -29,9 +29,9 @@ describe("allocate()", () => {
     expect(byUser(out, "u1").assignedItemIds).toEqual(["A"]);
     expect(byUser(out, "u2").assignedItemIds).toEqual(["B"]);
 
-    // available-by-preference
-    expect(byUser(out, "u1").availableByPreference).toEqual(["A", "B"]); // no one before them
-    expect(byUser(out, "u2").availableByPreference).toEqual(["B"]); // A taken by u1
+    // available-by-preference: shows next 20 backup allocations
+    expect(byUser(out, "u1").availableByPreference).toEqual(["B"]); // if A unavailable, would get B
+    expect(byUser(out, "u2").availableByPreference).toEqual([]); // if A unavailable, would get nothing
   });
 
   test("round-robin honors quota = order; stops when no more choices", () => {
@@ -92,7 +92,7 @@ describe("allocate()", () => {
 
     expect(byUser(out, "early").assignedItemIds).toEqual(["X"]);
     expect(byUser(out, "late").assignedItemIds).toEqual(["Y"]);
-    expect(byUser(out, "late").availableByPreference).toEqual(["Y"]); // X taken by higher priority (earlier submit)
+    expect(byUser(out, "late").availableByPreference).toEqual([]); // if X unavailable, no backup available
   });
 
   test("handles string/number IDs consistently", () => {
@@ -120,7 +120,7 @@ describe("allocate()", () => {
     expect(byUser(out, "u2").assignedItemIds).toEqual(["102"]);
   });
 
-  test("zero/negative quota (order) assigns nothing", () => {
+  test("zero/negative order still gets 1 item if available", () => {
     const submissions = [
       {
         id: "u1",
@@ -147,12 +147,14 @@ describe("allocate()", () => {
 
     const out = allocate(submissions);
 
-    expect(byUser(out, "u1").assignedItemIds).toEqual([]);
-    expect(byUser(out, "u2").assignedItemIds).toEqual([]);
-    expect(byUser(out, "u3").assignedItemIds).toEqual(["A"]);
+    // All users get exactly 1 item in priority order (by order number, then submittedAt)
+    // Priority: u2 (order -3), u1 (order 0), u3 (order 1)
+    expect(byUser(out, "u1").assignedItemIds).toEqual(["B"]);
+    expect(byUser(out, "u2").assignedItemIds).toEqual(["A"]);
+    expect(byUser(out, "u3").assignedItemIds).toEqual([]);
   });
 
-  test("availableByPreference lists remaining prefs after higher-priority picks", () => {
+  test("availableByPreference shows next 20 backup allocations", () => {
     const submissions = [
       {
         id: "u1",
@@ -180,10 +182,10 @@ describe("allocate()", () => {
     const out = allocate(submissions);
 
     // Assignments with priority by order: u1->A, u2->B, u3->C
-    // availableByPreference excludes items taken by anyone ABOVE you:
-    expect(byUser(out, "u1").availableByPreference).toEqual(["A", "B", "C"]); // nobody above
-    expect(byUser(out, "u2").availableByPreference).toEqual(["B", "C"]); // A taken by u1
-    expect(byUser(out, "u3").availableByPreference).toEqual(["C"]); // A,B taken by higher (u1,u2)
+    // availableByPreference shows next 20 backup allocations:
+    expect(byUser(out, "u1").availableByPreference).toEqual(["B", "C"]); // if A unavailable→B, if A,B unavailable→C
+    expect(byUser(out, "u2").availableByPreference).toEqual(["C"]); // if B unavailable, would get C
+    expect(byUser(out, "u3").availableByPreference).toEqual([]); // if C unavailable, would get nothing
   });
 
   test("gracefully handles users with empty rankedItems", () => {
