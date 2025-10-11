@@ -48,7 +48,7 @@ function renderAllocation(payload) {
   <td>${r.name}</td>
   <td><strong>${firstAssigned}</strong></td>
   <td>${
-    availableNums ||
+    "NO VOY A MOSTRAR NADA QUE OS VOLVÉIS LOCOS" ||
     "<span class='muted'>No items available at your turn</span>"
   }</td>
 </tr>`;
@@ -62,7 +62,7 @@ function renderAllocation(payload) {
       <th>Tu posición</th>
       <th>Nombre</th>
       <th>Destino asignado</th>
-      <th>Siguientes 20 destinos disponibles (según tu preferencia) que nadie por encima tuya ha obtenido como destino</th>
+      <th>Siguientes 20 destinos disponibles (por tu preferencia) que nadie por encima tuya ha obtenido como destino</th>
     </tr>
   </thead>
   <tbody>${rows}</tbody>
