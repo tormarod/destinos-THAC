@@ -6,7 +6,7 @@ const path = require("path");
 const cors = require("cors");
 
 const { createDdb } = require("./src/lib/ddb"); // season-aware v2 helper
-const { getItemsForSeason } = require("./src/lib/s3Items");
+const { getItemsForSeason } = require("./src/lib/localItems");
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, "public");
@@ -19,8 +19,6 @@ requireEnv([
   "AWS_REGION",
   "AWS_ACCESS_KEY_ID",
   "AWS_SECRET_ACCESS_KEY",
-  "S3_BUCKET",
-  "S3_PREFIX",
   "DDB_TABLE",
 ]);
 

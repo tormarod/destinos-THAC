@@ -45,7 +45,7 @@ destinos-THAC/
 │   ├── lib/                 # Core library functions
 │   │   ├── allocate.js      # Allocation algorithm
 │   │   ├── ddb.js           # DynamoDB operations
-│   │   ├── s3Items.js       # S3 catalog management
+│   │   ├── localItems.js    # Local catalog management
 │   │   └── requireEnv.js    # Environment validation
 │   └── routes/              # API route handlers
 │       ├── state.js         # Application state endpoint
@@ -62,7 +62,7 @@ destinos-THAC/
 ### Prerequisites
 
 - Node.js (v14 or higher)
-- AWS Account with DynamoDB and S3 access
+- AWS Account with DynamoDB access
 - AWS credentials with appropriate permissions
 
 ### Installation
@@ -87,8 +87,6 @@ npm install
 AWS_REGION=your-aws-region
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
-S3_BUCKET=your-s3-bucket-name
-S3_PREFIX=items/
 DDB_TABLE=your-dynamodb-table-name
 ID_FIELD=Nº vacante
 ITEMS_CACHE_TTL_MS=900000
@@ -110,7 +108,7 @@ npm start
 
 ## 📊 Data Format
 
-### Destination Catalog (S3 JSON files)
+### Destination Catalog (Local JSON files)
 
 ```json
 [
@@ -284,17 +282,17 @@ The project includes Jest tests for the allocation algorithm and core functional
 
 ### Environment Setup
 
-1. Set up AWS infrastructure (DynamoDB table, S3 bucket)
+1. Set up AWS infrastructure (DynamoDB table)
 2. Configure IAM roles with minimal required permissions
 3. Set environment variables in your deployment platform
-4. Upload destination catalogs to S3
+4. Add destination catalogs as JSON files in the root directory
 
 ### Production Considerations
 
 - Use a reverse proxy (nginx) for static file serving
 - Implement proper logging and monitoring
 - Set up automated backups for DynamoDB
-- Consider using AWS CloudFront for S3 content delivery
+- Consider using a CDN for static file delivery
 
 ## 📝 Configuration
 

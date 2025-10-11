@@ -1,4 +1,4 @@
-// src/lib/s3Items.js
+// src/lib/localItems.js
 const fs = require("fs").promises;
 const path = require("path");
 
