@@ -52,35 +52,36 @@ function allocate(submissions, x = 0) {
       }
     }
 
-    // Find what this user would get if their first few preferences were also unavailable
+    // Find the next available items from this user's preference list
+    // Keep going until we find 20 available items or run out of preferences
     const backupItems = [];
     const maxBackupItems = 20;
-
-    for (
-      let skipCount = 1;
-      skipCount <= maxBackupItems && skipCount < userRankedItems.length;
-      skipCount++
-    ) {
-      // Find the first available item after skipping the first 'skipCount' preferences
-      const availableItem = userRankedItems
-        .slice(skipCount)
-        .find((id) => !takenByUsersAbove.has(String(id)));
-
-      if (availableItem) {
-        const itemStr = String(availableItem);
-        // Only add if it's different from their actual assigned item
-        const actualAssigned = assigned.get(u.id);
-        const actualItem =
-          actualAssigned && actualAssigned.length > 0
-            ? String(actualAssigned[0])
-            : null;
-        if (itemStr !== actualItem && !backupItems.includes(itemStr)) {
-          backupItems.push(itemStr);
-        }
+    
+    // Get the user's actual assigned item to exclude it
+    const actualAssigned = assigned.get(u.id);
+    const actualItem = actualAssigned && actualAssigned.length > 0 ? String(actualAssigned[0]) : null;
+    
+    // Go through all user preferences and find available ones
+    for (let i = 0; i < userRankedItems.length && backupItems.length < maxBackupItems; i++) {
+      const item = String(userRankedItems[i]);
+      
+      // Skip if this is their actual assigned item
+      if (item === actualItem) {
+        continue;
+      }
+      
+      // Skip if already in backup items (avoid duplicates)
+      if (backupItems.includes(item)) {
+        continue;
+      }
+      
+      // Check if this item is available (not taken by users above)
+      if (!takenByUsersAbove.has(item)) {
+        backupItems.push(item);
       }
     }
 
-    availableByPref.set(u.id, backupItems.slice(0, maxBackupItems));
+    availableByPref.set(u.id, backupItems);
   }
 
   return users.map((u) => ({

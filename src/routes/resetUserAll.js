@@ -1,5 +1,6 @@
 // src/routes/resetUserAll.js
 const express = require("express");
+const { logIP } = require("../lib/ipLogger");
 
 module.exports = function ({ ddb }) {
   const router = express.Router();
@@ -8,16 +9,20 @@ module.exports = function ({ ddb }) {
     try {
       const { userId } = req.body || {};
       if (!userId || typeof userId !== "string") {
+        logIP(req, "RESET_USER_ALL_FAILED", { reason: "missing_userId" });
         return res.status(400).json({ error: "userId is required" });
       }
       if (!ddb.enabled) {
+        logIP(req, "RESET_USER_ALL_FAILED", { reason: "ddb_disabled", userId });
         return res.status(503).json({ error: "DynamoDB not enabled" });
       }
 
       const removed = await ddb.deleteAllByUser(userId);
+      logIP(req, "RESET_USER_ALL_SUCCESS", { userId, removedCount: removed });
       return res.json({ ok: true, removed });
     } catch (e) {
       console.error("[/api/reset-user-all] error:", e);
+      logIP(req, "RESET_USER_ALL_ERROR", { error: e.message, userId });
       res.status(500).json({ error: "Internal error" });
     }
   });

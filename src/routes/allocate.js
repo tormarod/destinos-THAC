@@ -1,5 +1,6 @@
 const express = require("express");
 const { allocate } = require("../lib/allocate");
+const { logIP } = require("../lib/ipLogger");
 
 module.exports = function ({ ddb }) {
   const router = express.Router();
@@ -45,6 +46,7 @@ module.exports = function ({ ddb }) {
       const userId = req.body && req.body.userId;
 
       if (!userId || typeof userId !== "string") {
+        logIP(req, "ALLOCATE_FAILED", { reason: "missing_userId", season });
         return res.status(400).json({ error: "userId is required" });
       }
 
@@ -55,8 +57,20 @@ module.exports = function ({ ddb }) {
       const userAllocation = fullAllocation.find((a) => a.userId === userId);
 
       if (!userAllocation) {
+        logIP(req, "ALLOCATE_NOT_FOUND", { userId, season, competitionDepth });
         return res.status(404).json({ error: "User not found in allocation" });
       }
+
+      // Log successful allocation request
+      logIP(req, "ALLOCATE_SUCCESS", {
+        userId,
+        userName: userAllocation.name,
+        order: userAllocation.order,
+        season,
+        competitionDepth,
+        assignedCount: userAllocation.assignedItemIds.length,
+        availableCount: userAllocation.availableByPreference.length
+      });
 
       // Return only the user's own data (no other users' information)
       res.json({
@@ -66,6 +80,7 @@ module.exports = function ({ ddb }) {
       });
     } catch (e) {
       console.error("[/api/allocate] error:", e);
+      logIP(req, "ALLOCATE_ERROR", { error: e.message, userId, season });
       res.status(500).json({ error: "Allocation failed" });
     }
   });
@@ -80,9 +95,19 @@ module.exports = function ({ ddb }) {
       const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 0;
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
       const allocation = allocate(subs, competitionDepth);
+      
+      // Log admin allocation request
+      logIP(req, "ALLOCATE_ADMIN_SUCCESS", {
+        season,
+        competitionDepth,
+        totalUsers: allocation.length,
+        adminRequest: true
+      });
+      
       res.json({ allocation, season, competitionDepth });
     } catch (e) {
       console.error("[/api/allocate-admin] error:", e);
+      logIP(req, "ALLOCATE_ADMIN_ERROR", { error: e.message, season });
       res.status(500).json({ error: "Allocation failed" });
     }
   });

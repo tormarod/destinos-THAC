@@ -1,4 +1,5 @@
 const express = require("express");
+const { logIP } = require("../lib/ipLogger");
 
 module.exports = function ({ ddb }) {
   const router = express.Router();
@@ -13,10 +14,12 @@ module.exports = function ({ ddb }) {
       const seasonStr = String(season || new Date().getFullYear());
 
       if (!name || typeof name !== "string") {
+        logIP(req, "SUBMIT_FAILED", { reason: "missing_name", season: seasonStr });
         return res.status(400).json({ error: "Name is required." });
       }
       const parsedOrder = Number(order);
       if (!Number.isInteger(parsedOrder) || parsedOrder <= 0) {
+        logIP(req, "SUBMIT_FAILED", { reason: "invalid_order", season: seasonStr, name: name.trim() });
         return res
           .status(400)
           .json({ error: "Order must be a positive integer." });
@@ -37,6 +40,7 @@ module.exports = function ({ ddb }) {
       const lastSubmission = recentSubmissions.get(submissionKey);
       if (lastSubmission && (now - lastSubmission) < SUBMISSION_COOLDOWN_MS) {
         const remainingSeconds = Math.ceil((SUBMISSION_COOLDOWN_MS - (now - lastSubmission)) / 1000);
+        logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_submission", userId, season: seasonStr, remainingSeconds });
         return res.status(429).json({
           error: "Solicitud duplicada",
           message: `Ya has enviado una solicitud recientemente. Espera ${remainingSeconds} segundo(s) antes de enviar otra.`,
@@ -60,6 +64,16 @@ module.exports = function ({ ddb }) {
         submittedAt,
       });
 
+      // Log successful submission with IP
+      logIP(req, "SUBMIT_SUCCESS", {
+        userId,
+        name: trimmedName,
+        order: parsedOrder,
+        season: seasonStr,
+        rankedItemsCount: rankedItems?.length || 0,
+        isUpdate: !!existing
+      });
+
       // Track this submission to prevent rapid duplicates
       recentSubmissions.set(submissionKey, now);
 
@@ -72,6 +86,7 @@ module.exports = function ({ ddb }) {
       return res.json({ ok: true, id: userId });
     } catch (e) {
       console.error("[/api/submit] error:", e);
+      logIP(req, "SUBMIT_ERROR", { error: e.message, season: seasonStr });
       res.status(500).json({ error: "Internal error" });
     }
   });
