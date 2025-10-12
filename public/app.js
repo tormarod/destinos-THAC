@@ -142,8 +142,8 @@ function renderClickableItems() {
     return "";
   };
 
-  // Check if mobile/tablet view (screen width <= 1366px)
-  const isMobile = window.innerWidth <= 1366;
+  // Check if mobile/tablet view (screen width <= 1024px)
+  const isMobile = window.innerWidth <= 1024;
   
   const rows = slice
     .map((o) => {
@@ -307,8 +307,8 @@ function renderRankingTable() {
     return;
   }
 
-  // Check if mobile/tablet view (screen width <= 1366px)
-  const isMobile = window.innerWidth <= 1366;
+  // Check if mobile/tablet view (screen width <= 1024px)
+  const isMobile = window.innerWidth <= 1024;
 
   const rows = ids
     .map((id, idx) => {
