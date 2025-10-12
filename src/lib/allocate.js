@@ -34,12 +34,18 @@ function allocate(submissions, x = 0) {
       continue;
     }
 
-    // Collect all first X preferences from users above this user
+    // Collect all items that should be considered unavailable for this user:
+    // 1. Items actually assigned to users above this user
+    // 2. First X preferences of users above this user (for simulation purposes)
     const takenByUsersAbove = new Set();
     for (const otherUser of users) {
       if (otherUser.order < u.order) {
+        // Add items actually assigned to users above
+        const assignedItems = assigned.get(otherUser.id) || [];
+        assignedItems.forEach(item => takenByUsersAbove.add(String(item)));
+        
+        // Also add first X preferences for simulation (if X > 0)
         const otherUserItems = otherUser.rankedItems || [];
-        // Mark the first X preferences of this user above as taken
         for (let i = 0; i < Math.min(x, otherUserItems.length); i++) {
           takenByUsersAbove.add(String(otherUserItems[i]));
         }
