@@ -41,7 +41,7 @@ module.exports = function ({ ddb }) {
       const season = String(
         (req.body && req.body.season) || new Date().getFullYear(),
       );
-      const x = parseInt(req.body && req.body.x) || 0;
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 0;
       const userId = req.body && req.body.userId;
 
       if (!userId || typeof userId !== "string") {
@@ -49,7 +49,7 @@ module.exports = function ({ ddb }) {
       }
 
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      const fullAllocation = allocate(subs, x);
+      const fullAllocation = allocate(subs, competitionDepth);
 
       // Find only the current user's allocation
       const userAllocation = fullAllocation.find((a) => a.userId === userId);
@@ -62,7 +62,7 @@ module.exports = function ({ ddb }) {
       res.json({
         allocation: [userAllocation],
         season,
-        x,
+        competitionDepth,
       });
     } catch (e) {
       console.error("[/api/allocate] error:", e);
@@ -77,10 +77,10 @@ module.exports = function ({ ddb }) {
       const season = String(
         (req.body && req.body.season) || new Date().getFullYear(),
       );
-      const x = parseInt(req.body && req.body.x) || 0;
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 0;
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      const allocation = allocate(subs, x);
-      res.json({ allocation, season, x });
+      const allocation = allocate(subs, competitionDepth);
+      res.json({ allocation, season, competitionDepth });
     } catch (e) {
       console.error("[/api/allocate-admin] error:", e);
       res.status(500).json({ error: "Allocation failed" });

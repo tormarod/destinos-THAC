@@ -114,9 +114,9 @@ function renderClickableItems() {
 
   const cols = [
     state.idField,
+    "Centro directivo",
     "Centro de destino",
     "Localidad",
-    "Provincia",
     "Horario/ATF",
   ].filter(
     (c) => filtered[0] && Object.prototype.hasOwnProperty.call(filtered[0], c),
@@ -135,12 +135,16 @@ function renderClickableItems() {
     const k = String(name).toLowerCase();
     if (k.includes("provincia")) return "col-provincia";
     if (k.includes("localidad")) return "col-localidad";
-    if (k.includes("centro")) return "col-centro";
+    if (k.includes("centro de destino")) return "col-centro";
+    if (k.includes("centro directivo")) return "col-centro-directivo";
     if (k.includes("horario")) return "col-horario";
     if (k.includes("vacante")) return "col-id";
     return "";
   };
 
+  // Check if mobile/tablet view (screen width <= 1366px)
+  const isMobile = window.innerWidth <= 1366;
+  
   const rows = slice
     .map((o) => {
       const id = String(o[state.idField]);
@@ -150,7 +154,36 @@ function renderClickableItems() {
       const num = parseInt(o[state.idField], 10);
       const highlight = !isNaN(num) && num >= 1 && num <= 199 ? "top199" : "";
 
-      return `
+      if (isMobile) {
+        // Mobile card layout
+        return `
+<div class="mobile-item-card ${highlight}" data-id="${id}">
+  <div class="mobile-item-header">
+    <div class="mobile-item-id">#${id}</div>
+    <button type="button" class="${btnClass} mobile-btn" data-id="${id}">${btnLabel}</button>
+  </div>
+  <div class="mobile-item-details">
+    <div class="mobile-item-row">
+      <span class="mobile-label">Centro directivo:</span>
+      <span class="mobile-value">${o["Centro directivo"] || ""}</span>
+    </div>
+    <div class="mobile-item-row">
+      <span class="mobile-label">Centro de destino:</span>
+      <span class="mobile-value">${o["Centro de destino"] || ""}</span>
+    </div>
+    <div class="mobile-item-row">
+      <span class="mobile-label">Localidad:</span>
+      <span class="mobile-value">${o["Localidad"] || ""}</span>
+    </div>
+    <div class="mobile-item-row">
+      <span class="mobile-label">Horario/ATF:</span>
+      <span class="mobile-value">${o["Horario/ATF"] || ""}</span>
+    </div>
+  </div>
+</div>`;
+      } else {
+        // Desktop table layout
+        return `
 <tr class="${highlight}">
   ${cols
     .map((c) => `<td class="${classFor(c)}">${o[c] != null ? o[c] : ""}</td>`)
@@ -159,6 +192,7 @@ function renderClickableItems() {
     <button type="button" class="${btnClass} table-btn" data-id="${id}">${btnLabel}</button>
   </td>
 </tr>`;
+      }
     })
     .join("");
 
@@ -199,20 +233,31 @@ function renderClickableItems() {
   </div>
 </div>`.trim();
 
-  ct.innerHTML = `
-  <div class="table-wrap">
-    <table class="items-table">
-      <thead>
-        <tr>
-          ${cols.map((c) => `<th class="${classFor(c)}">${c}</th>`).join("")}
-          <th class="action"></th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>
-  ${pager}
-  `;
+  if (isMobile) {
+    // Mobile card layout
+    ct.innerHTML = `
+    <div class="mobile-items-container">
+      ${rows}
+    </div>
+    ${pager}
+    `;
+  } else {
+    // Desktop table layout
+    ct.innerHTML = `
+    <div class="table-wrap">
+      <table class="items-table">
+        <thead>
+          <tr>
+            ${cols.map((c) => `<th class="${classFor(c)}">${c}</th>`).join("")}
+            <th class="action"></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    ${pager}
+    `;
+  }
 
   // Row buttons
   ct.querySelectorAll("button[data-id]").forEach((btn) => {
@@ -262,39 +307,80 @@ function renderRankingTable() {
     return;
   }
 
+  // Check if mobile/tablet view (screen width <= 1366px)
+  const isMobile = window.innerWidth <= 1366;
+
   const rows = ids
     .map((id, idx) => {
       const o = state.itemsById.get(String(id));
-      return `
+      
+      if (isMobile) {
+        // Mobile card layout with drag functionality
+        return `
+<div class="mobile-ranking-card" draggable="true" data-index="${idx}">
+  <div class="mobile-ranking-header">
+    <div class="mobile-ranking-order">${idx + 1}</div>
+    <div class="mobile-ranking-id">#${id}</div>
+    <button type="button" class="ghost mobile-btn" data-remove="${id}">Eliminar</button>
+  </div>
+  <div class="mobile-ranking-details">
+    <div class="mobile-ranking-row">
+      <span class="mobile-label">Centro directivo:</span>
+      <span class="mobile-value">${o ? o["Centro directivo"] || "" : ""}</span>
+    </div>
+    <div class="mobile-ranking-row">
+      <span class="mobile-label">Centro de destino:</span>
+      <span class="mobile-value">${o ? o["Centro de destino"] || "" : ""}</span>
+    </div>
+    <div class="mobile-ranking-row">
+      <span class="mobile-label">Localidad:</span>
+      <span class="mobile-value">${o ? o["Localidad"] || "" : ""}</span>
+    </div>
+  </div>
+  <div class="mobile-drag-indicator">↕ Arrastra para reordenar</div>
+</div>`;
+      } else {
+        // Desktop table layout
+        return `
 <tr draggable="true" data-index="${idx}">
   <td class="drag-handle" style="width:40px;cursor:grab;">↕</td>
   <td class="col-id"><strong>${id}</strong></td>
+  <td class="col-centro-directivo">${o ? o["Centro directivo"] || "" : ""}</td>
   <td class="col-centro">${o ? o["Centro de destino"] || "" : ""}</td>
   <td class="col-localidad">${o ? o["Localidad"] || "" : ""}</td>
-  <td class="col-provincia">${o ? o["Provincia"] || "" : ""}</td>
   <td class="action" style="text-align:right;">
     <button type="button" class="ghost table-btn" data-remove="${id}">Eliminar</button>
   </td>
 </tr>`;
+      }
     })
     .join("");
 
-  ct.innerHTML = `
-  <div class="table-wrap">
-    <table class="drag-table">
-      <thead>
-        <tr>
-          <th class="drag-handle" style="width:40px;"></th>
-          <th class="col-id">${state.idField}</th>
-          <th class="col-centro">Centro de destino</th>
-          <th class="col-localidad">Localidad</th>
-          <th class="col-provincia">Provincia</th>
-          <th class="action"></th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>`;
+  if (isMobile) {
+    // Mobile card layout
+    ct.innerHTML = `
+    <div class="mobile-ranking-container">
+      ${rows}
+    </div>`;
+  } else {
+    // Desktop table layout
+    ct.innerHTML = `
+    <div class="table-wrap">
+      <table class="drag-table">
+        <thead>
+          <tr>
+            <th class="drag-handle" style="width:40px;"></th>
+            <th class="col-id">${state.idField}</th>
+            <th class="col-centro-directivo">Centro directivo</th>
+            <th class="col-centro">Centro de destino</th>
+            <th class="col-localidad">Localidad</th>
+            <th class="action"></th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
 
   ct.querySelectorAll("button[data-remove]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -307,32 +393,151 @@ function renderRankingTable() {
     });
   });
 
-  const tbody = ct.querySelector("tbody");
   let dragIndex = null;
 
-  tbody.querySelectorAll("tr").forEach((tr) => {
-    tr.addEventListener("dragstart", (e) => {
-      dragIndex = Number(tr.dataset.index);
-      tr.classList.add("dragging");
-      e.dataTransfer.effectAllowed = "move";
-    });
-    tr.addEventListener("dragend", () => {
-      tr.classList.remove("dragging");
-    });
-    tr.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
-    });
-    tr.addEventListener("drop", (e) => {
-      e.preventDefault();
-      const overIndex = Number(e.currentTarget.dataset.index);
-      if (dragIndex === null || overIndex === dragIndex) return;
-      const moved = state.ranking.splice(dragIndex, 1)[0];
-      state.ranking.splice(overIndex, 0, moved);
-      renderRankingTable();
-      updateQuotaIndicators();
-    });
-  });
+  if (isMobile) {
+    // Mobile touch drag-and-drop for cards
+    const container = ct.querySelector(".mobile-ranking-container");
+    if (container) {
+      let touchStartY = 0;
+      let touchStartIndex = -1;
+      let draggedCard = null;
+      let draggedIndex = -1;
+      let isDragging = false;
+
+      container.querySelectorAll(".mobile-ranking-card").forEach((card) => {
+        // Touch events for mobile drag-and-drop
+        card.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          touchStartY = e.touches[0].clientY;
+          touchStartIndex = Number(card.dataset.index);
+          draggedCard = card;
+          draggedIndex = touchStartIndex;
+          isDragging = false;
+        });
+
+        card.addEventListener("touchmove", (e) => {
+          e.preventDefault();
+          if (!draggedCard) return;
+          
+          const touchY = e.touches[0].clientY;
+          const deltaY = touchY - touchStartY;
+          
+          // Start dragging after 10px movement
+          if (Math.abs(deltaY) > 10 && !isDragging) {
+            isDragging = true;
+            draggedCard.classList.add("dragging");
+            draggedCard.style.transform = `translateY(${deltaY}px)`;
+          }
+          
+          if (isDragging) {
+            draggedCard.style.transform = `translateY(${deltaY}px)`;
+            
+            // Find which card we're over
+            const cards = container.querySelectorAll(".mobile-ranking-card");
+            let overIndex = -1;
+            
+            cards.forEach((otherCard, index) => {
+              if (otherCard === draggedCard) return;
+              
+              const rect = otherCard.getBoundingClientRect();
+              const cardCenter = rect.top + rect.height / 2;
+              
+              if (touchY < cardCenter && touchY > rect.top) {
+                overIndex = index;
+              }
+            });
+            
+            // Add visual feedback
+            cards.forEach((otherCard, index) => {
+              if (otherCard !== draggedCard) {
+                otherCard.classList.toggle("drag-over", index === overIndex);
+              }
+            });
+          }
+        });
+
+        card.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          if (!draggedCard) return;
+          
+          const touchY = e.changedTouches[0].clientY;
+          const deltaY = touchY - touchStartY;
+          
+          // Remove visual feedback
+          container.querySelectorAll(".mobile-ranking-card").forEach(card => {
+            card.classList.remove("drag-over");
+          });
+          
+          if (isDragging) {
+            // Find drop target
+            const cards = container.querySelectorAll(".mobile-ranking-card");
+            let dropIndex = -1;
+            
+            cards.forEach((otherCard, index) => {
+              if (otherCard === draggedCard) return;
+              
+              const rect = otherCard.getBoundingClientRect();
+              const cardCenter = rect.top + rect.height / 2;
+              
+              if (touchY < cardCenter && touchY > rect.top) {
+                dropIndex = index;
+              }
+            });
+            
+            // Perform the reorder if we have a valid drop target
+            if (dropIndex !== -1 && dropIndex !== draggedIndex) {
+              const moved = state.ranking.splice(draggedIndex, 1)[0];
+              state.ranking.splice(dropIndex, 0, moved);
+              renderRankingTable();
+              updateQuotaIndicators();
+            } else {
+              // Reset position if no valid drop
+              renderRankingTable();
+            }
+          } else {
+            // Just a tap, no drag - reset position
+            draggedCard.style.transform = "";
+          }
+          
+          // Reset drag state
+          draggedCard.classList.remove("dragging");
+          draggedCard.style.transform = "";
+          draggedCard = null;
+          draggedIndex = -1;
+          isDragging = false;
+        });
+      });
+    }
+  } else {
+    // Desktop drag-and-drop for table rows
+    const tbody = ct.querySelector("tbody");
+    if (tbody) {
+      tbody.querySelectorAll("tr").forEach((tr) => {
+        tr.addEventListener("dragstart", (e) => {
+          dragIndex = Number(tr.dataset.index);
+          tr.classList.add("dragging");
+          e.dataTransfer.effectAllowed = "move";
+        });
+        tr.addEventListener("dragend", () => {
+          tr.classList.remove("dragging");
+        });
+        tr.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+        });
+        tr.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const overIndex = Number(e.currentTarget.dataset.index);
+          if (dragIndex === null || overIndex === dragIndex) return;
+          const moved = state.ranking.splice(dragIndex, 1)[0];
+          state.ranking.splice(overIndex, 0, moved);
+          renderRankingTable();
+          updateQuotaIndicators();
+        });
+      });
+    }
+  }
 }
 
 function updateQuotaIndicators() {
@@ -607,38 +812,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Update X parameter display when input changes
-  $("xParameter").addEventListener("input", (e) => {
-    let xValue = parseInt(e.target.value) || 1;
+  // Update competition depth parameter display when input changes
+  const competitionDepthInput = $("competitionDepthParameter");
+  if (competitionDepthInput) {
+    competitionDepthInput.addEventListener("input", (e) => {
+      let competitionDepthValue = parseInt(e.target.value) || 1;
 
-    // Clamp value to valid range (1-20)
-    if (xValue < 1) xValue = 1;
-    if (xValue > 20) xValue = 20;
+      // Clamp value to valid range (1-20)
+      if (competitionDepthValue < 1) competitionDepthValue = 1;
+      if (competitionDepthValue > 20) competitionDepthValue = 20;
 
-    // Update the input field if it was clamped
-    if (parseInt(e.target.value) !== xValue) {
-      e.target.value = xValue;
-    }
+      // Update the input field if it was clamped
+      if (parseInt(e.target.value) !== competitionDepthValue) {
+        e.target.value = competitionDepthValue;
+      }
 
-    const xValueElement = $("xValue");
-    const xValue2Element = $("xValue2");
+      const competitionDepthValueElement = $("competitionDepthValue");
+      const competitionDepthValue2Element = $("competitionDepthValue2");
 
-    if (xValueElement) xValueElement.textContent = xValue;
-    if (xValue2Element) xValue2Element.textContent = xValue;
-  });
+      if (competitionDepthValueElement) competitionDepthValueElement.textContent = competitionDepthValue;
+      if (competitionDepthValue2Element) competitionDepthValue2Element.textContent = competitionDepthValue;
+    });
 
-  // Initialize X parameter display on page load
-  const initialXValue = $("xParameter").value || "1";
-  const xValueElement = $("xValue");
-  const xValue2Element = $("xValue2");
+    // Initialize competition depth parameter display on page load
+    const initialCompetitionDepthValue = competitionDepthInput.value || "1";
+    const competitionDepthValueElement = $("competitionDepthValue");
+    const competitionDepthValue2Element = $("competitionDepthValue2");
 
-  if (xValueElement) xValueElement.textContent = initialXValue;
-  if (xValue2Element) xValue2Element.textContent = initialXValue;
+    if (competitionDepthValueElement) competitionDepthValueElement.textContent = initialCompetitionDepthValue;
+    if (competitionDepthValue2Element) competitionDepthValue2Element.textContent = initialCompetitionDepthValue;
+  }
 
   $("order").addEventListener("input", () => {
     state.quota = Math.max(0, Number($("order").value) || 0);
     renderClickableItems();
     updateQuotaIndicators();
+  });
+
+  // Re-render on window resize to switch between mobile/desktop layouts
+  window.addEventListener("resize", () => {
+    renderClickableItems();
+    renderRankingTable();
   });
 
   $("userId").value = getLocalUserId();

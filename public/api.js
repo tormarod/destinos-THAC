@@ -88,7 +88,7 @@
 
       return result;
     },
-    async allocate(season, x = 0) {
+    async allocate(season, competitionDepth = 0) {
       const userId = localStorage.getItem("allocator:userId");
       if (!userId) {
         throw new Error(
@@ -100,7 +100,7 @@
       const res = await fetch("/api/allocate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ season, x, userId }),
+        body: JSON.stringify({ season, competitionDepth, userId }),
       });
       const result = await jsonOrThrow(res, "Error en la asignación");
 

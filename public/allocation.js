@@ -84,11 +84,11 @@ async function runAllocation(season) {
   showLuckOverlay();
 
   try {
-    // Get the X parameter from the input field
-    const xInput = document.getElementById("xParameter");
-    const x = xInput ? parseInt(xInput.value) || 0 : 0;
+          // Get the competition depth parameter from the input field
+          const competitionDepthInput = document.getElementById("competitionDepthParameter");
+          const competitionDepth = competitionDepthInput ? parseInt(competitionDepthInput.value) || 0 : 0;
 
-    const data = await window.api.allocate(season, x);
+          const data = await window.api.allocate(season, competitionDepth);
     renderAllocation(data);
 
     // Start countdown after successful allocation to prevent immediate second request
