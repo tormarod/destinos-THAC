@@ -169,7 +169,7 @@ function createDdb(cfg) {
             ":pk": makePk(season),
             ":userOrder": Number(userOrder)
           },
-          ProjectionExpression: "sk, #o, #ranked, #name, submittedAt, updatedAt, season",
+          ProjectionExpression: "sk, #o, #ranked, #name, submittedAt, season",
           ExclusiveStartKey,
         }),
       );
@@ -180,7 +180,7 @@ function createDdb(cfg) {
           order: it.order,
           rankedItems: it.rankedItems,
           submittedAt: it.submittedAt,
-          updatedAt: it.updatedAt,
+          updatedAt: it.updatedAt || it.submittedAt, // Fallback to submittedAt if updatedAt not available from GSI1
           season: it.season,
         }),
       );
