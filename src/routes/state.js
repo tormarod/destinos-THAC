@@ -33,9 +33,8 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
       let submissions = [];
       if (ddb.enabled) {
         if (userId && typeof userId === "string") {
-          // User-specific: only return their own submission
-          const allSubmissions = await ddb.fetchAllSubmissions(season);
-          const userSubmission = allSubmissions.find((s) => s.id === userId);
+          // User-specific: directly fetch only their submission (more efficient)
+          const userSubmission = await ddb.fetchUserSubmission(season, userId);
           submissions = userSubmission ? [userSubmission] : [];
         } else {
           // Admin/backward compatibility: return all submissions

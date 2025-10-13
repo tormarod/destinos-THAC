@@ -78,6 +78,7 @@ module.exports = function ({ ddb }) {
         allocation: [userAllocation],
         season,
         competitionDepth,
+        usersAboveCount: subsAbove.length, // Number of users with higher priority (lower order number)
       });
     } catch (e) {
       console.error("[/api/allocate] error:", e);

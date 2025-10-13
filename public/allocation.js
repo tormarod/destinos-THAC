@@ -34,10 +34,15 @@ function renderAllocation(payload) {
   }
 
   const x = payload.x || 0;
+  const usersAboveCount = payload.usersAboveCount || 0;
   const simulationText =
     x > 0
       ? ` (Simulación: primeras ${x} preferencias de usuarios por encima marcadas como no disponibles)`
       : " (Simulación estándar)";
+  
+  const positionInfo = usersAboveCount > 0 
+    ? `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> Han contestado <strong>${usersAboveCount}</strong> persona${usersAboveCount === 1 ? '' : 's'} por encima de ti.</p>`
+    : `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> ¡Eres la primera persona en la lista de prioridades!</p>`;
 
   const rows = mine
     .map((r) => {
@@ -59,13 +64,14 @@ function renderAllocation(payload) {
     .join("");
 
   ct.innerHTML = `
+${positionInfo}
 <table>
   <thead>
     <tr>
       <th>Tu posición</th>
       <th>Nombre</th>
       <th>Destino asignado</th>
-      <th>Siguientes 40 destinos disponibles (según tu preferencia) que nadie por encima de tí ha obtenido como destino</th>
+      <th>Siguientes 20 destinos disponibles (según tu preferencia) que nadie por encima de tí ha obtenido como destino</th>
     </tr>
   </thead>
   <tbody>${rows}</tbody>
