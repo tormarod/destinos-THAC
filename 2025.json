@@ -1,7 +1,6 @@
 [
   {
-
-    "Nº vacante": 200,
+    "Vacante": 200,
     "Centro directivo": "DELEGACION ESPECIAL DE ANDALUCIA, CEUTA Y MELILLA",
     "Centro de destino": "DELEGACION CEUTA-SEDE CEUTA. AREA DE GESTION",
     "Provincia": "CEUTA",
@@ -9,8 +8,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 201,
+    "Vacante": 201,
     "Centro directivo": "DELEGACION ESPECIAL DE ANDALUCIA, CEUTA Y MELILLA",
     "Centro de destino": "DELEGACION MELILLA-SEDE MELILLA. AREA DE RECAUDACION",
     "Provincia": "MELILLA",
@@ -18,8 +16,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 202,
+    "Vacante": 202,
     "Centro directivo": "DELEGACION ESPECIAL DE ARAGON",
     "Centro de destino": "DELEGACION HUESCA-SEDE HUESCA. AREA DE GESTION",
     "Provincia": "HUESCA",
@@ -27,8 +24,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 203,
+    "Vacante": 203,
     "Centro directivo": "DELEGACION ESPECIAL DE ARAGON",
     "Centro de destino": "DELEGACION HUESCA-SEDE HUESCA. AREA DE GESTION",
     "Provincia": "HUESCA",
@@ -36,8 +32,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 204,
+    "Vacante": 204,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE EIVISSA-FORMENTERA. AREA DE GESTION",
     "Provincia": "ILLES BALEARS",
@@ -45,8 +40,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 205,
+    "Vacante": 205,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE EIVISSA-FORMENTERA. AREA DE GESTION",
     "Provincia": "ILLES BALEARS",
@@ -54,8 +48,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 206,
+    "Vacante": 206,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE EIVISSA-FORMENTERA. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -63,8 +56,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 207,
+    "Vacante": 207,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE EIVISSA-FORMENTERA. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -72,8 +64,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 208,
+    "Vacante": 208,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE EIVISSA-FORMENTERA. AREA DE RECAUDACION",
     "Provincia": "ILLES BALEARS",
@@ -81,8 +72,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 209,
+    "Vacante": 209,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE MENORCA. AREA DE GESTION",
     "Provincia": "ILLES BALEARS",
@@ -90,8 +80,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 210,
+    "Vacante": 210,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE MENORCA. AREA DE RECAUDACION",
     "Provincia": "ILLES BALEARS",
@@ -99,8 +88,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 211,
+    "Vacante": 211,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -108,8 +96,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 212,
+    "Vacante": 212,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -117,8 +104,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 213,
+    "Vacante": 213,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -126,8 +112,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 214,
+    "Vacante": 214,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -135,8 +120,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 215,
+    "Vacante": 215,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "ILLES BALEARS",
@@ -144,8 +128,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 216,
+    "Vacante": 216,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "ILLES BALEARS",
@@ -153,8 +136,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 217,
+    "Vacante": 217,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "ILLES BALEARS",
@@ -162,8 +144,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 218,
+    "Vacante": 218,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "ILLES BALEARS",
@@ -171,8 +152,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 219,
+    "Vacante": 219,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "ADMINISTRACION DE PALMA DE MALLORCA. AREA DE GESTION",
     "Provincia": "ILLES BALEARS",
@@ -180,8 +160,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 220,
+    "Vacante": 220,
     "Centro directivo": "DELEGACION ESPECIAL DE ILLES BALEARS",
     "Centro de destino": "AD.ADU.IIEE.DE EIVISSA. AREA DE ADUANAS",
     "Provincia": "ILLES BALEARS",
@@ -189,8 +168,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 221,
+    "Vacante": 221,
     "Centro directivo": "DELEGACION ESPECIAL DE CANARIAS",
     "Centro de destino": "AD.ADU.IIEE.DE ARRECIFE. AREA DE ADUANAS",
     "Provincia": "LAS PALMAS",
@@ -198,17 +176,15 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 222,
+    "Vacante": 222,
     "Centro directivo": "DELEGACION ESPECIAL DE CANARIAS",
-    "Centro de destino": "AD.ADU.IIEE.DE PUERTO DEL ROSARIO. AREA DE\nADUANAS",
+    "Centro de destino": "AD.ADU.IIEE.DE PUERTO DEL ROSARIO. AREA DE ADUANAS",
     "Provincia": "LAS PALMAS",
     "Localidad": "PUERTO DEL ROSARIO",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 223,
+    "Vacante": 223,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "DELEGACION GUADALAJARA-SEDE GUADALAJARA. AREA DE RECAUDACION",
     "Provincia": "GUADALAJARA",
@@ -216,8 +192,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 224,
+    "Vacante": 224,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "TOLEDO",
@@ -225,8 +200,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 225,
+    "Vacante": 225,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "TOLEDO",
@@ -234,17 +208,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 226,
-    "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA\nMANCHA",
+    "Vacante": 226,
+    "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TOLEDO",
     "Localidad": "TOLEDO",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 227,
+    "Vacante": 227,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "TOLEDO",
@@ -252,17 +224,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 228,
-    "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA\nMANCHA",
-    "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
-    "Provincia": "TOLEDO",
-    "Localidad": "TOLEDO",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 229,
+    "Vacante": 228,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "TOLEDO",
@@ -270,8 +232,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 230,
+    "Vacante": 229,
+    "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
+    "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
+    "Provincia": "TOLEDO",
+    "Localidad": "TOLEDO",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 230,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "TOLEDO",
@@ -279,8 +248,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 231,
+    "Vacante": 231,
     "Centro directivo": "DELEGACION ESPECIAL DE CASTILLA LA MANCHA",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "TOLEDO",
@@ -288,8 +256,7 @@
     "Horario/ATF": "ATF-TEAR CM- TOLEDO"
   },
   {
-
-    "Nº vacante": 232,
+    "Vacante": 232,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE OLOT. AREA DE GESTION",
     "Provincia": "GIRONA",
@@ -297,8 +264,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 233,
+    "Vacante": 233,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE GESTION",
     "Provincia": "GIRONA",
@@ -306,8 +272,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 234,
+    "Vacante": 234,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE GESTION",
     "Provincia": "GIRONA",
@@ -315,8 +280,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 235,
+    "Vacante": 235,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE GESTION",
     "Provincia": "GIRONA",
@@ -324,8 +288,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 236,
+    "Vacante": 236,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE RECAUDACION",
     "Provincia": "GIRONA",
@@ -333,8 +296,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 237,
+    "Vacante": 237,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE RECAUDACION",
     "Provincia": "GIRONA",
@@ -342,8 +304,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 238,
+    "Vacante": 238,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE ADUANAS",
     "Provincia": "GIRONA",
@@ -351,17 +312,15 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 239,
+    "Vacante": 239,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE\nADUANAS",
+    "Centro de destino": "DELEGACION GIRONA-SEDE GIRONA. AREA DE ADUANAS",
     "Provincia": "GIRONA",
     "Localidad": "JONQUERA, LA",
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 240,
+    "Vacante": 240,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE GESTION",
     "Provincia": "LLEIDA",
@@ -369,8 +328,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 241,
+    "Vacante": 241,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE GESTION",
     "Provincia": "LLEIDA",
@@ -378,8 +336,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 242,
+    "Vacante": 242,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE GESTION",
     "Provincia": "LLEIDA",
@@ -387,8 +344,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 243,
+    "Vacante": 243,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE ADUANAS",
     "Provincia": "LLEIDA",
@@ -396,8 +352,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 244,
+    "Vacante": 244,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE ADUANAS",
     "Provincia": "LLEIDA",
@@ -405,8 +360,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 245,
+    "Vacante": 245,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE ADUANAS",
     "Provincia": "LLEIDA",
@@ -414,8 +368,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 246,
+    "Vacante": 246,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE ADUANAS",
     "Provincia": "LLEIDA",
@@ -423,8 +376,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 247,
+    "Vacante": 247,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION LLEIDA-SEDE LLEIDA. AREA DE ADUANAS",
     "Provincia": "LLEIDA",
@@ -432,8 +384,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 248,
+    "Vacante": 248,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE REUS. AREA DE GESTION",
     "Provincia": "TARRAGONA",
@@ -441,8 +392,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 249,
+    "Vacante": 249,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE TORTOSA. AREA DE GESTION",
     "Provincia": "TARRAGONA",
@@ -450,8 +400,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 250,
+    "Vacante": 250,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE TORTOSA. AREA DE GESTION",
     "Provincia": "TARRAGONA",
@@ -459,8 +408,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 251,
+    "Vacante": 251,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION TARRAGONA-SEDE TARRAGONA. AREA DE GESTION",
     "Provincia": "TARRAGONA",
@@ -468,8 +416,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 252,
+    "Vacante": 252,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "DELEGACION TARRAGONA-SEDE TARRAGONA. AREA DE RECAUDACION",
     "Provincia": "TARRAGONA",
@@ -477,17 +424,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 253,
+    "Vacante": 253,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "DELEGACION TARRAGONA-SEDE TARRAGONA. AREA DE\nADUANAS",
+    "Centro de destino": "DELEGACION TARRAGONA-SEDE TARRAGONA. AREA DE ADUANAS",
     "Provincia": "TARRAGONA",
     "Localidad": "TARRAGONA",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 254,
+    "Vacante": 254,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE BADALONA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -495,8 +440,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 255,
+    "Vacante": 255,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE CORNELLA DE LLOBREGAT. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -504,8 +448,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 256,
+    "Vacante": 256,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE CORNELLA DE LLOBREGAT. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -513,8 +456,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 257,
+    "Vacante": 257,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE CORNELLA DE LLOBREGAT. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -522,17 +464,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 258,
+    "Vacante": 258,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "ADMINISTRACION DE CORNELLA DE LLOBREGAT. AREA\nDE RECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE CORNELLA DE LLOBREGAT. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
     "Localidad": "CORNELLA DE LLOBREGAT",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 259,
+    "Vacante": 259,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE GRANOLLERS. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -540,8 +480,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 260,
+    "Vacante": 260,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE GRANOLLERS. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -549,8 +488,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 261,
+    "Vacante": 261,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE GRANOLLERS. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -558,8 +496,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 262,
+    "Vacante": 262,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE GRANOLLERS. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -567,8 +504,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 263,
+    "Vacante": 263,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE MANRESA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -576,8 +512,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 264,
+    "Vacante": 264,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE MATARO. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -585,8 +520,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 265,
+    "Vacante": 265,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE MATARO. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -594,8 +528,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 266,
+    "Vacante": 266,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE MATARO. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -603,8 +536,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 267,
+    "Vacante": 267,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE MATARO. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -612,8 +544,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 268,
+    "Vacante": 268,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SABADELL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -621,8 +552,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 269,
+    "Vacante": 269,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SABADELL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -630,8 +560,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 270,
+    "Vacante": 270,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SABADELL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -639,8 +568,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 271,
+    "Vacante": 271,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SABADELL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -648,17 +576,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 272,
-    "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "ADMINISTRACION DE SANT CUGAT DEL VALLES. AREA\nDE GESTION",
-    "Provincia": "BARCELONA",
-    "Localidad": "SANT CUGAT DEL VALLES",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 273,
+    "Vacante": 272,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SANT CUGAT DEL VALLES. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -666,8 +584,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 274,
+    "Vacante": 273,
+    "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
+    "Centro de destino": "ADMINISTRACION DE SANT CUGAT DEL VALLES. AREA DE GESTION",
+    "Provincia": "BARCELONA",
+    "Localidad": "SANT CUGAT DEL VALLES",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 274,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SANT CUGAT DEL VALLES. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -675,8 +600,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 275,
+    "Vacante": 275,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SANT CUGAT DEL VALLES. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -684,8 +608,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 276,
+    "Vacante": 276,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE SANT FELIU LLOBREGAT. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -693,17 +616,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 277,
+    "Vacante": 277,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "ADMINISTRACION DE SANT FELIU LLOBREGAT. AREA DE\nGESTION",
+    "Centro de destino": "ADMINISTRACION DE SANT FELIU LLOBREGAT. AREA DE GESTION",
     "Provincia": "BARCELONA",
     "Localidad": "SANT FELIU DE LLOBREGAT",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 278,
+    "Vacante": 278,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE TERRASSA. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -711,8 +632,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 279,
+    "Vacante": 279,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -720,8 +640,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 280,
+    "Vacante": 280,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -729,8 +648,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 281,
+    "Vacante": 281,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -738,8 +656,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 282,
+    "Vacante": 282,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -747,8 +664,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 283,
+    "Vacante": 283,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -756,8 +672,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 284,
+    "Vacante": 284,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -765,8 +680,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 285,
+    "Vacante": 285,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -774,8 +688,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 286,
+    "Vacante": 286,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -783,8 +696,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 287,
+    "Vacante": 287,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -792,8 +704,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 288,
+    "Vacante": 288,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -801,8 +712,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 289,
+    "Vacante": 289,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -810,8 +720,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 290,
+    "Vacante": 290,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -819,8 +728,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 291,
+    "Vacante": 291,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -828,8 +736,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 292,
+    "Vacante": 292,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -837,8 +744,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 293,
+    "Vacante": 293,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -846,8 +752,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 294,
+    "Vacante": 294,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -855,8 +760,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 295,
+    "Vacante": 295,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -864,8 +768,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 296,
+    "Vacante": 296,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -873,8 +776,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 297,
+    "Vacante": 297,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -882,8 +784,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 298,
+    "Vacante": 298,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -891,8 +792,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 299,
+    "Vacante": 299,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -900,8 +800,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 300,
+    "Vacante": 300,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -909,8 +808,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 301,
+    "Vacante": 301,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -918,8 +816,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 302,
+    "Vacante": 302,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -927,8 +824,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 303,
+    "Vacante": 303,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -936,8 +832,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 304,
+    "Vacante": 304,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -945,8 +840,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 305,
+    "Vacante": 305,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -954,8 +848,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 306,
+    "Vacante": 306,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -963,8 +856,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 307,
+    "Vacante": 307,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -972,8 +864,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 308,
+    "Vacante": 308,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -981,8 +872,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 309,
+    "Vacante": 309,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -990,8 +880,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 310,
+    "Vacante": 310,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -999,8 +888,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 311,
+    "Vacante": 311,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1008,8 +896,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 312,
+    "Vacante": 312,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1017,8 +904,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 313,
+    "Vacante": 313,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1026,8 +912,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 314,
+    "Vacante": 314,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1035,8 +920,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 315,
+    "Vacante": 315,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1044,8 +928,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 316,
+    "Vacante": 316,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1053,8 +936,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 317,
+    "Vacante": 317,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1062,8 +944,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 318,
+    "Vacante": 318,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1071,8 +952,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 319,
+    "Vacante": 319,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1080,8 +960,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 320,
+    "Vacante": 320,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1089,8 +968,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 321,
+    "Vacante": 321,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1098,8 +976,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 322,
+    "Vacante": 322,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1107,8 +984,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 323,
+    "Vacante": 323,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1116,8 +992,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 324,
+    "Vacante": 324,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1125,8 +1000,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 325,
+    "Vacante": 325,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1134,8 +1008,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 326,
+    "Vacante": 326,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1143,8 +1016,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 327,
+    "Vacante": 327,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1152,8 +1024,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 328,
+    "Vacante": 328,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1161,8 +1032,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 329,
+    "Vacante": 329,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1170,8 +1040,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 330,
+    "Vacante": 330,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1179,8 +1048,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 331,
+    "Vacante": 331,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1188,8 +1056,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 332,
+    "Vacante": 332,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1197,8 +1064,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 333,
+    "Vacante": 333,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1206,8 +1072,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 334,
+    "Vacante": 334,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1215,8 +1080,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 335,
+    "Vacante": 335,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1224,8 +1088,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 336,
+    "Vacante": 336,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1233,8 +1096,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 337,
+    "Vacante": 337,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1242,8 +1104,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 338,
+    "Vacante": 338,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1251,8 +1112,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 339,
+    "Vacante": 339,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1260,8 +1120,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 340,
+    "Vacante": 340,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1269,8 +1128,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 341,
+    "Vacante": 341,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1278,8 +1136,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 342,
+    "Vacante": 342,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1287,8 +1144,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 343,
+    "Vacante": 343,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1296,8 +1152,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 344,
+    "Vacante": 344,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1305,8 +1160,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 345,
+    "Vacante": 345,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1314,8 +1168,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 346,
+    "Vacante": 346,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1323,8 +1176,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 347,
+    "Vacante": 347,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1332,8 +1184,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 348,
+    "Vacante": 348,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1341,8 +1192,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 349,
+    "Vacante": 349,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1350,8 +1200,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 350,
+    "Vacante": 350,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1359,8 +1208,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 351,
+    "Vacante": 351,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1368,8 +1216,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 352,
+    "Vacante": 352,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1377,8 +1224,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 353,
+    "Vacante": 353,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1386,8 +1232,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 354,
+    "Vacante": 354,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1395,8 +1240,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 355,
+    "Vacante": 355,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1404,8 +1248,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 356,
+    "Vacante": 356,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1413,8 +1256,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 357,
+    "Vacante": 357,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1422,8 +1264,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 358,
+    "Vacante": 358,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1431,8 +1272,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 359,
+    "Vacante": 359,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -1440,8 +1280,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 360,
+    "Vacante": 360,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1449,8 +1288,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 361,
+    "Vacante": 361,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1458,8 +1296,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 362,
+    "Vacante": 362,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1467,8 +1304,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 363,
+    "Vacante": 363,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1476,8 +1312,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 364,
+    "Vacante": 364,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1485,8 +1320,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 365,
+    "Vacante": 365,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1494,8 +1328,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 366,
+    "Vacante": 366,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1503,8 +1336,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 367,
+    "Vacante": 367,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1512,8 +1344,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 368,
+    "Vacante": 368,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1521,8 +1352,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 369,
+    "Vacante": 369,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1530,8 +1360,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 370,
+    "Vacante": 370,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1539,8 +1368,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 371,
+    "Vacante": 371,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1548,8 +1376,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 372,
+    "Vacante": 372,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1557,8 +1384,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 373,
+    "Vacante": 373,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1566,8 +1392,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 374,
+    "Vacante": 374,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1575,8 +1400,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 375,
+    "Vacante": 375,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1584,8 +1408,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 376,
+    "Vacante": 376,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1593,8 +1416,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 377,
+    "Vacante": 377,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1602,8 +1424,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 378,
+    "Vacante": 378,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1611,8 +1432,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 379,
+    "Vacante": 379,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1620,8 +1440,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 380,
+    "Vacante": 380,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1629,8 +1448,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 381,
+    "Vacante": 381,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1638,8 +1456,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 382,
+    "Vacante": 382,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1647,8 +1464,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 383,
+    "Vacante": 383,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1656,8 +1472,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 384,
+    "Vacante": 384,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1665,8 +1480,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 385,
+    "Vacante": 385,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1674,8 +1488,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 386,
+    "Vacante": 386,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1683,8 +1496,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 387,
+    "Vacante": 387,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1692,8 +1504,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 388,
+    "Vacante": 388,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1701,8 +1512,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 389,
+    "Vacante": 389,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1710,8 +1520,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 390,
+    "Vacante": 390,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1719,8 +1528,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 391,
+    "Vacante": 391,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1728,8 +1536,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 392,
+    "Vacante": 392,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1737,8 +1544,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 393,
+    "Vacante": 393,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -1746,8 +1552,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 394,
+    "Vacante": 394,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "BARCELONA",
@@ -1755,8 +1560,7 @@
     "Horario/ATF": "ATF-TEAR CAT- BARCELONA"
   },
   {
-
-    "Nº vacante": 395,
+    "Vacante": 395,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1764,8 +1568,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 396,
+    "Vacante": 396,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1773,8 +1576,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 397,
+    "Vacante": 397,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1782,8 +1584,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 398,
+    "Vacante": 398,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1791,8 +1592,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 399,
+    "Vacante": 399,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1800,8 +1600,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 400,
+    "Vacante": 400,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1809,8 +1608,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 401,
+    "Vacante": 401,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE COLOM. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
@@ -1818,8 +1616,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 402,
+    "Vacante": 402,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1827,8 +1624,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 403,
+    "Vacante": 403,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1836,8 +1632,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 404,
+    "Vacante": 404,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1845,8 +1640,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 405,
+    "Vacante": 405,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1854,8 +1648,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 406,
+    "Vacante": 406,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1863,8 +1656,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 407,
+    "Vacante": 407,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1872,8 +1664,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 408,
+    "Vacante": 408,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1881,8 +1672,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 409,
+    "Vacante": 409,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1890,17 +1680,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 410,
+    "Vacante": 410,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE\nRECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE VIA AUGUSTA. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
     "Localidad": "BARCELONA",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 411,
+    "Vacante": 411,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE HORTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1908,8 +1696,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 412,
+    "Vacante": 412,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE HORTA. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1917,8 +1704,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 413,
+    "Vacante": 413,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE POBLENOU. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1926,8 +1712,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 414,
+    "Vacante": 414,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE POBLENOU. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1935,8 +1720,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 415,
+    "Vacante": 415,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE POBLENOU. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1944,8 +1728,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 416,
+    "Vacante": 416,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1953,8 +1736,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 417,
+    "Vacante": 417,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1962,8 +1744,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 418,
+    "Vacante": 418,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1971,8 +1752,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 419,
+    "Vacante": 419,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1980,8 +1760,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 420,
+    "Vacante": 420,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1989,8 +1768,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 421,
+    "Vacante": 421,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -1998,8 +1776,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 422,
+    "Vacante": 422,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -2007,8 +1784,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 423,
+    "Vacante": 423,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE GESTION",
     "Provincia": "BARCELONA",
@@ -2016,17 +1792,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 424,
+    "Vacante": 424,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
-    "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE\nRECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE LETAMENDI. AREA DE RECAUDACION",
     "Provincia": "BARCELONA",
     "Localidad": "BARCELONA",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 425,
+    "Vacante": 425,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE AEROPTO.BARCELONA-EL PRAT. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2034,8 +1808,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 426,
+    "Vacante": 426,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE AEROPTO.BARCELONA-EL PRAT. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2043,8 +1816,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 427,
+    "Vacante": 427,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2052,8 +1824,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 428,
+    "Vacante": 428,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2061,8 +1832,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 429,
+    "Vacante": 429,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2070,8 +1840,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 430,
+    "Vacante": 430,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2079,8 +1848,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 431,
+    "Vacante": 431,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2088,8 +1856,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 432,
+    "Vacante": 432,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2097,8 +1864,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 433,
+    "Vacante": 433,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2106,8 +1872,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 434,
+    "Vacante": 434,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "AD.ADU.IIEE.DE BARCELONA. AREA DE ADUANAS",
     "Provincia": "BARCELONA",
@@ -2115,8 +1880,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 435,
+    "Vacante": 435,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "GIRONA",
@@ -2124,8 +1888,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 436,
+    "Vacante": 436,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "GIRONA",
@@ -2133,8 +1896,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 437,
+    "Vacante": 437,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "GIRONA",
@@ -2142,8 +1904,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 438,
+    "Vacante": 438,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TARRAGONA",
@@ -2151,8 +1912,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 439,
+    "Vacante": 439,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TARRAGONA",
@@ -2160,8 +1920,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 440,
+    "Vacante": 440,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TARRAGONA",
@@ -2169,8 +1928,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 441,
+    "Vacante": 441,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TARRAGONA",
@@ -2178,8 +1936,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 442,
+    "Vacante": 442,
     "Centro directivo": "DELEGACION ESPECIAL DE CATALUÑA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "TARRAGONA",
@@ -2187,17 +1944,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 443,
+    "Vacante": 443,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE ALCOBENDAS. AREA DE\nRECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE ALCOBENDAS. AREA DE RECAUDACION",
     "Provincia": "MADRID",
     "Localidad": "ALCOBENDAS",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 444,
+    "Vacante": 444,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2205,8 +1960,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 445,
+    "Vacante": 445,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2214,8 +1968,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 446,
+    "Vacante": 446,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2223,8 +1976,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 447,
+    "Vacante": 447,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2232,17 +1984,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 448,
-    "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE\nRECAUDACION",
-    "Provincia": "MADRID",
-    "Localidad": "ALCORCON",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 449,
+    "Vacante": 448,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2250,17 +1992,23 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 450,
+    "Vacante": 449,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE\nRECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE RECAUDACION",
     "Provincia": "MADRID",
     "Localidad": "ALCORCON",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 451,
+    "Vacante": 450,
+    "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
+    "Centro de destino": "ADMINISTRACION DE ALCORCON. AREA DE RECAUDACION",
+    "Provincia": "MADRID",
+    "Localidad": "ALCORCON",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 451,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE ARGANDA. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2268,8 +2016,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 452,
+    "Vacante": 452,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE EL ESCORIAL. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2277,8 +2024,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 453,
+    "Vacante": 453,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE FUENLABRADA. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2286,17 +2032,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 454,
+    "Vacante": 454,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE FUENLABRADA. AREA DE\nGESTION",
+    "Centro de destino": "ADMINISTRACION DE FUENLABRADA. AREA DE GESTION",
     "Provincia": "MADRID",
     "Localidad": "FUENLABRADA",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 455,
+    "Vacante": 455,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE LEGANES. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2304,8 +2048,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 456,
+    "Vacante": 456,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MOSTOLES. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2313,8 +2056,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 457,
+    "Vacante": 457,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE POZUELO DE ALARCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2322,8 +2064,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 458,
+    "Vacante": 458,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE POZUELO DE ALARCON. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2331,8 +2072,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 459,
+    "Vacante": 459,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2340,8 +2080,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 460,
+    "Vacante": 460,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2349,8 +2088,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 461,
+    "Vacante": 461,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2358,8 +2096,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 462,
+    "Vacante": 462,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2367,8 +2104,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 463,
+    "Vacante": 463,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2376,8 +2112,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 464,
+    "Vacante": 464,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2385,8 +2120,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 465,
+    "Vacante": 465,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2394,8 +2128,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 466,
+    "Vacante": 466,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2403,8 +2136,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 467,
+    "Vacante": 467,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2412,8 +2144,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 468,
+    "Vacante": 468,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2421,8 +2152,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 469,
+    "Vacante": 469,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2430,8 +2160,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 470,
+    "Vacante": 470,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2439,8 +2168,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 471,
+    "Vacante": 471,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2448,8 +2176,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 472,
+    "Vacante": 472,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2457,8 +2184,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 473,
+    "Vacante": 473,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2466,8 +2192,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 474,
+    "Vacante": 474,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2475,8 +2200,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 475,
+    "Vacante": 475,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2484,8 +2208,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 476,
+    "Vacante": 476,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2493,8 +2216,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 477,
+    "Vacante": 477,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2502,8 +2224,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 478,
+    "Vacante": 478,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2511,8 +2232,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 479,
+    "Vacante": 479,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2520,8 +2240,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 480,
+    "Vacante": 480,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2529,8 +2248,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 481,
+    "Vacante": 481,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2538,8 +2256,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 482,
+    "Vacante": 482,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2547,8 +2264,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 483,
+    "Vacante": 483,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2556,8 +2272,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 484,
+    "Vacante": 484,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2565,8 +2280,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 485,
+    "Vacante": 485,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2574,8 +2288,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 486,
+    "Vacante": 486,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2583,8 +2296,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 487,
+    "Vacante": 487,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2592,8 +2304,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 488,
+    "Vacante": 488,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2601,8 +2312,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 489,
+    "Vacante": 489,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2610,8 +2320,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 490,
+    "Vacante": 490,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2619,8 +2328,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 491,
+    "Vacante": 491,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2628,8 +2336,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 492,
+    "Vacante": 492,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2637,8 +2344,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 493,
+    "Vacante": 493,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2646,8 +2352,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 494,
+    "Vacante": 494,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2655,8 +2360,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 495,
+    "Vacante": 495,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2664,8 +2368,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 496,
+    "Vacante": 496,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2673,8 +2376,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 497,
+    "Vacante": 497,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2682,8 +2384,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 498,
+    "Vacante": 498,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2691,8 +2392,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 499,
+    "Vacante": 499,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2700,8 +2400,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 500,
+    "Vacante": 500,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2709,8 +2408,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 501,
+    "Vacante": 501,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2718,8 +2416,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 502,
+    "Vacante": 502,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2727,8 +2424,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 503,
+    "Vacante": 503,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2736,8 +2432,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 504,
+    "Vacante": 504,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2745,8 +2440,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 505,
+    "Vacante": 505,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2754,8 +2448,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 506,
+    "Vacante": 506,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2763,8 +2456,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 507,
+    "Vacante": 507,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2772,8 +2464,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 508,
+    "Vacante": 508,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2781,8 +2472,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 509,
+    "Vacante": 509,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2790,8 +2480,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 510,
+    "Vacante": 510,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2799,8 +2488,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 511,
+    "Vacante": 511,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2808,8 +2496,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 512,
+    "Vacante": 512,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2817,8 +2504,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 513,
+    "Vacante": 513,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2826,8 +2512,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 514,
+    "Vacante": 514,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2835,8 +2520,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 515,
+    "Vacante": 515,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2844,8 +2528,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 516,
+    "Vacante": 516,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "MADRID",
@@ -2853,8 +2536,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 517,
+    "Vacante": 517,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2862,8 +2544,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 518,
+    "Vacante": 518,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2871,8 +2552,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 519,
+    "Vacante": 519,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2880,8 +2560,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 520,
+    "Vacante": 520,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2889,8 +2568,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 521,
+    "Vacante": 521,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2898,8 +2576,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 522,
+    "Vacante": 522,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2907,8 +2584,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 523,
+    "Vacante": 523,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2916,8 +2592,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 524,
+    "Vacante": 524,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -2925,8 +2600,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 525,
+    "Vacante": 525,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "MADRID",
@@ -2934,8 +2608,7 @@
     "Horario/ATF": "ATF- D.G.TRIB"
   },
   {
-
-    "Nº vacante": 526,
+    "Vacante": 526,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "MADRID",
@@ -2943,8 +2616,7 @@
     "Horario/ATF": "ATF- D.G.TRIB"
   },
   {
-
-    "Nº vacante": 527,
+    "Vacante": 527,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "MADRID",
@@ -2952,8 +2624,7 @@
     "Horario/ATF": "ATF- D.G.TRIB"
   },
   {
-
-    "Nº vacante": 528,
+    "Vacante": 528,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "SEDE REGIONAL. AREA DE JEFATURA",
     "Provincia": "MADRID",
@@ -2961,8 +2632,7 @@
     "Horario/ATF": "ATF- D.G.TRIB"
   },
   {
-
-    "Nº vacante": 529,
+    "Vacante": 529,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2970,17 +2640,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 530,
-    "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE\nGESTION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 531,
+    "Vacante": 530,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -2988,26 +2648,23 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 532,
+    "Vacante": 531,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE\nGESTION",
+    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE GESTION",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 533,
+    "Vacante": 532,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
-    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE RECAUDACION",
+    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE GESTION",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 534,
+    "Vacante": 533,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -3015,8 +2672,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 535,
+    "Vacante": 534,
+    "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
+    "Centro de destino": "ADMINISTRACION DE MADRID NORTE. AREA DE RECAUDACION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 535,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MARIA DE MOLINA. AREA DE RECAUDACION",
     "Provincia": "MADRID",
@@ -3024,8 +2688,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 536,
+    "Vacante": 536,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMINISTRACION DE MADRID ESTE. AREA DE GESTION",
     "Provincia": "MADRID",
@@ -3033,8 +2696,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 537,
+    "Vacante": 537,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMON. DIGITAL INTEGRAL MADRID-GETAFE. AREA ADI",
     "Provincia": "MADRID",
@@ -3042,8 +2704,7 @@
     "Horario/ATF": "H10"
   },
   {
-
-    "Nº vacante": 538,
+    "Vacante": 538,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMON. DIGITAL INTEGRAL MADRID-GETAFE. AREA ADI",
     "Provincia": "MADRID",
@@ -3051,8 +2712,7 @@
     "Horario/ATF": "H10"
   },
   {
-
-    "Nº vacante": 539,
+    "Vacante": 539,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMON. DIGITAL INTEGRAL MADRID-GETAFE. AREA ADI",
     "Provincia": "MADRID",
@@ -3060,8 +2720,7 @@
     "Horario/ATF": "H10"
   },
   {
-
-    "Nº vacante": 540,
+    "Vacante": 540,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "ADMON. DIGITAL INTEGRAL MADRID-GETAFE. AREA ADI",
     "Provincia": "MADRID",
@@ -3069,8 +2728,7 @@
     "Horario/ATF": "H10"
   },
   {
-
-    "Nº vacante": 541,
+    "Vacante": 541,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3078,8 +2736,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 542,
+    "Vacante": 542,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3087,8 +2744,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 543,
+    "Vacante": 543,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3096,8 +2752,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 544,
+    "Vacante": 544,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3105,8 +2760,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 545,
+    "Vacante": 545,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3114,8 +2768,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 546,
+    "Vacante": 546,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3123,8 +2776,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 547,
+    "Vacante": 547,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3132,8 +2784,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 548,
+    "Vacante": 548,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3141,8 +2792,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 549,
+    "Vacante": 549,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3150,8 +2800,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 550,
+    "Vacante": 550,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3159,8 +2808,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 551,
+    "Vacante": 551,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3168,8 +2816,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 552,
+    "Vacante": 552,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3177,8 +2824,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 553,
+    "Vacante": 553,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3186,8 +2832,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 554,
+    "Vacante": 554,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3195,8 +2840,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 555,
+    "Vacante": 555,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3204,8 +2848,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 556,
+    "Vacante": 556,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3213,8 +2856,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 557,
+    "Vacante": 557,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3222,8 +2864,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 558,
+    "Vacante": 558,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3231,8 +2872,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 559,
+    "Vacante": 559,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3240,8 +2880,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 560,
+    "Vacante": 560,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3249,8 +2888,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 561,
+    "Vacante": 561,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3258,8 +2896,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 562,
+    "Vacante": 562,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3267,8 +2904,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 563,
+    "Vacante": 563,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3276,8 +2912,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 564,
+    "Vacante": 564,
     "Centro directivo": "DELEGACION ESPECIAL DE MADRID",
     "Centro de destino": "AD.ADU.IIEE.DE MADRID. AREA DE ADUANAS",
     "Provincia": "MADRID",
@@ -3285,8 +2920,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 565,
+    "Vacante": 565,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "NAVARRA",
@@ -3294,8 +2928,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 566,
+    "Vacante": 566,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "NAVARRA",
@@ -3303,8 +2936,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 567,
+    "Vacante": 567,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "NAVARRA",
@@ -3312,8 +2944,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 568,
+    "Vacante": 568,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "NAVARRA",
@@ -3321,8 +2952,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 569,
+    "Vacante": 569,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "NAVARRA",
@@ -3330,8 +2960,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 570,
+    "Vacante": 570,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "NAVARRA",
@@ -3339,8 +2968,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 571,
+    "Vacante": 571,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE ADUANAS",
     "Provincia": "NAVARRA",
@@ -3348,8 +2976,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 572,
+    "Vacante": 572,
     "Centro directivo": "DELEGACION ESPECIAL DE NAVARRA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RELACIONES INSTITUCIONALES",
     "Provincia": "NAVARRA",
@@ -3357,8 +2984,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 573,
+    "Vacante": 573,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION ARABA/ALAVA-SEDE ARABA/ALAVA. AREA DE ADUANAS",
     "Provincia": "ARABA/ALAVA",
@@ -3366,8 +2992,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 574,
+    "Vacante": 574,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION ARABA/ALAVA-SEDE ARABA/ALAVA. AREA DE ADUANAS",
     "Provincia": "ARABA/ALAVA",
@@ -3375,8 +3000,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 575,
+    "Vacante": 575,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION ARABA/ALAVA-SEDE ARABA/ALAVA. AREA DE ADUANAS",
     "Provincia": "ARABA/ALAVA",
@@ -3384,17 +3008,15 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 576,
+    "Vacante": 576,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
-    "Centro de destino": "DELEGACION GIPUZKOA-SEDE DONOSTIA. AREA DE\nGESTION",
+    "Centro de destino": "DELEGACION GIPUZKOA-SEDE DONOSTIA. AREA DE GESTION",
     "Provincia": "GIPUZKOA",
     "Localidad": "DONOSTIA-SAN SEBASTIAN",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 577,
+    "Vacante": 577,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION GIPUZKOA-SEDE DONOSTIA. AREA DE ADUANAS",
     "Provincia": "GIPUZKOA",
@@ -3402,8 +3024,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 578,
+    "Vacante": 578,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION GIPUZKOA-SEDE DONOSTIA. AREA DE ADUANAS",
     "Provincia": "GIPUZKOA",
@@ -3411,8 +3032,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 579,
+    "Vacante": 579,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "DELEGACION GIPUZKOA-SEDE DONOSTIA. AREA DE ADUANAS",
     "Provincia": "GIPUZKOA",
@@ -3420,8 +3040,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 580,
+    "Vacante": 580,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BIZKAIA",
@@ -3429,8 +3048,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 581,
+    "Vacante": 581,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "BIZKAIA",
@@ -3438,8 +3056,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 582,
+    "Vacante": 582,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "SEDE REGIONAL. AREA DE RELACIONES INSTITUCIONALES",
     "Provincia": "BIZKAIA",
@@ -3447,8 +3064,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 583,
+    "Vacante": 583,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "AD.ADU.IIEE.DE AEROPTO.BILBAO. AREA DE ADUANAS",
     "Provincia": "BIZKAIA",
@@ -3456,8 +3072,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 584,
+    "Vacante": 584,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "AD.ADU.IIEE.DE AEROPTO.BILBAO. AREA DE ADUANAS",
     "Provincia": "BIZKAIA",
@@ -3465,8 +3080,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 585,
+    "Vacante": 585,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "AD.ADU.IIEE.DE AEROPTO.BILBAO. AREA DE ADUANAS",
     "Provincia": "BIZKAIA",
@@ -3474,8 +3088,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 586,
+    "Vacante": 586,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "AD.ADU.IIEE.DE BILBAO-MARITIMA. AREA DE ADUANAS",
     "Provincia": "BIZKAIA",
@@ -3483,8 +3096,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 587,
+    "Vacante": 587,
     "Centro directivo": "DELEGACION ESPECIAL DE PAIS VASCO",
     "Centro de destino": "AD.ADU.IIEE.DE BILBAO-MARITIMA. AREA DE ADUANAS",
     "Provincia": "BIZKAIA",
@@ -3492,8 +3104,7 @@
     "Horario/ATF": "H24"
   },
   {
-
-    "Nº vacante": 588,
+    "Vacante": 588,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "ADMINISTRACION DE HARO. AREA DE RECAUDACION",
     "Provincia": "LA RIOJA",
@@ -3501,8 +3112,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 589,
+    "Vacante": 589,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "LA RIOJA",
@@ -3510,8 +3120,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 590,
+    "Vacante": 590,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "LA RIOJA",
@@ -3519,8 +3128,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 591,
+    "Vacante": 591,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "LA RIOJA",
@@ -3528,8 +3136,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 592,
+    "Vacante": 592,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE GESTION",
     "Provincia": "LA RIOJA",
@@ -3537,8 +3144,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 593,
+    "Vacante": 593,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "LA RIOJA",
@@ -3546,8 +3152,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 594,
+    "Vacante": 594,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "LA RIOJA",
@@ -3555,8 +3160,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 595,
+    "Vacante": 595,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE INSPECCION",
     "Provincia": "LA RIOJA",
@@ -3564,8 +3168,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 596,
+    "Vacante": 596,
     "Centro directivo": "DELEGACION ESPECIAL DE LA RIOJA",
     "Centro de destino": "SEDE REGIONAL. AREA DE RECAUDACION",
     "Provincia": "LA RIOJA",
@@ -3573,8 +3176,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 597,
+    "Vacante": 597,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "JEFATURA",
     "Provincia": "MADRID",
@@ -3582,8 +3184,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 598,
+    "Vacante": 598,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "JEFATURA",
     "Provincia": "MADRID",
@@ -3591,8 +3192,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 599,
+    "Vacante": 599,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "S.G.DE INFORMACION Y ASISTENCIA TRIB.",
     "Provincia": "MADRID",
@@ -3600,8 +3200,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 600,
+    "Vacante": 600,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "S.G.DE INFORMACION Y ASISTENCIA TRIB.",
     "Provincia": "MADRID",
@@ -3609,8 +3208,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 601,
+    "Vacante": 601,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "S.G.DE ASISTENCIA JUR.Y COORD.NORMATIVA",
     "Provincia": "MADRID",
@@ -3618,8 +3216,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 602,
+    "Vacante": 602,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "S.G.DE VERIFICACION Y CONTROL TRIB.",
     "Provincia": "MADRID",
@@ -3627,8 +3224,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 603,
+    "Vacante": 603,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "S.G.DE VERIFICACION Y CONTROL TRIB.",
     "Provincia": "MADRID",
@@ -3636,8 +3232,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 604,
+    "Vacante": 604,
     "Centro directivo": "DEPARTAMENTO DE GESTION TRIBUTARIA",
     "Centro de destino": "ONGT-AREA NO RESIDENTES",
     "Provincia": "MADRID",
@@ -3645,8 +3240,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 605,
+    "Vacante": 605,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC.. EQUIPOS",
     "Provincia": "MADRID",
@@ -3654,17 +3248,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 606,
-    "Centro directivo": "DEPARTAMENTO DE INSPECCION\nFINANCIERA Y TRIBUTARIA",
-    "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC..\nEQUIPOS",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 607,
+    "Vacante": 606,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC.. EQUIPOS",
     "Provincia": "MADRID",
@@ -3672,17 +3256,23 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 608,
-    "Centro directivo": "DEPARTAMENTO DE INSPECCION\nFINANCIERA Y TRIBUTARIA",
-    "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC..\nEQUIPOS",
+    "Vacante": 607,
+    "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
+    "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC.. EQUIPOS",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 609,
+    "Vacante": 608,
+    "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
+    "Centro de destino": "OFICINA NACIONAL DE FISCALIDAD INTERNAC.. EQUIPOS",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 609,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE INVESTIGACION FRAUDE. JEFATURA",
     "Provincia": "MADRID",
@@ -3690,8 +3280,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 610,
+    "Vacante": 610,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE INVESTIGACION FRAUDE. JEFATURA",
     "Provincia": "MADRID",
@@ -3699,8 +3288,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 611,
+    "Vacante": 611,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE INVESTIGACION FRAUDE. JEFATURA",
     "Provincia": "MADRID",
@@ -3708,8 +3296,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 612,
+    "Vacante": 612,
     "Centro directivo": "DEPARTAMENTO DE INSPECCION FINANCIERA Y TRIBUTARIA",
     "Centro de destino": "OFICINA NACIONAL DE INVESTIGACION FRAUDE. JEFATURA",
     "Provincia": "MADRID",
@@ -3717,8 +3304,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 613,
+    "Vacante": 613,
     "Centro directivo": "DEPARTAMENTO DE RECAUDACION",
     "Centro de destino": "S.G.DE COORDINACION Y GESTION",
     "Provincia": "MADRID",
@@ -3726,8 +3312,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 614,
+    "Vacante": 614,
     "Centro directivo": "DEPARTAMENTO DE RECAUDACION",
     "Centro de destino": "S.G.DE COORDINACION Y GESTION",
     "Provincia": "MADRID",
@@ -3735,8 +3320,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 615,
+    "Vacante": 615,
     "Centro directivo": "DEPARTAMENTO DE RECAUDACION",
     "Centro de destino": "S.G.DE COORDINACION Y GESTION",
     "Provincia": "MADRID",
@@ -3744,8 +3328,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 616,
+    "Vacante": 616,
     "Centro directivo": "DEPARTAMENTO DE RECAUDACION",
     "Centro de destino": "S.G.DE PROCEDIMIENTOS ESPECIALES",
     "Provincia": "MADRID",
@@ -3753,8 +3336,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 617,
+    "Vacante": 617,
     "Centro directivo": "DEPARTAMENTO DE RECAUDACION",
     "Centro de destino": "S.G.DE PROCEDIMIENTOS ESPECIALES",
     "Provincia": "MADRID",
@@ -3762,8 +3344,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 618,
+    "Vacante": 618,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "OFICINA NACIONAL GESTION ADUANAS II.EE.",
     "Provincia": "MADRID",
@@ -3771,17 +3352,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 619,
-    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS\nESPECIALES",
-    "Centro de destino": "OFICINA NACIONAL GESTION ADUANAS II.EE.",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 620,
+    "Vacante": 619,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "OFICINA NACIONAL GESTION ADUANAS II.EE.",
     "Provincia": "MADRID",
@@ -3789,17 +3360,23 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 621,
-    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS\nESPECIALES",
+    "Vacante": 620,
+    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
+    "Centro de destino": "OFICINA NACIONAL GESTION ADUANAS II.EE.",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 621,
+    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE PLANIF.,ESTADISTICA Y COORDINAC.",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 622,
+    "Vacante": 622,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE GESTION E INTERVENCION DE II.EE.",
     "Provincia": "MADRID",
@@ -3807,8 +3384,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 623,
+    "Vacante": 623,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE GESTION E INTERVENCION DE II.EE.",
     "Provincia": "MADRID",
@@ -3816,8 +3392,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 624,
+    "Vacante": 624,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE GESTION E INTERVENCION DE II.EE.",
     "Provincia": "MADRID",
@@ -3825,17 +3400,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 625,
-    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS\nESPECIALES",
-    "Centro de destino": "S.G.DE INSPECCION E INVESTIGACION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 626,
+    "Vacante": 625,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE INSPECCION E INVESTIGACION",
     "Provincia": "MADRID",
@@ -3843,17 +3408,23 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 627,
-    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS\nESPECIALES",
+    "Vacante": 626,
+    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE INSPECCION E INVESTIGACION",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 628,
+    "Vacante": 627,
+    "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
+    "Centro de destino": "S.G.DE INSPECCION E INVESTIGACION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 628,
     "Centro directivo": "DEPARTAMENTO DE ADUANAS E IMPUESTOS ESPECIALES",
     "Centro de destino": "S.G.DE GESTION ADUANERA",
     "Provincia": "MADRID",
@@ -3861,8 +3432,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 629,
+    "Vacante": 629,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3870,8 +3440,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 630,
+    "Vacante": 630,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3879,8 +3448,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 631,
+    "Vacante": 631,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3888,8 +3456,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 632,
+    "Vacante": 632,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3897,17 +3464,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 633,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "BARCELONA",
-    "Localidad": "BARCELONA",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 634,
+    "Vacante": 633,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3915,8 +3472,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 635,
+    "Vacante": 634,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "BARCELONA",
@@ -3924,8 +3480,15 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 636,
+    "Vacante": 635,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "BARCELONA",
+    "Localidad": "BARCELONA",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 636,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3933,8 +3496,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 637,
+    "Vacante": 637,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3942,17 +3504,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 638,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 639,
+    "Vacante": 638,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3960,17 +3512,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 640,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 641,
+    "Vacante": 639,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3978,8 +3520,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 642,
+    "Vacante": 640,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3987,8 +3528,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 643,
+    "Vacante": 641,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -3996,17 +3536,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 644,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 645,
+    "Vacante": 642,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4014,17 +3544,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 646,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 647,
+    "Vacante": 643,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4032,8 +3552,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 648,
+    "Vacante": 644,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4041,8 +3560,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 649,
+    "Vacante": 645,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4050,8 +3568,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 650,
+    "Vacante": 646,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4059,8 +3576,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 651,
+    "Vacante": 647,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4068,17 +3584,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 652,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 653,
+    "Vacante": 648,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4086,8 +3592,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 654,
+    "Vacante": 649,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4095,8 +3600,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 655,
+    "Vacante": 650,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4104,8 +3608,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 656,
+    "Vacante": 651,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4113,17 +3616,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 657,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 658,
+    "Vacante": 652,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4131,17 +3624,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 659,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 660,
+    "Vacante": 653,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4149,8 +3632,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 661,
+    "Vacante": 654,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4158,8 +3640,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 662,
+    "Vacante": 655,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4167,17 +3648,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 663,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 664,
+    "Vacante": 656,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
@@ -4185,17 +3656,79 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 665,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN..\nEQUIPOS NACIONALES DE INSPECCION",
+    "Vacante": 657,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
     "Provincia": "MADRID",
     "Localidad": "MADRID",
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 666,
+    "Vacante": 658,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 659,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 660,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 661,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 662,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 663,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 664,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 665,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE CONTROL TRIBUT.Y ADUAN.. EQUIPOS NACIONALES DE INSPECCION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 666,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4203,8 +3736,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 667,
+    "Vacante": 667,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4212,8 +3744,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 668,
+    "Vacante": 668,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4221,8 +3752,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 669,
+    "Vacante": 669,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4230,8 +3760,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 670,
+    "Vacante": 670,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4239,17 +3768,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 671,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES\nDE GESTION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 672,
+    "Vacante": 671,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4257,8 +3776,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 673,
+    "Vacante": 672,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4266,8 +3784,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 674,
+    "Vacante": 673,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4275,8 +3792,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 675,
+    "Vacante": 674,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4284,17 +3800,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 676,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES\nDE GESTION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 677,
+    "Vacante": 675,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4302,17 +3808,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 678,
-    "Centro directivo": "DELEGACION CENTRAL DE GRANDES\nCONTRIBUYENTES",
-    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES\nDE GESTION",
-    "Provincia": "MADRID",
-    "Localidad": "MADRID",
-    "Horario/ATF": null
-  },
-  {
-
-    "Nº vacante": 679,
+    "Vacante": 676,
     "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
     "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
     "Provincia": "MADRID",
@@ -4320,8 +3816,31 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 680,
+    "Vacante": 677,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 678,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 679,
+    "Centro directivo": "DELEGACION CENTRAL DE GRANDES CONTRIBUYENTES",
+    "Centro de destino": "DEPENDENCIA DE ASISTENCIA Y SERV.TRIB.. UNIDADES DE GESTION",
+    "Provincia": "MADRID",
+    "Localidad": "MADRID",
+    "Horario/ATF": null
+  },
+  {
+    "Vacante": 680,
     "Centro directivo": "SERVICIO JURIDICO DE LA AGENCIA",
     "Centro de destino": "SERV.JURIDICO REGIONAL DE MADRID",
     "Provincia": "MADRID",
@@ -4329,8 +3848,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 681,
+    "Vacante": 681,
     "Centro directivo": "SERVICIO JURIDICO DE LA AGENCIA",
     "Centro de destino": "SERV.JURIDICO REGIONAL DE MADRID",
     "Provincia": "MADRID",
@@ -4338,8 +3856,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 682,
+    "Vacante": 682,
     "Centro directivo": "SERVICIO JURIDICO DE LA AGENCIA",
     "Centro de destino": "SERV.JURIDICO REGIONAL DE MADRID",
     "Provincia": "MADRID",
@@ -4347,8 +3864,7 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 683,
+    "Vacante": 683,
     "Centro directivo": "SERVICIO JURIDICO DE LA AGENCIA",
     "Centro de destino": "SERV.JURIDICO REGIONAL DE MADRID",
     "Provincia": "MADRID",
@@ -4356,9 +3872,8 @@
     "Horario/ATF": null
   },
   {
-
-    "Nº vacante": 684,
-    "Centro directivo": "SERVICIO DE ESTUDIOS TRIBUTARIOS Y\nESTADISTICAS",
+    "Vacante": 684,
+    "Centro directivo": "SERVICIO DE ESTUDIOS TRIBUTARIOS Y ESTADISTICAS",
     "Centro de destino": "S.G.DE PRESUP.Y SEGUIMIENTO II.TT.",
     "Provincia": "MADRID",
     "Localidad": "MADRID",

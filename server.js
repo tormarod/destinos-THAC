@@ -10,7 +10,7 @@ const { getItemsForSeason } = require("./src/lib/localItems");
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, "public");
-const ID_FIELD = process.env.ID_FIELD || "Nº vacante";
+const ID_FIELD = process.env.ID_FIELD || "Vacante";
 const ALLOCATION_RATE_LIMIT_SECONDS = process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30";
 
 const { requireEnv } = require("./src/lib/requireEnv");

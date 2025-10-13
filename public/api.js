@@ -88,7 +88,7 @@
 
       return result;
     },
-    async allocate(season, competitionDepth = 0) {
+    async allocate(season, scenario = 0, blockedItems = {}, competitionDepth = 3) {
       const userId = localStorage.getItem("allocator:userId");
       if (!userId) {
         throw new Error(
@@ -97,10 +97,11 @@
       }
 
       // Pure server-side allocation - no client-side caching or calculation
+      const payload = { season, scenario, userId, blockedItems, competitionDepth };
       const res = await fetch("/api/allocate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ season, competitionDepth, userId }),
+        body: JSON.stringify(payload),
       });
       const result = await jsonOrThrow(res, "Error en la asignación");
 
