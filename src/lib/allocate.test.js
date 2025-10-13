@@ -1,4 +1,4 @@
-const { allocate } = require("./allocate");
+const { allocate, allocateForUser } = require("./allocate");
 
 function byUser(a, id) {
   return a.find((x) => x.userId === id);
@@ -29,7 +29,7 @@ describe("allocate()", () => {
     expect(byUser(out, "u1").assignedItemIds).toEqual(["A"]);
     expect(byUser(out, "u2").assignedItemIds).toEqual(["B"]);
 
-    // available-by-preference: shows next 20 backup allocations
+    // available-by-preference: shows next 40 backup allocations
     expect(byUser(out, "u1").availableByPreference).toEqual(["B"]); // if A unavailable, would get B
     expect(byUser(out, "u2").availableByPreference).toEqual([]); // if A unavailable, would get nothing
   });
@@ -246,5 +246,108 @@ describe("allocate()", () => {
 
     expect(byUser(out, "u1").assignedItemIds).toEqual(["A"]);
     expect(byUser(out, "u2").assignedItemIds).toEqual(["B"]);
+  });
+});
+
+describe("allocateForUser() - optimized single user allocation", () => {
+  test("should produce same results as full allocation", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "User 1",
+        order: 1,
+        rankedItems: ["A", "B"],
+        submittedAt: 1000,
+      },
+      {
+        id: "u2",
+        name: "User 2",
+        order: 2,
+        rankedItems: ["A", "B"],
+        submittedAt: 1001,
+      },
+      {
+        id: "u3",
+        name: "User 3",
+        order: 3,
+        rankedItems: ["B", "C"],
+        submittedAt: 1002,
+      },
+    ];
+
+    // Test u2 allocation using optimized method
+    const subsAboveU2 = submissions.filter(s => s.order < 2);
+    const u2Submission = submissions.find(s => s.id === "u2");
+    const optimizedResult = allocateForUser(subsAboveU2, u2Submission, 0);
+
+    // Test u2 allocation using full method
+    const fullResult = allocate(submissions, 0);
+    const u2FullResult = fullResult.find(r => r.userId === "u2");
+
+    expect(optimizedResult.assignedItemIds).toEqual(u2FullResult.assignedItemIds);
+    expect(optimizedResult.availableByPreference).toEqual(u2FullResult.availableByPreference);
+    expect(optimizedResult.userId).toEqual(u2FullResult.userId);
+  });
+
+  test("should work for first user (no users above)", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "User 1",
+        order: 1,
+        rankedItems: ["A", "B"],
+        submittedAt: 1000,
+      },
+      {
+        id: "u2",
+        name: "User 2",
+        order: 2,
+        rankedItems: ["A", "B"],
+        submittedAt: 1001,
+      },
+    ];
+
+    // Test u1 allocation (first user, no users above)
+    const subsAboveU1 = []; // No users above u1
+    const u1Submission = submissions.find(s => s.id === "u1");
+    const optimizedResult = allocateForUser(subsAboveU1, u1Submission, 0);
+
+    // Test u1 allocation using full method
+    const fullResult = allocate(submissions, 0);
+    const u1FullResult = fullResult.find(r => r.userId === "u1");
+
+    expect(optimizedResult.assignedItemIds).toEqual(u1FullResult.assignedItemIds);
+    expect(optimizedResult.availableByPreference).toEqual(u1FullResult.availableByPreference);
+  });
+
+  test("should work with competition depth simulation", () => {
+    const submissions = [
+      {
+        id: "u1",
+        name: "User 1",
+        order: 1,
+        rankedItems: ["A", "B", "C"],
+        submittedAt: 1000,
+      },
+      {
+        id: "u2",
+        name: "User 2",
+        order: 2,
+        rankedItems: ["B", "C", "A"],
+        submittedAt: 1001,
+      },
+    ];
+
+    // Test u2 allocation with competition depth = 1
+    const subsAboveU2 = submissions.filter(s => s.order < 2);
+    const u2Submission = submissions.find(s => s.id === "u2");
+    const optimizedResult = allocateForUser(subsAboveU2, u2Submission, 1);
+
+    // Test u2 allocation using full method
+    const fullResult = allocate(submissions, 1);
+    const u2FullResult = fullResult.find(r => r.userId === "u2");
+
+    expect(optimizedResult.assignedItemIds).toEqual(u2FullResult.assignedItemIds);
+    expect(optimizedResult.availableByPreference).toEqual(u2FullResult.availableByPreference);
   });
 });

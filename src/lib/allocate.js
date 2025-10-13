@@ -53,9 +53,9 @@ function allocate(submissions, x = 0) {
     }
 
     // Find the next available items from this user's preference list
-    // Keep going until we find 20 available items or run out of preferences
+    // Keep going until we find 40 available items or run out of preferences
     const backupItems = [];
-    const maxBackupItems = 20;
+    const maxBackupItems = 40;
     
     // Get the user's actual assigned item to exclude it
     const actualAssigned = assigned.get(u.id);
@@ -94,4 +94,88 @@ function allocate(submissions, x = 0) {
   }));
 }
 
-module.exports = { allocate };
+// Optimized allocation for a single user given submissions from users above them
+function allocateForUser(submissionsAbove, currentUser, x = 0) {
+  // Sort submissions above current user by priority (order, then submittedAt)
+  const usersAbove = [...submissionsAbove].sort((a, b) => {
+    if (a.order !== b.order) return a.order - b.order;
+    return (a.submittedAt || 0) - (b.submittedAt || 0);
+  });
+
+  const takenByUsersAbove = new Set();
+  const assignedAbove = new Map();
+
+  // First pass: simulate allocation for users above
+  for (const u of usersAbove) {
+    const next = (u.rankedItems || []).find(
+      (id) => !takenByUsersAbove.has(String(id)),
+    );
+    if (typeof next !== "undefined") {
+      const id = String(next);
+      takenByUsersAbove.add(id);
+      assignedAbove.set(u.id, [id]);
+    } else {
+      assignedAbove.set(u.id, []);
+    }
+  }
+
+  // Second pass: calculate current user's allocation
+  const currentUserRankedItems = currentUser.rankedItems || [];
+  const userAssignedItems = [];
+  
+  // Find first available item for current user
+  const firstAvailable = currentUserRankedItems.find(
+    (id) => !takenByUsersAbove.has(String(id)),
+  );
+  if (typeof firstAvailable !== "undefined") {
+    userAssignedItems.push(String(firstAvailable));
+    takenByUsersAbove.add(String(firstAvailable));
+  }
+
+  // Third pass: calculate available by preference for current user
+  const availableByPref = [];
+  const maxBackupItems = 20;
+  const actualAssigned = userAssignedItems.length > 0 ? userAssignedItems[0] : null;
+
+  // Add first X preferences of users above for simulation (if X > 0)
+  const simulatedTaken = new Set(takenByUsersAbove);
+  if (x > 0) {
+    for (const u of usersAbove) {
+      const otherUserItems = u.rankedItems || [];
+      for (let i = 0; i < Math.min(x, otherUserItems.length); i++) {
+        simulatedTaken.add(String(otherUserItems[i]));
+      }
+    }
+  }
+
+  // Find backup items for current user
+  for (let i = 0; i < currentUserRankedItems.length && availableByPref.length < maxBackupItems; i++) {
+    const item = String(currentUserRankedItems[i]);
+    
+    // Skip if this is their actual assigned item
+    if (item === actualAssigned) {
+      continue;
+    }
+    
+    // Skip if already in backup items (avoid duplicates)
+    if (availableByPref.includes(item)) {
+      continue;
+    }
+    
+    // Check if this item is available (not taken by users above or simulation)
+    if (!simulatedTaken.has(item)) {
+      availableByPref.push(item);
+    }
+  }
+
+  return {
+    userId: currentUser.id,
+    name: currentUser.name,
+    order: currentUser.order,
+    rankedItems: currentUser.rankedItems || [],
+    assignedItemIds: userAssignedItems,
+    availableByPreference: availableByPref,
+  };
+}
+
+module.exports = { allocate, allocateForUser };

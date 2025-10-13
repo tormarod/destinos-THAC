@@ -1,5 +1,5 @@
 const express = require("express");
-const { allocate } = require("../lib/allocate");
+const { allocate, allocateForUser } = require("../lib/allocate");
 const { logIP } = require("../lib/ipLogger");
 
 module.exports = function ({ ddb }) {
@@ -50,16 +50,17 @@ module.exports = function ({ ddb }) {
         return res.status(400).json({ error: "userId is required" });
       }
 
-      const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      const fullAllocation = allocate(subs, competitionDepth);
+      // Optimized: get current user's submission and submissions above them
+      const currentUserSubmission = ddb.enabled ? await ddb.fetchUserSubmission(season, userId) : null;
 
-      // Find only the current user's allocation
-      const userAllocation = fullAllocation.find((a) => a.userId === userId);
-
-      if (!userAllocation) {
+      if (!currentUserSubmission) {
         logIP(req, "ALLOCATE_NOT_FOUND", { userId, season, competitionDepth });
-        return res.status(404).json({ error: "User not found in allocation" });
+        return res.status(404).json({ error: "User not found in submissions" });
       }
+
+      // Only fetch submissions above current user (much more efficient)
+      const subsAbove = ddb.enabled ? await ddb.fetchSubmissionsAboveUser(season, currentUserSubmission.order) : [];
+      const userAllocation = allocateForUser(subsAbove, currentUserSubmission, competitionDepth);
 
       // Log successful allocation request
       logIP(req, "ALLOCATE_SUCCESS", {

@@ -52,8 +52,14 @@ function createDdb(cfg) {
         new QueryCommand({
           TableName: tableName,
           KeyConditionExpression: "#pk = :pk",
-          ExpressionAttributeNames: { "#pk": "pk" },
+          ExpressionAttributeNames: { 
+            "#pk": "pk",
+            "#order": "order",
+            "#ranked": "rankedItems",
+            "#name": "name"
+          },
           ExpressionAttributeValues: { ":pk": makePk(season) },
+          ProjectionExpression: "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
           ExclusiveStartKey,
         }),
       );
@@ -63,8 +69,9 @@ function createDdb(cfg) {
           id: it.sk,
           name: it.name,
           order: it.order,
-          rankedItems: it.rankedItems,
+          rankedItems: it.rankedItems, // Keep ALL rankedItems (even if 300+ items)
           submittedAt: it.submittedAt,
+          updatedAt: it.updatedAt,
           season: it.season,
         }),
       );
@@ -108,6 +115,80 @@ function createDdb(cfg) {
     return out;
   }
 
+  /** Get a specific user's submission by userId */
+  async function fetchUserSubmission(season, userId) {
+    if (!enabled) return null;
+    const resp = await doc.send(
+      new QueryCommand({
+        TableName: tableName,
+        KeyConditionExpression: "#pk = :pk AND #sk = :sk",
+        ExpressionAttributeNames: { 
+          "#pk": "pk",
+          "#sk": "sk",
+          "#order": "order",
+          "#ranked": "rankedItems",
+          "#name": "name"
+        },
+        ExpressionAttributeValues: { 
+          ":pk": makePk(season),
+          ":sk": String(userId)
+        },
+        ProjectionExpression: "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
+      }),
+    );
+    const item = resp.Items && resp.Items[0];
+    return item ? {
+      id: item.sk,
+      name: item.name,
+      order: item.order,
+      rankedItems: item.rankedItems,
+      submittedAt: item.submittedAt,
+      updatedAt: item.updatedAt,
+      season: item.season,
+    } : null;
+  }
+
+  /** Get submissions above a specific user order (optimized for allocation) */
+  async function fetchSubmissionsAboveUser(season, userOrder) {
+    if (!enabled) return [];
+    const out = [];
+    let ExclusiveStartKey;
+    do {
+      const resp = await doc.send(
+        new QueryCommand({
+          TableName: tableName,
+          IndexName: "GSI1",
+          KeyConditionExpression: "#pk = :pk AND #o < :userOrder",
+          ExpressionAttributeNames: { 
+            "#pk": "pk",
+            "#o": "order",
+            "#ranked": "rankedItems",
+            "#name": "name"
+          },
+          ExpressionAttributeValues: { 
+            ":pk": makePk(season),
+            ":userOrder": Number(userOrder)
+          },
+          ProjectionExpression: "sk, #o, #ranked, #name, submittedAt, updatedAt, season",
+          ExclusiveStartKey,
+        }),
+      );
+      (resp.Items || []).forEach((it) =>
+        out.push({
+          id: it.sk,
+          name: it.name,
+          order: it.order,
+          rankedItems: it.rankedItems,
+          submittedAt: it.submittedAt,
+          updatedAt: it.updatedAt,
+          season: it.season,
+        }),
+      );
+      ExclusiveStartKey = resp.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+    return out;
+  }
+
   /** FAST order-exists check via GSI1 (optional helper) */
   async function orderExists(season, orderValue) {
     if (!enabled) return false;
@@ -135,6 +216,7 @@ function createDdb(cfg) {
     order,
     rankedItems,
     submittedAt,
+    updatedAt,
   }) {
     if (!enabled) return;
     await doc.send(
@@ -148,6 +230,7 @@ function createDdb(cfg) {
           order: Number(order),
           rankedItems,
           submittedAt,
+          updatedAt: updatedAt || Date.now(),
         },
       }),
     );
@@ -214,6 +297,8 @@ function createDdb(cfg) {
     tableName,
     fetchAllSubmissions,
     fetchAllOrders,
+    fetchUserSubmission, // get single user submission
+    fetchSubmissionsAboveUser, // optimized for user-specific allocation
     upsertSubmission,
     deleteSubmission,
     orderExists, // optional faster check

@@ -62,6 +62,7 @@ module.exports = function ({ ddb }) {
         order: parsedOrder,
         rankedItems: Array.from(new Set((rankedItems || []).map(String))),
         submittedAt,
+        updatedAt: now, // Always set updatedAt to current timestamp
       });
 
       // Log successful submission with IP

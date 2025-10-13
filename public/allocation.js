@@ -65,7 +65,7 @@ function renderAllocation(payload) {
       <th>Tu posición</th>
       <th>Nombre</th>
       <th>Destino asignado</th>
-      <th>Siguientes 20 destinos disponibles (según tu preferencia) que nadie por encima de tí ha obtenido como destino</th>
+      <th>Siguientes 40 destinos disponibles (según tu preferencia) que nadie por encima de tí ha obtenido como destino</th>
     </tr>
   </thead>
   <tbody>${rows}</tbody>
