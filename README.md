@@ -30,6 +30,37 @@ This application is designed for managing destination assignments where:
 - **Duplicate Prevention**: Multi-layer client-side protection against duplicate submissions
 - **Real-time Feedback**: Visual countdown timers and loading states
 
+## 🧩 Modular Architecture
+
+The application has been refactored into a modular architecture for better maintainability and separation of concerns:
+
+### Backend Modules
+
+- **`src/lib/allocate.js`**: Core allocation algorithm with scenario support
+- **`src/lib/fakeUsers.js`**: Fake user generation for simulation scenarios
+- **`src/lib/itemUtils.js`**: Item utility functions for popularity analysis and blocking
+- **`src/middleware/rateLimit.js`**: Rate limiting middleware for API protection
+- **`src/services/itemsLoader.js`**: Items loading and caching service
+- **`src/routes/`**: Lean API route handlers with dependency injection
+
+### Frontend Modules
+
+- **`public/state.js`**: Application state management and version control
+- **`public/ui.js`**: UI rendering functions for tables, pagination, and drag & drop
+- **`public/events.js`**: Event handlers and drag & drop functionality
+- **`public/scenarios.js`**: Scenario management and location selection
+- **`public/submission.js`**: Submission logic and cooldown management
+- **`public/utils.js`**: Utility functions for data validation and API calls
+- **`public/app.js`**: Main application initialization and coordination
+
+### Benefits
+
+- **Maintainability**: Each module has a single responsibility
+- **Testability**: Individual modules can be tested in isolation
+- **Scalability**: New features can be added without affecting existing modules
+- **Code Reuse**: Common functionality is centralized in utility modules
+- **Performance**: Smaller, focused modules load faster and are easier to optimize
+
 ## 📁 Project Structure
 
 ```
@@ -42,10 +73,16 @@ destinos-THAC/
 ├── test_user_allocation.js   # User allocation testing script
 ├── public/                   # Frontend static files
 │   ├── index.html           # Main application page
-│   ├── app.js               # Frontend application logic
+│   ├── app.js               # Main application initialization
 │   ├── api.js               # API client functions
 │   ├── allocation.js        # Allocation algorithm frontend
 │   ├── splash.js            # Splash screen functionality
+│   ├── state.js             # Application state management
+│   ├── ui.js                # UI rendering functions
+│   ├── events.js            # Event handlers and drag & drop
+│   ├── scenarios.js         # Scenario management
+│   ├── submission.js        # Submission and cooldown logic
+│   ├── utils.js             # Utility functions
 │   ├── styles.css           # Application styles
 │   ├── explosive-explosion.webp # Splash screen image
 │   └── assets/              # Images and videos
@@ -53,13 +90,19 @@ destinos-THAC/
 │       └── video/           # Video assets
 ├── src/
 │   ├── lib/                 # Core library functions
-│   │   ├── allocate.js      # Allocation algorithm
+│   │   ├── allocate.js      # Core allocation algorithm
 │   │   ├── allocate.test.js # Allocation algorithm tests
+│   │   ├── fakeUsers.js     # Fake user generation
+│   │   ├── itemUtils.js     # Item utility functions
 │   │   ├── ddb.js           # DynamoDB operations
 │   │   ├── demandDrivenCache.js # Demand-driven caching system
 │   │   ├── ipLogger.js      # IP logging and monitoring
 │   │   ├── localItems.js    # Local catalog management
 │   │   └── requireEnv.js    # Environment validation
+│   ├── middleware/          # Express middleware
+│   │   └── rateLimit.js     # Rate limiting middleware
+│   ├── services/            # Service layer
+│   │   └── itemsLoader.js   # Items loading service
 │   └── routes/              # API route handlers
 │       ├── state.js         # Application state endpoint
 │       ├── submit.js        # User submission endpoint
