@@ -285,11 +285,11 @@ function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userComp
         includeFakeUsers: false
       };
     
-    case 1: // Usuarios faltantes se presentan
+    case 1: // Usuarios restantes se presentan
       // Simulate actual missing users submitting their preferences
       return { 
         competitionDepth: 0, 
-        description: "Si usuarios faltantes se presentan",
+        description: "Si usuarios restantes contestasen",
         includeFakeUsers: true
       };
     

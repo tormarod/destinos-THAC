@@ -39,7 +39,7 @@ function renderAllocation(payload) {
   // Scenario descriptions
   const scenarioDescriptions = {
     0: "Estado actual de la asignación",
-    1: "Simulación: usuarios faltantes se presentan",
+    1: "Simulación: usuarios restantes se presentan",
     2: "Simulación: destinos específicos se ocupan", 
     3: "Simulación: peor caso posible"
   };

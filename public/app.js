@@ -824,7 +824,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Scenario descriptions
   const scenarioDescriptions = {
     "0": "Estado actual de la asignación",
-    "1": "Si usuarios faltantes se presentan",
+    "1": "Si usuarios restantes se presentan",
     "2": "Si destinos específicos se ocupan", 
     "3": "Peor caso posible"
   };
