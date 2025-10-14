@@ -94,7 +94,7 @@ AWS_REGION=your-aws-region
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
 DDB_TABLE=your-dynamodb-table-name
-ID_FIELD=Nº vacante
+ID_FIELD=Vacante
 ITEMS_CACHE_TTL_MS=900000
 PORT=3000
 ```
@@ -119,11 +119,12 @@ npm start
 ```json
 [
   {
-    "Vacante": "684",
-    "Centro de destino": "Hospital General",
-    "Localidad": "Madrid",
-    "Provincia": "Madrid",
-    "Horario/ATF": "H24"
+    "Vacante": 200,
+    "Centro directivo": "DELEGACION ESPECIAL DE ANDALUCIA, CEUTA Y MELILLA",
+    "Centro de destino": "DELEGACION CEUTA-SEDE CEUTA. AREA DE GESTION",
+    "Provincia": "CEUTA",
+    "Localidad": "CEUTA",
+    "Horario/ATF": null
   }
 ]
 ```
@@ -143,6 +144,8 @@ npm start
 }
 ```
 
+**Note**: The `pk` and `sk` fields are internal DynamoDB keys. The API returns submissions with `id` instead of `sk`.
+
 ## 🔧 API Endpoints
 
 ### GET `/api/state?season=2024`
@@ -155,7 +158,7 @@ Retrieves the current application state including available destinations and use
 {
   "items": [...],
   "submissions": [...],
-  "idField": "Nº vacante",
+  "idField": "Vacante",
   "season": "2024",
   "notFound": false
 }
@@ -173,7 +176,17 @@ Submits or updates a user's destination preferences.
   "order": 14,
   "rankedItems": ["684", "683", "682"],
   "id": "u_73t4dx4ron8",
-  "season": "2024"
+  "season": "2024",
+  "requestId": "req_1703123456789_abc123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "ok": true,
+  "id": "u_73t4dx4ron8"
 }
 ```
 
@@ -218,7 +231,8 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
     }
   ],
   "season": "2024",
-  "scenario": 0
+  "scenario": 0,
+  "usersAboveCount": 13
 }
 ```
 
@@ -233,6 +247,21 @@ Deletes all submissions for a user across all seasons.
 ### GET `/api/orders?season=2024`
 
 Retrieves all user orders for a season.
+
+**Response:**
+
+```json
+{
+  "orders": [
+    {
+      "id": "u_73t4dx4ron8",
+      "order": 14,
+      "name": "Fernando Alonso",
+      "season": "2024"
+    }
+  ]
+}
+```
 
 ### GET `/api/config`
 
@@ -353,11 +382,10 @@ The project includes Jest tests for the allocation algorithm and core functional
 - `AWS_ACCESS_KEY_ID`: AWS access key
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
 - `DDB_TABLE`: DynamoDB table name
-- `ID_FIELD`: Field name for destination ID (default: "Nº vacante")
+- `ID_FIELD`: Field name for destination ID (default: "Vacante")
 - `ALLOCATION_RATE_LIMIT_SECONDS`: Rate limit for allocation requests in seconds (default: 30)
 - `ITEMS_CACHE_TTL_MS`: Cache TTL for local items (default: 15 minutes)
 - `PORT`: Server port (default: 3000)
-- `ID_FIELD`: Field name for destination ID (default: "Nº vacante")
 
 ## 🤝 Contributing
 
