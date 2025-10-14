@@ -11,7 +11,7 @@ module.exports = function ({ ddb }) {
 
   // Cache for real submissions above user queries (fake users generated fresh each time)
   const submissionsAboveCache = new Map(); // season+userOrder -> { realSubmissions, timestamp }
-  const ALLOCATION_CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes cache TTL
+  const ALLOCATION_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache TTL
 
   // Invalidate allocation cache for a season (call after new submissions)
   function invalidateAllocationCache(season) {
