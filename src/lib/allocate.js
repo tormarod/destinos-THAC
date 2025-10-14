@@ -8,9 +8,9 @@ function generateFakeSubmissions(realSubmissions, targetUserOrder) {
   const minOrder = Math.min(...realOrders);
   const maxOrder = Math.max(...realOrders);
   
-  // Find missing orders up to the target user (gaps in submission sequence)
+  // Find missing orders up to (but not including) the target user (gaps in submission sequence)
   const missingOrders = [];
-  for (let i = minOrder; i <= Math.min(targetUserOrder, maxOrder); i++) {
+  for (let i = minOrder; i < targetUserOrder; i++) {
     if (!realOrders.includes(i)) {
       missingOrders.push(i);
     }
