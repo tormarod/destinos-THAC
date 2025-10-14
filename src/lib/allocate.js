@@ -1,331 +1,13 @@
 // src/lib/allocate.js
-// Core allocation algorithm and fake user generation for simulation scenarios
+// Core allocation algorithm for destination assignment
 
-// Generate realistic fake submissions for missing users in scenario 1
-// This creates synthetic users to fill gaps in the submission order for realistic simulation
-function generateFakeSubmissions(realSubmissions, targetUserOrder) {
-  const realOrders = realSubmissions.map((s) => s.order).sort((a, b) => a - b);
-  const minOrder = Math.min(...realOrders);
-  const maxOrder = Math.max(...realOrders);
+const { generateFakeSubmissions } = require("./fakeUsers");
+const { getBlockedItemIds } = require("./itemUtils");
 
-  // Calculate exactly how many fake users we need
-  const totalUsersNeeded = targetUserOrder - 1; // User order 422 needs 421 users above
-  const fakeUsersNeeded = totalUsersNeeded - realSubmissions.length;
-
-  if (fakeUsersNeeded <= 0) {
-    return realSubmissions;
-  }
-
-  // Create a Set for O(1) lookup of existing orders
-  const existingOrders = new Set(realOrders);
-  const missingOrders = [];
-
-  // Find gaps in the sequence and generate fake users for them
-  for (
-    let i = 1;
-    i < targetUserOrder && missingOrders.length < fakeUsersNeeded;
-    i++
-  ) {
-    if (!existingOrders.has(i)) {
-      missingOrders.push(i);
-    }
-  }
-
-  // Keep this useful log showing the missing orders
-  console.log(
-    `[FAKE-DEBUG] Real submissions above user: ${realSubmissions.length}`,
-  );
-  console.log(`[FAKE-DEBUG] Missing orders: ${missingOrders.join(", ")}`);
-
-  if (missingOrders.length === 0) {
-    return realSubmissions; // No gaps to fill
-  }
-
-  // Analyze preference patterns by order ranges to generate realistic fake preferences
-  // This ensures fake users have believable preference patterns based on real data
-  const preferencePatterns = analyzePreferencePatterns(realSubmissions);
-
-  // Generate fake submissions for missing orders
-  const fakeSubmissions = missingOrders.map((missingOrder) => {
-    const pattern = getPreferencePatternForOrder(
-      missingOrder,
-      preferencePatterns,
-    );
-    return {
-      id: `fake_${missingOrder}`,
-      userId: `fake_user_${missingOrder}`,
-      name: `Usuario ${missingOrder}`,
-      order: missingOrder,
-      rankedItems: pattern,
-      submittedAt: Date.now() - missingOrder * 1000, // Stagger submission times for realism
-      isFake: true, // Mark as fake for filtering in position calculations
-    };
-  });
-
-  // Combine real and fake submissions, sort by order
-  const allSubmissions = [...realSubmissions, ...fakeSubmissions].sort(
-    (a, b) => a.order - b.order,
-  );
-
-  return allSubmissions;
-}
-
-// Analyze preference patterns by order ranges to generate realistic fake user preferences
-// This helps create believable fake users that match the behavior patterns of real users
-function analyzePreferencePatterns(submissions) {
-  const patterns = {};
-
-  // Define order ranges to capture different user behavior patterns
-  const ranges = [
-    { name: "top50", min: 1, max: 50 }, // Early submitters (high priority)
-    { name: "orders51_100", min: 51, max: 100 }, // Mid-range submitters
-    { name: "orders101_200", min: 101, max: 200 }, // Mid-late submitters
-    { name: "orders201_300", min: 201, max: 300 }, // Late submitters
-    { name: "orders301_plus", min: 301, max: 999 }, // Very late submitters
-  ];
-
-  ranges.forEach((range) => {
-    const usersInRange = submissions.filter(
-      (s) => s.order >= range.min && s.order <= range.max,
-    );
-    if (usersInRange.length === 0) return;
-
-    // Collect all preferences in this range with weighted importance
-    const allPreferences = [];
-    usersInRange.forEach((user) => {
-      const rankedItems = user.rankedItems || [];
-      rankedItems.forEach((item, index) => {
-        allPreferences.push({
-          item: String(item),
-          position: index,
-          weight: Math.max(0, 10 - index), // Higher weight for earlier positions (more important preferences)
-        });
-      });
-    });
-
-    // Calculate weighted preference frequencies (items with higher positions get more weight)
-    const prefWeights = {};
-    allPreferences.forEach((pref) => {
-      if (!prefWeights[pref.item]) {
-        prefWeights[pref.item] = 0;
-      }
-      prefWeights[pref.item] += pref.weight;
-    });
-
-    // Get top preferences for this range (most popular items in this order range)
-    const topPrefs = Object.entries(prefWeights)
-      .sort((a, b) => b[1] - a[1]) // Sort by weight (most popular first)
-      .slice(0, 100) // Take top 100 preferences
-      .map(([item, weight]) => item);
-
-    patterns[range.name] = topPrefs;
-  });
-
-  return patterns;
-}
-
-// Get preference pattern for a specific order based on analyzed patterns
-// This creates realistic fake user preferences that match the behavior of real users in similar order ranges
-function getPreferencePatternForOrder(order, patterns) {
-  let rangeName;
-
-  // Determine which order range this fake user belongs to
-  if (order <= 50) {
-    rangeName = "top50";
-  } else if (order <= 100) {
-    rangeName = "orders51_100";
-  } else if (order <= 200) {
-    rangeName = "orders101_200";
-  } else if (order <= 300) {
-    rangeName = "orders201_300";
-  } else {
-    rangeName = "orders301_plus";
-  }
-
-  const basePattern = patterns[rangeName] || [];
-
-  // Generate a realistic preference list with high variance (like real users)
-  const preferenceList = [];
-  const usedItems = new Set();
-
-  // Create a shuffled copy of the base pattern for randomness
-  const shuffledPattern = [...basePattern].sort(() => Math.random() - 0.5);
-
-  // Add 70-85% of items from the base pattern (higher overlap for realism)
-  // This ensures fake users have similar but not identical preferences to real users
-  const basePercentage = 0.7 + Math.random() * 0.15; // 70-85%
-  const baseItems = shuffledPattern.slice(
-    0,
-    Math.floor(basePattern.length * basePercentage),
-  );
-
-  // Add base items with some randomness in order (realistic preference ordering)
-  const shuffledBaseItems = [...baseItems].sort(() => Math.random() - 0.5);
-  shuffledBaseItems.forEach((item) => {
-    if (!usedItems.has(item)) {
-      preferenceList.push(item);
-      usedItems.add(item);
-    }
-  });
-
-  // Add variation items with controlled randomness (realistic preference variations)
-  const variationItems = [];
-  baseItems.forEach((item) => {
-    const itemNum = parseInt(item);
-    // Add items within ±2 to ±4 range (smaller, more realistic range)
-    // This simulates users having preferences for similar items
-    const range = 2 + Math.floor(Math.random() * 3); // 2-4 range
-    for (let i = Math.max(1, itemNum - range); i <= itemNum + range; i++) {
-      const variationItem = String(i);
-      if (!usedItems.has(variationItem) && Math.random() < 0.25) {
-        // 25% chance (reduced for realism)
-        variationItems.push(variationItem);
-        usedItems.add(variationItem);
-      }
-    }
-  });
-
-  // Shuffle variation items and add them to the preference list
-  const shuffledVariationItems = variationItems.sort(() => Math.random() - 0.5);
-  preferenceList.push(...shuffledVariationItems);
-
-  // Add random items to fill up to the required order number (realistic preference list length)
-  const randomItems = [];
-  const targetCount = Math.max(order, 15); // Ensure we have at least 15 items, or the full order
-
-  // Keep adding random items until we have enough (simulates users having many preferences)
-  while (preferenceList.length < targetCount) {
-    const randomItem = String(Math.floor(Math.random() * 700) + 1);
-    if (!usedItems.has(randomItem)) {
-      randomItems.push(randomItem);
-      usedItems.add(randomItem);
-      preferenceList.push(randomItem);
-    }
-
-    // Safety check to prevent infinite loop (prevent too many random items)
-    if (usedItems.size > 600) {
-      break;
-    }
-  }
-
-  // If we still don't have enough, add sequential items (fallback to ensure minimum preferences)
-  let nextItemNum = 1;
-  while (preferenceList.length < targetCount && nextItemNum <= 700) {
-    const nextItem = String(nextItemNum);
-    if (!usedItems.has(nextItem)) {
-      preferenceList.push(nextItem);
-      usedItems.add(nextItem);
-    }
-    nextItemNum++;
-  }
-
-  // Final shuffle to randomize the order (realistic preference ordering)
-  const finalList = preferenceList.sort(() => Math.random() - 0.5);
-
-  // Limit to user's order number (more realistic - higher order users get more items)
-  return finalList.slice(0, order);
-}
-
-// Get the most desired items (items with most first preferences)
-function getMostDesiredItems(submissions, maxItems = 10) {
-  const firstPreferenceCounts = {};
-
-  submissions.forEach((user) => {
-    const rankedItems = user.rankedItems || [];
-    if (rankedItems.length > 0) {
-      const firstPref = String(rankedItems[0]);
-      firstPreferenceCounts[firstPref] =
-        (firstPreferenceCounts[firstPref] || 0) + 1;
-    }
-  });
-
-  // Sort by first preference count and return top items
-  return Object.entries(firstPreferenceCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, maxItems)
-    .map(([item, count]) => item);
-}
-
-// Get items from most popular centros (using actual centro data)
-async function getItemsFromPopularCentrosSync(submissions, maxCentros = 3) {
-  // We need to get the items data to access centro information
-  // For now, return empty array - this will be implemented properly
-  // when we have access to the items data in the allocation context
-  return [];
-}
-
-// Get items from most popular centros (proper implementation with items data)
-function getItemsFromPopularCentrosWithItems(
-  submissions,
-  items,
-  maxCentros = 3,
-) {
-  // Group items by centro de destino
-  const itemsByCentro = {};
-  items.forEach((item) => {
-    const centro = item["Centro de destino"] || "Sin centro";
-    const itemId = item["Vacante"];
-    if (itemId && typeof itemId === "number") {
-      if (!itemsByCentro[centro]) {
-        itemsByCentro[centro] = [];
-      }
-      itemsByCentro[centro].push(String(itemId));
-    }
-  });
-
-  // Analyze first preferences by centro
-  const centroFirstPreferences = {};
-  submissions.forEach((user) => {
-    const rankedItems = user.rankedItems || [];
-    if (rankedItems.length > 0) {
-      const firstPref = String(rankedItems[0]);
-      const item = items.find((i) => i["Vacante"] == firstPref);
-      if (item && item["Centro de destino"]) {
-        const centro = item["Centro de destino"];
-        centroFirstPreferences[centro] =
-          (centroFirstPreferences[centro] || 0) + 1;
-      }
-    }
-  });
-
-  // Get top centros by first preferences
-  const topCentros = Object.entries(centroFirstPreferences)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, maxCentros);
-
-  // Return all items from top centros
-  const result = [];
-  topCentros.forEach(([centro, count]) => {
-    const centroItems = itemsByCentro[centro] || [];
-    result.push(...centroItems);
-  });
-
-  return result;
-}
-
-// Get blocked item IDs based on selected localidades and centros
-function getBlockedItemIds(items, blockedItems) {
-  const { selectedLocalidades = [], selectedCentros = [] } = blockedItems;
-
-  if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
-    return [];
-  }
-
-  return items
-    .filter((item) => {
-      const localidadMatch =
-        selectedLocalidades.length === 0 ||
-        selectedLocalidades.includes(item.Localidad);
-      const centroMatch =
-        selectedCentros.length === 0 ||
-        selectedCentros.includes(item["Centro de destino"]);
-      return localidadMatch && centroMatch;
-    })
-    .map((item) => String(item.Vacante));
-}
-
-// Convert scenario to simulation parameters
-// This function defines the behavior for each allocation scenario (0-3)
+/**
+ * Convert scenario to simulation parameters
+ * This function defines the behavior for each allocation scenario (0-3)
+ */
 function getScenarioParams(
   scenario,
   submissionsAbove,
@@ -374,9 +56,11 @@ function getScenarioParams(
   }
 }
 
-// Round-robin allocation with exactly 1 item per user.
-// Returns per-user: assignedItemIds and availableByPreference (backup allocations).
-// scenario: simulation scenario (0-3) that determines competition depth
+/**
+ * Round-robin allocation with exactly 1 item per user.
+ * Returns per-user: assignedItemIds and availableByPreference (backup allocations).
+ * scenario: simulation scenario (0-3) that determines competition depth
+ */
 function allocate(
   submissions,
   scenario = 0,
@@ -495,7 +179,9 @@ function allocate(
   }));
 }
 
-// Optimized allocation for a single user given submissions from users above them
+/**
+ * Optimized allocation for a single user given submissions from users above them
+ */
 function allocateForUser(
   submissionsAbove,
   currentUser,
@@ -628,9 +314,5 @@ function allocateForUser(
 module.exports = {
   allocate,
   allocateForUser,
-  generateFakeSubmissions,
-  getMostDesiredItems,
-  getItemsFromPopularCentrosSync,
-  getItemsFromPopularCentrosWithItems,
-  getBlockedItemIds,
+  getScenarioParams,
 };
