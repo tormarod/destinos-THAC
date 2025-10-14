@@ -49,6 +49,26 @@ app.use((req, res, next) => {
 // serve static files from public directory
 app.use(express.static(PUBLIC_DIR));
 
+// Serve index.html with cache-busting version parameters
+app.get("/", (req, res) => {
+  const version = process.env.APP_VERSION || Date.now();
+  const fs = require('fs');
+  const path = require('path');
+  
+  try {
+    let html = fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8');
+    
+    // Add version parameters to all static assets
+    html = html.replace(/href="\/styles\.css"/g, `href="/styles.css?v=${version}"`);
+    html = html.replace(/src="\/(splash|api|allocation|app)\.js"/g, `src="/$1.js?v=${version}"`);
+    
+    res.send(html);
+  } catch (error) {
+    console.error('Error serving index.html:', error);
+    res.status(500).send('Error loading page');
+  }
+});
+
 // API request logger for debugging and monitoring
 app.use("/api", (req, _res, next) => {
   console.log(`[api] ${req.method} ${req.path} body=`, req.body);

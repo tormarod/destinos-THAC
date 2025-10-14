@@ -22,6 +22,21 @@ const state = {
   competitionDepth: 1,                   // Competition depth for scenario 3
 };
 
+// Version check to force refresh after deployment
+const CURRENT_VERSION = '1.0.0'; // Update this on each deployment
+const STORAGE_KEY = 'allocator:version';
+
+function checkVersionAndRefresh() {
+  const storedVersion = localStorage.getItem(STORAGE_KEY);
+  if (storedVersion && storedVersion !== CURRENT_VERSION) {
+    console.log(`Version changed from ${storedVersion} to ${CURRENT_VERSION}. Refreshing...`);
+    localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+    window.location.reload();
+    return;
+  }
+  localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+}
+
 // Make state accessible globally for other scripts
 window.state = state;
 
@@ -882,6 +897,9 @@ async function resetAll() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Check version and force refresh if needed
+  checkVersionAndRefresh();
+  
   populateSeasonSelect();
 
   // Initialize submit button state and start cooldown timer
