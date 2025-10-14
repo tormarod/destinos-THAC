@@ -178,8 +178,9 @@ class DemandDrivenCacheManager {
       cached.data = null; // Clear the data
       cached.lastRefresh = 0; // Reset refresh timestamp
       cached.nextRefresh = Date.now() + this.CACHE_TTL_MS; // Not used in demand-driven mode
+      cached.isActive = false; // Reset active status to force fresh refresh
 
-      console.log(`[DEMAND-CACHE] Season ${seasonStr} cache invalidated`);
+      console.log(`[DEMAND-CACHE] Season ${seasonStr} cache invalidated and marked inactive`);
     }
   }
 
