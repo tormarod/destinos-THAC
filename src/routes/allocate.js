@@ -222,6 +222,7 @@ module.exports = function ({ ddb }) {
 
       logIP(req, "ALLOCATE_SUCCESS", {
         userId,
+        userName: currentUserSubmission.name,
         season,
         scenario,
         userOrder: currentUserSubmission.order,
