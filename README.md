@@ -33,6 +33,9 @@ destinos-THAC/
 ├── server.js                 # Main server entry point
 ├── package.json              # Dependencies and scripts
 ├── data.json                 # Sample data for development
+├── 2025.json                 # Destination catalog for 2025 season
+├── test_user.js              # User testing script
+├── test_user_allocation.js   # User allocation testing script
 ├── public/                   # Frontend static files
 │   ├── index.html           # Main application page
 │   ├── app.js               # Frontend application logic
@@ -40,7 +43,10 @@ destinos-THAC/
 │   ├── allocation.js        # Allocation algorithm frontend
 │   ├── splash.js            # Splash screen functionality
 │   ├── styles.css           # Application styles
+│   ├── explosive-explosion.webp # Splash screen image
 │   └── assets/              # Images and videos
+│       ├── img/             # Static images
+│       └── video/           # Video assets
 ├── src/
 │   ├── lib/                 # Core library functions
 │   │   ├── allocate.js      # Allocation algorithm
@@ -113,7 +119,7 @@ npm start
 ```json
 [
   {
-    "Nº vacante": "684",
+    "Vacante": "684",
     "Centro de destino": "Hospital General",
     "Localidad": "Madrid",
     "Provincia": "Madrid",
@@ -132,7 +138,8 @@ npm start
   "name": "Fernando Alonso",
   "order": 14,
   "rankedItems": ["684", "683", "682"],
-  "submittedAt": 1759837255515
+  "submittedAt": 1759837255515,
+  "updatedAt": 1759837255545
 }
 ```
 
@@ -172,15 +179,29 @@ Submits or updates a user's destination preferences.
 
 ### POST `/api/allocate`
 
-Runs the allocation algorithm for the specified season.
+Runs the allocation algorithm for the specified season. This endpoint now supports user-specific allocation with scenario simulation.
 
 **Request Body:**
 
 ```json
 {
-  "season": "2024"
+  "season": "2024",
+  "userId": "u_73t4dx4ron8",
+  "scenario": 0,
+  "blockedItems": {
+    "selectedLocalidades": ["Madrid", "Barcelona"],
+    "selectedCentros": ["Hospital General"]
+  },
+  "competitionDepth": 3
 }
 ```
+
+**Parameters:**
+- `season`: The allocation season/year
+- `userId`: User ID for user-specific allocation (required)
+- `scenario`: Simulation scenario (0-3, optional, default: 0)
+- `blockedItems`: Items to mark as unavailable for scenario 2 (optional)
+- `competitionDepth`: Number of preferences to simulate as blocked for scenario 3 (optional, default: 3)
 
 **Response:**
 
@@ -192,11 +213,12 @@ Runs the allocation algorithm for the specified season.
       "name": "Fernando Alonso",
       "order": 14,
       "rankedItems": ["684", "683", "682"],
-      "assignedItemIds": ["684", "683"],
-      "availableByPreference": ["684", "683", "682"]
+      "assignedItemIds": ["684"],
+      "availableByPreference": ["683", "682", "685", "686"]
     }
   ],
-  "season": "2024"
+  "season": "2024",
+  "scenario": 0
 }
 ```
 
@@ -212,6 +234,18 @@ Deletes all submissions for a user across all seasons.
 
 Retrieves all user orders for a season.
 
+### GET `/api/config`
+
+Retrieves application configuration including rate limits.
+
+**Response:**
+
+```json
+{
+  "allocationRateLimitSeconds": 30
+}
+```
+
 ## 🎲 Allocation Algorithm
 
 The allocation system uses a fair, single-item allocation algorithm with the following rules:
@@ -221,6 +255,15 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 3. **Single Item**: Each user receives exactly 1 destination (if available)
 4. **Preference Matching**: Each user gets their highest-ranked available destination
 5. **Backup Allocations**: Users can see their next 20 backup allocations in different scenarios, with configurable simulation of unavailable preferences from higher priority users
+
+### Allocation Scenarios
+
+The system supports 4 different simulation scenarios:
+
+- **Scenario 0 (Default)**: Current state allocation - shows what would happen with existing submissions
+- **Scenario 1**: Missing users simulation - generates realistic fake submissions for users who haven't submitted yet
+- **Scenario 2**: Specific items unavailable - simulates scenarios where certain destinations (by location or center) are blocked
+- **Scenario 3**: Competition depth simulation - simulates worst-case scenarios where higher priority users get their top N preferences (configurable)
 
 ### Algorithm Steps:
 
@@ -237,12 +280,13 @@ The allocation system uses a fair, single-item allocation algorithm with the fol
 - **Backup Visibility**: Users can see their next 20 backup allocations in different scenarios
 - **Configurable Simulation**: The `availableByPreference` calculation can simulate scenarios where the first X preferences of all users above are unavailable, providing more realistic backup options
 
-### AvailableByPreference Parameter:
+### Advanced Features:
 
-The `allocate(submissions, x)` function accepts an optional second parameter `x`:
-
-- **x = 0 (default)**: Standard backup calculation - only the user's own preferences are marked unavailable in scenarios
-- **x > 0**: The first X preferences of all users above the current user are marked as unavailable in the simulation, providing more realistic backup scenarios that account for potential competition from higher priority users
+- **Fake User Generation**: For scenario 1, the system analyzes real user preference patterns by order ranges and generates realistic fake submissions for missing users
+- **Blocked Items Simulation**: For scenario 2, users can select specific locations or centers to mark as unavailable
+- **Competition Depth**: For scenario 3, users can configure how many preferences of higher priority users should be simulated as unavailable (1-20)
+- **Rate Limiting**: Allocation requests are rate-limited per user to prevent abuse (configurable via environment variable)
+- **User-Specific Allocation**: The system now supports efficient user-specific allocation without processing all submissions
 
 ## 🎨 Frontend Features
 
@@ -253,6 +297,10 @@ The `allocate(submissions, x)` function accepts an optional second parameter `x`
 - **Drag & Drop Ranking**: Reorder selected destinations by dragging
 - **Real-time Validation**: Check for order conflicts and quota limits
 - **Submission Management**: View and update your submissions
+- **Scenario Selection**: Choose from 4 different allocation simulation scenarios
+- **Blocked Items Selection**: For scenario 2, select specific locations or centers to simulate as unavailable
+- **Competition Depth Control**: For scenario 3, configure how many preferences of higher priority users to simulate as blocked
+- **Rate Limit Display**: Shows countdown timer when allocation requests are rate-limited
 
 ### Key Components
 
@@ -260,6 +308,9 @@ The `allocate(submissions, x)` function accepts an optional second parameter `x`
 - **Search & Filter**: Real-time filtering of destinations
 - **Pagination**: Efficient browsing of large destination lists
 - **Responsive Design**: Works on desktop and mobile devices
+- **Scenario UI**: Dynamic interface that shows/hides relevant controls based on selected scenario
+- **Blocked Items Preview**: Shows preview of destinations that would be affected by blocked items selection
+- **Allocation Animation**: Visual feedback during allocation process with rate limit handling
 
 ## 🧪 Testing
 
@@ -306,6 +357,7 @@ The project includes Jest tests for the allocation algorithm and core functional
 - `ALLOCATION_RATE_LIMIT_SECONDS`: Rate limit for allocation requests in seconds (default: 30)
 - `ITEMS_CACHE_TTL_MS`: Cache TTL for local items (default: 15 minutes)
 - `PORT`: Server port (default: 3000)
+- `ID_FIELD`: Field name for destination ID (default: "Nº vacante")
 
 ## 🤝 Contributing
 
