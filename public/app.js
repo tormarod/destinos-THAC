@@ -1,34 +1,41 @@
 // public/app.js
+// Frontend application logic for the allocation system
 
 const $ = (id) => document.getElementById(id);
 
+// Global application state
 const state = {
-  idField: "Vacante",
-  season: null,
-  items: [],
-  itemsById: new Map(),
-  ranking: [],
-  quota: 0,
-  maxClickable: 9999999,
-  maxItemsTable: 9999999,
-  searchTerm: "",
-  page: 1,
-  pageSize: 10, // default page size,
-  yearsAbove: 0, // years above current year to allow
-  yearsBelow: 0, // years below current year to allow
-  blockedItems: { selectedLocalidades: [], selectedCentros: [] }, // in-memory storage for blocked items
-  competitionDepth: 1, // in-memory storage for competition depth
+  idField: "Vacante",                    // Field name for item identification
+  season: null,                          // Current selected season
+  items: [],                             // Available items for the season
+  itemsById: new Map(),                  // Fast lookup map for items by ID
+  ranking: [],                           // User's current ranking/preferences
+  quota: 0,                              // User's quota (number of items they can select)
+  maxClickable: 9999999,                 // Maximum number of clickable items
+  maxItemsTable: 9999999,                // Maximum items to display in table
+  searchTerm: "",                        // Current search filter
+  page: 1,                               // Current page for pagination
+  pageSize: 10,                          // Items per page
+  yearsAbove: 0,                         // Years above current year to allow
+  yearsBelow: 0,                         // Years below current year to allow
+  blockedItems: { selectedLocalidades: [], selectedCentros: [] }, // Blocked items for scenario 2
+  competitionDepth: 1,                   // Competition depth for scenario 3
 };
 
 // Make state accessible globally for other scripts
 window.state = state;
 
+// Local storage keys for persistence
 const LOCAL_KEY = "allocator:userId";
 const SEASON_KEY = "allocator:season";
+const LAST_SUBMIT_TIME_KEY = "allocator:lastSubmitTime";
+
+// User ID management functions
 const getLocalUserId = () => localStorage.getItem(LOCAL_KEY) || "";
 const setLocalUserId = (id) => localStorage.setItem(LOCAL_KEY, id);
 const clearLocalUserId = () => localStorage.removeItem(LOCAL_KEY);
 
+// Season management functions
 function getSeason() {
   return localStorage.getItem(SEASON_KEY) || String(new Date().getFullYear());
 }
@@ -706,8 +713,9 @@ function updateSubmitButtonState() {
 let cooldownInterval = null;
 
 // Update button state every second when on cooldown
+// This provides visual feedback to users about remaining cooldown time
 function startCooldownTimer() {
-  // Clear any existing interval first
+  // Clear any existing interval first (prevent multiple timers)
   if (cooldownInterval) {
     clearInterval(cooldownInterval);
     cooldownInterval = null;
@@ -719,8 +727,10 @@ function startCooldownTimer() {
     return;
   }
   
+  // Start countdown timer that updates every second
   cooldownInterval = setInterval(() => {
     if (!isSubmissionTooRecent()) {
+      // Cooldown expired - clear timer and update button
       clearInterval(cooldownInterval);
       cooldownInterval = null;
       updateSubmitButtonState();
@@ -733,20 +743,20 @@ function startCooldownTimer() {
 async function submitRanking(e) {
   e.preventDefault();
 
-  // Check if we're already submitting
+  // Check if we're already submitting (prevent rapid clicks)
   if (isSubmitting) {
     alert("Por favor espera, ya se está enviando tu solicitud...");
     return;
   }
 
-  // Enhanced duplicate prevention using localStorage
+  // Enhanced duplicate prevention using localStorage (persistent across page refreshes)
   if (isSubmissionTooRecent()) {
     const remaining = getRemainingCooldownSeconds();
     alert(`Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.\n\nEsto previene envíos duplicados por problemas de conexión.`);
     return;
   }
 
-  // Check if too soon since last submission (legacy check)
+  // Check if too soon since last submission (legacy check - in-memory only)
   const now = Date.now();
   if (now - lastSubmitTime < SUBMIT_DEBOUNCE_MS) {
     const remaining = Math.ceil((SUBMIT_DEBOUNCE_MS - (now - lastSubmitTime)) / 1000);
@@ -782,12 +792,13 @@ async function submitRanking(e) {
     }
   } catch {}
 
-  // Set submitting state
+  // Set submitting state to prevent duplicate submissions
   isSubmitting = true;
   lastSubmitTime = now;
-  setLastSubmissionTime(); // Store submission time immediately
+  setLastSubmissionTime(); // Store submission time immediately in localStorage
   
   // Generate unique request ID once for this submission attempt
+  // This ID is used by the server to prevent processing the same request multiple times
   const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   
   // Disable submit button and show loading state
@@ -797,6 +808,7 @@ async function submitRanking(e) {
   submitBtn.textContent = "Enviando...";
 
   try {
+    // Submit to server with unique request ID
     const data = await api.submit({
       name,
       order: orderVal,
@@ -806,11 +818,13 @@ async function submitRanking(e) {
       requestId // Use the same requestId for this submission attempt
     });
 
+    // Store user ID for future submissions
     if (data.id) {
       setLocalUserId(data.id);
       $("userId").value = data.id;
     }
 
+    // Refresh state and show success message
     await fetchState();
     alert("¡Guardado correctamente!");
     

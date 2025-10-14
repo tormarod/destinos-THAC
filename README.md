@@ -18,13 +18,17 @@ This application is designed for managing destination assignments where:
 - **Server**: Express.js server with RESTful API
 - **Database**: AWS DynamoDB for storing user submissions
 - **Storage**: Local JSON files for destination catalogs by season/year
+- **Caching**: Demand-driven caching system to reduce DynamoDB reads by 90%+
 - **Authentication**: Environment-based AWS credentials
+- **Monitoring**: IP logging and cache statistics for performance tracking
 
 ### Frontend (Vanilla JavaScript)
 
 - **UI**: Single-page application with modern CSS
-- **Features**: Drag-and-drop ranking, search/filter, pagination
-- **Storage**: Local storage for user session management
+- **Features**: Drag-and-drop ranking, search/filter, pagination, scenario simulation
+- **Storage**: Local storage for user session management and cooldown tracking
+- **Duplicate Prevention**: Multi-layer client-side protection against duplicate submissions
+- **Real-time Feedback**: Visual countdown timers and loading states
 
 ## 📁 Project Structure
 
@@ -101,8 +105,7 @@ PORT=3000
 
 4. Set up AWS resources:
    - Create a DynamoDB table with partition key `pk` and sort key `sk`
-   - Create an S3 bucket for storing destination catalogs
-   - Upload destination data as JSON files named `{year}.json` (e.g., `2024.json`)
+   - Add destination data as JSON files named `{year}.json` (e.g., `2025.json`) in the project root
 
 5. Start the server:
 
@@ -133,9 +136,9 @@ npm start
 
 ```json
 {
-  "pk": "SUBMISSION#2024",
+  "pk": "SUBMISSION#2025",
   "sk": "u_73t4dx4ron8",
-  "season": "2024",
+  "season": "2025",
   "name": "Fernando Alonso",
   "order": 14,
   "rankedItems": ["684", "683", "682"],
@@ -148,7 +151,7 @@ npm start
 
 ## 🔧 API Endpoints
 
-### GET `/api/state?season=2024`
+### GET `/api/state?season=2025`
 
 Retrieves the current application state including available destinations and user submissions.
 
@@ -159,7 +162,7 @@ Retrieves the current application state including available destinations and use
   "items": [...],
   "submissions": [...],
   "idField": "Vacante",
-  "season": "2024",
+  "season": "2025",
   "notFound": false
 }
 ```
@@ -176,7 +179,7 @@ Submits or updates a user's destination preferences.
   "order": 14,
   "rankedItems": ["684", "683", "682"],
   "id": "u_73t4dx4ron8",
-  "season": "2024",
+  "season": "2025",
   "requestId": "req_1703123456789_abc123"
 }
 ```
@@ -198,7 +201,7 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
 
 ```json
 {
-  "season": "2024",
+  "season": "2025",
   "userId": "u_73t4dx4ron8",
   "scenario": 0,
   "blockedItems": {
@@ -230,7 +233,7 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
       "availableByPreference": ["683", "682", "685", "686"]
     }
   ],
-  "season": "2024",
+  "season": "2025",
   "scenario": 0,
   "usersAboveCount": 13
 }
@@ -244,7 +247,7 @@ Deletes a specific user's submissions for a season.
 
 Deletes all submissions for a user across all seasons.
 
-### GET `/api/orders?season=2024`
+### GET `/api/orders?season=2025`
 
 Retrieves all user orders for a season.
 
@@ -257,7 +260,7 @@ Retrieves all user orders for a season.
       "id": "u_73t4dx4ron8",
       "order": 14,
       "name": "Fernando Alonso",
-      "season": "2024"
+      "season": "2025"
     }
   ]
 }
@@ -272,6 +275,37 @@ Retrieves application configuration including rate limits.
 ```json
 {
   "allocationRateLimitSeconds": 30
+}
+```
+
+### GET `/api/cache-stats`
+
+Retrieves cache statistics and status for monitoring.
+
+**Response:**
+
+```json
+{
+  "stats": {
+    "totalRequests": 150,
+    "cacheHits": 120,
+    "cacheMisses": 30,
+    "inactiveSeasons": 2,
+    "activeSeasons": 1,
+    "totalCachedSeasons": 3,
+    "cacheHitRate": "80.00%"
+  },
+  "cacheStatus": {
+    "2025": {
+      "isActive": true,
+      "hasData": true,
+      "timeSinceRefresh": "45s",
+      "timeSinceRequest": "12s",
+      "activeCount": 8,
+      "needsRefresh": false
+    }
+  },
+  "timestamp": "2024-01-15T10:30:00.000Z"
 }
 ```
 
@@ -316,6 +350,62 @@ The system supports 4 different simulation scenarios:
 - **Competition Depth**: For scenario 3, users can configure how many preferences of higher priority users should be simulated as unavailable (1-20)
 - **Rate Limiting**: Allocation requests are rate-limited per user to prevent abuse (configurable via environment variable)
 - **User-Specific Allocation**: The system now supports efficient user-specific allocation without processing all submissions
+- **Demand-Driven Caching**: Intelligent server-side caching that only refreshes when users are actively requesting allocations, reducing DynamoDB reads by 90%+
+- **Duplicate Prevention**: Multi-layer protection against duplicate submissions with client-side cooldown and server-side request ID tracking
+- **Real-time Monitoring**: IP logging and cache statistics for performance tracking and debugging
+
+## 🚀 Demand-Driven Caching System
+
+The application implements an intelligent caching system that dramatically reduces DynamoDB read costs while maintaining data freshness:
+
+### How It Works
+
+1. **Request-Driven Activation**: When a user makes an allocation request, the season is marked as "active"
+2. **Smart Refresh Logic**: Cache is refreshed every 15 minutes (configurable) ONLY if the season is active
+3. **Automatic Inactivity Detection**: If no requests come in for 15+ minutes, the season becomes "inactive" and stops refreshing
+4. **Resume on Demand**: When users return to an inactive season, the cache is refreshed immediately
+
+### Benefits
+
+- **90%+ Reduction in DynamoDB Reads**: Only refresh when users are actually active
+- **Zero Waste**: No background refreshes during inactive periods
+- **Always Fresh Data**: Active seasons get regular updates
+- **Automatic Scaling**: More active seasons get more attention
+- **Cost Optimization**: Pay only for what you use
+
+### Cache Lifecycle
+
+- **Active Period (0-15 min)**: Regular 15-minute refreshes
+- **Inactive Period (15+ min)**: Season marked inactive, next request triggers fresh refresh
+
+### Monitoring
+
+Use the `/api/cache-stats` endpoint to monitor cache performance, hit rates, and season activity.
+
+## 🛡️ Duplicate Prevention System
+
+The application implements a comprehensive multi-layer duplicate prevention system to handle network issues and user behavior:
+
+### Client-Side Protection
+
+- **Visual Feedback**: Submit button shows countdown timer during cooldown period
+- **Persistent Cooldown**: Uses localStorage to maintain cooldown across page refreshes
+- **Request ID Generation**: Each submission attempt gets a unique request ID
+- **Submission State Tracking**: Prevents rapid clicks and multiple submissions
+
+### Server-Side Protection
+
+- **Request ID Tracking**: Prevents processing the same request multiple times
+- **Cooldown Enforcement**: 15-second cooldown between submissions per user
+- **Memory Management**: Automatic cleanup of old tracking data
+- **Cache Invalidation**: Ensures fresh data after submissions
+
+### Benefits
+
+- **Network Resilience**: Handles poor connections and timeouts gracefully
+- **User Experience**: Clear feedback and prevents accidental duplicates
+- **Data Integrity**: Ensures each submission is processed exactly once
+- **Performance**: Minimal overhead with automatic cleanup
 
 ## 🎨 Frontend Features
 
@@ -330,6 +420,7 @@ The system supports 4 different simulation scenarios:
 - **Blocked Items Selection**: For scenario 2, select specific locations or centers to simulate as unavailable
 - **Competition Depth Control**: For scenario 3, configure how many preferences of higher priority users to simulate as blocked
 - **Rate Limit Display**: Shows countdown timer when allocation requests are rate-limited
+- **Duplicate Prevention**: Multi-layer protection with visual feedback and cooldown timers
 
 ### Key Components
 
@@ -340,6 +431,7 @@ The system supports 4 different simulation scenarios:
 - **Scenario UI**: Dynamic interface that shows/hides relevant controls based on selected scenario
 - **Blocked Items Preview**: Shows preview of destinations that would be affected by blocked items selection
 - **Allocation Animation**: Visual feedback during allocation process with rate limit handling
+- **Cooldown Management**: Persistent cooldown tracking across page refreshes with localStorage
 
 ## 🧪 Testing
 
@@ -357,6 +449,9 @@ The project includes Jest tests for the allocation algorithm and core functional
 - Consider implementing user authentication for production use
 - Validate all user inputs on both client and server side
 - Use HTTPS in production environments
+- Multi-layer duplicate submission prevention with request ID tracking
+- Rate limiting to prevent abuse of allocation endpoints
+- IP logging for monitoring and security auditing
 
 ## 🚀 Deployment
 

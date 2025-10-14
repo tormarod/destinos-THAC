@@ -1,12 +1,14 @@
 // src/lib/allocate.js
+// Core allocation algorithm and fake user generation for simulation scenarios
 
-// Generate realistic fake submissions for missing users
+// Generate realistic fake submissions for missing users in scenario 1
+// This creates synthetic users to fill gaps in the submission order for realistic simulation
 function generateFakeSubmissions(realSubmissions, targetUserOrder) {
   const realOrders = realSubmissions.map(s => s.order).sort((a, b) => a - b);
   const minOrder = Math.min(...realOrders);
   const maxOrder = Math.max(...realOrders);
   
-  // Find missing orders up to the target user
+  // Find missing orders up to the target user (gaps in submission sequence)
   const missingOrders = [];
   for (let i = minOrder; i <= Math.min(targetUserOrder, maxOrder); i++) {
     if (!realOrders.includes(i)) {
@@ -15,10 +17,11 @@ function generateFakeSubmissions(realSubmissions, targetUserOrder) {
   }
   
   if (missingOrders.length === 0) {
-    return realSubmissions;
+    return realSubmissions; // No gaps to fill
   }
   
   // Analyze preference patterns by order ranges to generate realistic fake preferences
+  // This ensures fake users have believable preference patterns based on real data
   const preferencePatterns = analyzePreferencePatterns(realSubmissions);
   
   // Generate fake submissions for missing orders
@@ -30,8 +33,8 @@ function generateFakeSubmissions(realSubmissions, targetUserOrder) {
       name: `Usuario ${missingOrder}`,
       order: missingOrder,
       rankedItems: pattern,
-      submittedAt: Date.now() - (missingOrder * 1000), // Stagger submission times
-      isFake: true
+      submittedAt: Date.now() - (missingOrder * 1000), // Stagger submission times for realism
+      isFake: true // Mark as fake for filtering in position calculations
     };
   });
   
@@ -42,24 +45,25 @@ function generateFakeSubmissions(realSubmissions, targetUserOrder) {
   return allSubmissions;
 }
 
-// Analyze preference patterns by order ranges
+// Analyze preference patterns by order ranges to generate realistic fake user preferences
+// This helps create believable fake users that match the behavior patterns of real users
 function analyzePreferencePatterns(submissions) {
   const patterns = {};
   
-  // Define order ranges
+  // Define order ranges to capture different user behavior patterns
   const ranges = [
-    { name: 'top50', min: 1, max: 50 },
-    { name: 'orders51_100', min: 51, max: 100 },
-    { name: 'orders101_200', min: 101, max: 200 },
-    { name: 'orders201_300', min: 201, max: 300 },
-    { name: 'orders301_plus', min: 301, max: 999 }
+    { name: 'top50', min: 1, max: 50 },        // Early submitters (high priority)
+    { name: 'orders51_100', min: 51, max: 100 }, // Mid-range submitters
+    { name: 'orders101_200', min: 101, max: 200 }, // Mid-late submitters
+    { name: 'orders201_300', min: 201, max: 300 }, // Late submitters
+    { name: 'orders301_plus', min: 301, max: 999 } // Very late submitters
   ];
   
   ranges.forEach(range => {
     const usersInRange = submissions.filter(s => s.order >= range.min && s.order <= range.max);
     if (usersInRange.length === 0) return;
     
-    // Collect all preferences in this range
+    // Collect all preferences in this range with weighted importance
     const allPreferences = [];
     usersInRange.forEach(user => {
       const rankedItems = user.rankedItems || [];
@@ -67,12 +71,12 @@ function analyzePreferencePatterns(submissions) {
         allPreferences.push({
           item: String(item),
           position: index,
-          weight: Math.max(0, 10 - index) // Higher weight for earlier positions
+          weight: Math.max(0, 10 - index) // Higher weight for earlier positions (more important preferences)
         });
       });
     });
     
-    // Calculate weighted preference frequencies
+    // Calculate weighted preference frequencies (items with higher positions get more weight)
     const prefWeights = {};
     allPreferences.forEach(pref => {
       if (!prefWeights[pref.item]) {
@@ -81,10 +85,10 @@ function analyzePreferencePatterns(submissions) {
       prefWeights[pref.item] += pref.weight;
     });
     
-    // Get top preferences for this range
+    // Get top preferences for this range (most popular items in this order range)
     const topPrefs = Object.entries(prefWeights)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 100)
+      .sort((a, b) => b[1] - a[1]) // Sort by weight (most popular first)
+      .slice(0, 100) // Take top 100 preferences
       .map(([item, weight]) => item);
     
     patterns[range.name] = topPrefs;
@@ -93,10 +97,12 @@ function analyzePreferencePatterns(submissions) {
   return patterns;
 }
 
-// Get preference pattern for a specific order
+// Get preference pattern for a specific order based on analyzed patterns
+// This creates realistic fake user preferences that match the behavior of real users in similar order ranges
 function getPreferencePatternForOrder(order, patterns) {
   let rangeName;
   
+  // Determine which order range this fake user belongs to
   if (order <= 50) {
     rangeName = 'top50';
   } else if (order <= 100) {
@@ -111,7 +117,7 @@ function getPreferencePatternForOrder(order, patterns) {
   
   const basePattern = patterns[rangeName] || [];
   
-  // Generate a realistic preference list with high variance
+  // Generate a realistic preference list with high variance (like real users)
   const preferenceList = [];
   const usedItems = new Set();
   
@@ -119,10 +125,11 @@ function getPreferencePatternForOrder(order, patterns) {
   const shuffledPattern = [...basePattern].sort(() => Math.random() - 0.5);
   
   // Add 70-85% of items from the base pattern (higher overlap for realism)
+  // This ensures fake users have similar but not identical preferences to real users
   const basePercentage = 0.7 + Math.random() * 0.15; // 70-85%
   const baseItems = shuffledPattern.slice(0, Math.floor(basePattern.length * basePercentage));
   
-  // Add base items with some randomness in order
+  // Add base items with some randomness in order (realistic preference ordering)
   const shuffledBaseItems = [...baseItems].sort(() => Math.random() - 0.5);
   shuffledBaseItems.forEach(item => {
     if (!usedItems.has(item)) {
@@ -131,30 +138,31 @@ function getPreferencePatternForOrder(order, patterns) {
     }
   });
   
-  // Add variation items with controlled randomness
+  // Add variation items with controlled randomness (realistic preference variations)
   const variationItems = [];
   baseItems.forEach(item => {
     const itemNum = parseInt(item);
     // Add items within ±2 to ±4 range (smaller, more realistic range)
+    // This simulates users having preferences for similar items
     const range = 2 + Math.floor(Math.random() * 3); // 2-4 range
     for (let i = Math.max(1, itemNum - range); i <= itemNum + range; i++) {
       const variationItem = String(i);
-      if (!usedItems.has(variationItem) && Math.random() < 0.25) { // 25% chance (reduced)
+      if (!usedItems.has(variationItem) && Math.random() < 0.25) { // 25% chance (reduced for realism)
         variationItems.push(variationItem);
         usedItems.add(variationItem);
       }
     }
   });
   
-  // Shuffle variation items and add them
+  // Shuffle variation items and add them to the preference list
   const shuffledVariationItems = variationItems.sort(() => Math.random() - 0.5);
   preferenceList.push(...shuffledVariationItems);
   
-  // Add random items to fill up to the required order number
+  // Add random items to fill up to the required order number (realistic preference list length)
   const randomItems = [];
   const targetCount = Math.max(order, 15); // Ensure we have at least 15 items, or the full order
   
-  // Keep adding random items until we have enough
+  // Keep adding random items until we have enough (simulates users having many preferences)
   while (preferenceList.length < targetCount) {
     const randomItem = String(Math.floor(Math.random() * 700) + 1);
     if (!usedItems.has(randomItem)) {
@@ -163,13 +171,13 @@ function getPreferencePatternForOrder(order, patterns) {
       preferenceList.push(randomItem);
     }
     
-    // Safety check to prevent infinite loop
+    // Safety check to prevent infinite loop (prevent too many random items)
     if (usedItems.size > 600) {
       break;
     }
   }
   
-  // If we still don't have enough, add sequential items
+  // If we still don't have enough, add sequential items (fallback to ensure minimum preferences)
   let nextItemNum = 1;
   while (preferenceList.length < targetCount && nextItemNum <= 700) {
     const nextItem = String(nextItemNum);
@@ -180,7 +188,7 @@ function getPreferencePatternForOrder(order, patterns) {
     nextItemNum++;
   }
   
-  // Final shuffle to randomize the order
+  // Final shuffle to randomize the order (realistic preference ordering)
   const finalList = preferenceList.sort(() => Math.random() - 0.5);
   
   // Limit to user's order number (more realistic - higher order users get more items)
@@ -276,41 +284,42 @@ function getBlockedItemIds(items, blockedItems) {
 }
 
 // Convert scenario to simulation parameters
+// This function defines the behavior for each allocation scenario (0-3)
 function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userCompetitionDepth = 1) {
   switch (scenario) {
-    case 0: // Estado actual
+    case 0: // Estado actual - show current allocation state
       return { 
         competitionDepth: 0, 
         description: "Estado actual de la asignación",
-        includeFakeUsers: false
+        includeFakeUsers: false // Only use real submissions
       };
     
-    case 1: // Usuarios restantes se presentan
+    case 1: // Usuarios restantes se presentan - simulate missing users
       // Simulate actual missing users submitting their preferences
       return { 
         competitionDepth: 0, 
         description: "Si usuarios restantes contestasen",
-        includeFakeUsers: true
+        includeFakeUsers: true // Generate fake users for missing orders
       };
     
-    case 2: // Destinos específicos se ocupan
+    case 2: // Destinos específicos se ocupan - simulate blocked destinations
       // Simulate if specific locations/centros were blocked
       return { 
         competitionDepth: 0, 
         description: "Si destinos específicos se ocupan",
-        includeFakeUsers: false,
+        includeFakeUsers: false, // Only use real submissions
         markSpecificItemsUnavailable: true
       };
     
-    case 3: // Bloqueo de preferencias
+    case 3: // Bloqueo de preferencias - simulate competition depth
       // Simulate worst case where users above get their top N preferences (user-configurable)
       return { 
         competitionDepth: userCompetitionDepth, 
         description: `(${userCompetitionDepth} opciones bloqueadas)`,
-        includeFakeUsers: false
+        includeFakeUsers: false // Only use real submissions
       };
     
-    default:
+    default: // Fallback to scenario 0
       return { 
         competitionDepth: 0, 
         description: "Estado actual de la asignación",

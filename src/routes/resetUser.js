@@ -1,7 +1,7 @@
 const express = require("express");
 const { logIP } = require("../lib/ipLogger");
 
-module.exports = function ({ ddb, invalidateAllocationCache }) {
+module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
   const router = express.Router();
 
   router.post("/reset-user", async (req, res) => {
@@ -29,6 +29,11 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
       console.log("[reset-user] removed:", removed);
 
       if (removed) {
+        // Mark season as active (data reset request)
+        if (cacheManager) {
+          cacheManager.markSeasonActive(seasonStr);
+        }
+        
         // Invalidate allocation cache since user deletion affects allocation results
         if (invalidateAllocationCache) {
           invalidateAllocationCache(seasonStr);
