@@ -9,8 +9,8 @@ module.exports = function ({ ddb }) {
   const userRequests = new Map(); // userId -> lastRequestTime
   const RATE_LIMIT_MS = parseInt(process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30") * 1000; // Convert seconds to milliseconds
 
-  // Cache for submissions above user queries
-  const submissionsAboveCache = new Map(); // season+userOrder -> { submissions, timestamp }
+  // Cache for real submissions above user queries (fake users generated fresh each time)
+  const submissionsAboveCache = new Map(); // season+userOrder -> { realSubmissions, timestamp }
   const ALLOCATION_CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes cache TTL
 
   // Invalidate allocation cache for a season (call after new submissions)
@@ -23,41 +23,54 @@ module.exports = function ({ ddb }) {
       }
     }
     if (invalidatedCount > 0) {
-      console.log(`[ALLOCATION-CACHE] INVALIDATED ${invalidatedCount} entries for season ${season}`);
+      console.log(`[ALLOCATION-CACHE] INVALIDATED ${invalidatedCount} real submission cache entries for season ${season}`);
     }
   }
 
-  // Get submissions above a specific user order (with caching)
-  async function getSubmissionsAboveUser(season, userOrder) {
+  // Get submissions above a specific user order (cache real submissions, generate fresh fake users)
+  async function getSubmissionsAboveUser(season, userOrder, scenario = 0) {
     if (!ddb.enabled) return [];
     
     const cacheKey = `${season}+${userOrder}`;
+    let realSubsAbove;
+    
+    // Check cache for real submissions only
     const cached = submissionsAboveCache.get(cacheKey);
-    
     if (cached && Date.now() - cached.timestamp < ALLOCATION_CACHE_TTL_MS) {
-      console.log(`[ALLOCATION-CACHE] HIT for season ${season}, user order ${userOrder} (${cached.submissions.length} submissions)`);
-      return cached.submissions;
+      console.log(`[ALLOCATION-CACHE] HIT for real submissions: season ${season}, user order ${userOrder} (${cached.realSubmissions.length} real submissions)`);
+      realSubsAbove = cached.realSubmissions;
+    } else {
+      // Cache miss - fetch real submissions from DynamoDB
+      console.log(`[ALLOCATION-CACHE] MISS for real submissions: season ${season}, user order ${userOrder} - fetching from DynamoDB`);
+      realSubsAbove = await ddb.fetchSubmissionsAboveUser(season, userOrder);
+      
+      // Cache only the real submissions
+      submissionsAboveCache.set(cacheKey, {
+        realSubmissions: realSubsAbove,
+        timestamp: Date.now()
+      });
+      
+      // Clean up old cache entries (keep only last 100 entries)
+      if (submissionsAboveCache.size > 100) {
+        const oldestKey = submissionsAboveCache.keys().next().value;
+        submissionsAboveCache.delete(oldestKey);
+        console.log(`[ALLOCATION-CACHE] Cleaned up old cache entry: ${oldestKey}`);
+      }
+      
+      console.log(`[ALLOCATION-CACHE] CACHED ${realSubsAbove.length} real submissions for season ${season}, user order ${userOrder}`);
     }
     
-    // Cache miss - fetch from DynamoDB
-    console.log(`[ALLOCATION-CACHE] MISS for season ${season}, user order ${userOrder} - fetching from DynamoDB`);
-    const subsAbove = await ddb.fetchSubmissionsAboveUser(season, userOrder);
-    
-    // Cache the result
-    submissionsAboveCache.set(cacheKey, {
-      submissions: subsAbove,
-      timestamp: Date.now()
-    });
-    
-    // Clean up old cache entries (keep only last 100 entries)
-    if (submissionsAboveCache.size > 100) {
-      const oldestKey = submissionsAboveCache.keys().next().value;
-      submissionsAboveCache.delete(oldestKey);
-      console.log(`[ALLOCATION-CACHE] Cleaned up old cache entry: ${oldestKey}`);
+    // Generate fresh fake users if scenario 1 (always fresh, never cached)
+    if (scenario === 1) {
+      const { generateFakeSubmissions } = require("../lib/allocate");
+      const finalSubmissions = generateFakeSubmissions(realSubsAbove, userOrder);
+      const fakeCount = finalSubmissions.length - realSubsAbove.length;
+      console.log(`[FAKE-USERS] Generated ${fakeCount} fresh fake users for scenario 1 (total: ${finalSubmissions.length} submissions)`);
+      return finalSubmissions;
     }
     
-    console.log(`[ALLOCATION-CACHE] CACHED ${subsAbove.length} submissions for season ${season}, user order ${userOrder} (should be ~${userOrder - 1})`);
-    return subsAbove;
+    // Return real submissions for other scenarios
+    return realSubsAbove;
   }
 
   // Rate limiting middleware
@@ -111,8 +124,12 @@ module.exports = function ({ ddb }) {
         return res.status(404).json({ error: "User not found in submissions" });
       }
 
-      // Get only submissions above current user (efficient GSI query)
-      const subsAbove = await getSubmissionsAboveUser(season, currentUserSubmission.order);
+      // Get submissions above current user (efficient GSI query with scenario-aware caching)
+      const subsAbove = await getSubmissionsAboveUser(season, currentUserSubmission.order, scenario);
+      
+      // For position display, count only real submissions (not fake users)
+      // This is already handled correctly by the caching system
+      const realUsersAboveCount = subsAbove.filter(s => !s.isFake).length;
       
       // Get items data for centro-based scenarios
       let items = [];
@@ -141,7 +158,7 @@ module.exports = function ({ ddb }) {
         allocation: [userAllocation],
         season,
         scenario,
-        usersAboveCount: subsAbove.length, // Number of users with higher priority (lower order number)
+        usersAboveCount: realUsersAboveCount, // Number of REAL users with higher priority (not including fake users)
       });
     } catch (e) {
       console.error("[/api/allocate] error:", e);
