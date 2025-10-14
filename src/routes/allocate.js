@@ -45,7 +45,7 @@ module.exports = function ({ ddb }) {
       const scenario = parseInt(req.body && req.body.scenario) || 0;
       const userId = req.body && req.body.userId;
       const blockedItems = req.body && req.body.blockedItems || {};
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 3;
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 1;
 
       if (!userId || typeof userId !== "string") {
         logIP(req, "ALLOCATE_FAILED", { reason: "missing_userId", season });
@@ -107,7 +107,7 @@ module.exports = function ({ ddb }) {
         (req.body && req.body.season) || new Date().getFullYear(),
       );
       const scenario = parseInt(req.body && req.body.scenario) || 0;
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 3;
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 1;
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
       
       // Get items data for centro-based scenarios

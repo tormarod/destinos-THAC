@@ -17,7 +17,7 @@ const state = {
   yearsAbove: 0, // years above current year to allow
   yearsBelow: 0, // years below current year to allow
   blockedItems: { selectedLocalidades: [], selectedCentros: [] }, // in-memory storage for blocked items
-  competitionDepth: 3, // in-memory storage for competition depth
+  competitionDepth: 1, // in-memory storage for competition depth
 };
 
 // Make state accessible globally for other scripts

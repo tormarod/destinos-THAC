@@ -108,7 +108,7 @@ async function runAllocation(season) {
           
           // Get blocked items for scenario 2 and competition depth for scenario 3
           let blockedItems = [];
-          let competitionDepth = 3; // default value
+          let competitionDepth = 1; // default value
           
           if (scenario === 2) {
             // Get current selections from dropdowns (in case user didn't click preview)
@@ -136,10 +136,10 @@ async function runAllocation(season) {
             }
           } else if (scenario === 3) {
             // Get competition depth from in-memory state or input
-            competitionDepth = window.state?.competitionDepth || 3;
+            competitionDepth = window.state?.competitionDepth || 1;
             const competitionDepthInput = document.getElementById("competitionDepthInput");
             if (competitionDepthInput) {
-              const inputValue = Math.max(1, Math.min(20, Number(competitionDepthInput.value) || 3));
+              const inputValue = Math.max(1, Math.min(20, Number(competitionDepthInput.value) || 1));
               competitionDepth = inputValue;
               // Update state with current input value
               if (window.state) {

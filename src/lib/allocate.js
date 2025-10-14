@@ -276,7 +276,7 @@ function getBlockedItemIds(items, blockedItems) {
 }
 
 // Convert scenario to simulation parameters
-function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userCompetitionDepth = 3) {
+function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userCompetitionDepth = 1) {
   switch (scenario) {
     case 0: // Estado actual
       return { 
@@ -322,7 +322,7 @@ function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userComp
 // Round-robin allocation with exactly 1 item per user.
 // Returns per-user: assignedItemIds and availableByPreference (backup allocations).
 // scenario: simulation scenario (0-3) that determines competition depth
-function allocate(submissions, scenario = 0, items = [], userCompetitionDepth = 3) {
+function allocate(submissions, scenario = 0, items = [], userCompetitionDepth = 1) {
   const { competitionDepth, includeFakeUsers } = getScenarioParams(scenario, submissions, 999, userCompetitionDepth);
   const x = competitionDepth;
   
@@ -424,7 +424,7 @@ function allocate(submissions, scenario = 0, items = [], userCompetitionDepth = 
 }
 
 // Optimized allocation for a single user given submissions from users above them
-function allocateForUser(submissionsAbove, currentUser, scenario = 0, items = [], blockedItems = {}, userCompetitionDepth = 3) {
+function allocateForUser(submissionsAbove, currentUser, scenario = 0, items = [], blockedItems = {}, userCompetitionDepth = 1) {
   const { competitionDepth, includeFakeUsers, markSpecificItemsUnavailable } = getScenarioParams(scenario, submissionsAbove, currentUser.order, userCompetitionDepth);
   const x = competitionDepth;
   

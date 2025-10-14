@@ -192,7 +192,7 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
     "selectedLocalidades": ["Madrid", "Barcelona"],
     "selectedCentros": ["Hospital General"]
   },
-  "competitionDepth": 3
+  "competitionDepth": 1
 }
 ```
 
@@ -201,7 +201,7 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
 - `userId`: User ID for user-specific allocation (required)
 - `scenario`: Simulation scenario (0-3, optional, default: 0)
 - `blockedItems`: Items to mark as unavailable for scenario 2 (optional)
-- `competitionDepth`: Number of preferences to simulate as blocked for scenario 3 (optional, default: 3)
+- `competitionDepth`: Number of preferences to simulate as blocked for scenario 3 (optional, default: 1)
 
 **Response:**
 

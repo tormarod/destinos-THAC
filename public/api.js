@@ -88,7 +88,7 @@
 
       return result;
     },
-    async allocate(season, scenario = 0, blockedItems = {}, competitionDepth = 3) {
+    async allocate(season, scenario = 0, blockedItems = {}, competitionDepth = 1) {
       const userId = localStorage.getItem("allocator:userId");
       if (!userId) {
         throw new Error(
