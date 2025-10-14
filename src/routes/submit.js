@@ -1,17 +1,19 @@
 const express = require("express");
 const { logIP } = require("../lib/ipLogger");
 
-module.exports = function ({ ddb }) {
+module.exports = function ({ ddb, invalidateAllocationCache }) {
   const router = express.Router();
 
   // Track recent submissions to prevent duplicates
   const recentSubmissions = new Map(); // userId+season -> timestamp
-  const SUBMISSION_COOLDOWN_MS = 10000; // 10 seconds
+  const processedRequestIds = new Set(); // Track processed requestIds to prevent duplicates
+  const SUBMISSION_COOLDOWN_MS = 15000; // 15 seconds (increased for better protection)
 
   router.post("/submit", async (req, res) => {
     try {
-      const { name, order, rankedItems, id, season } = req.body || {};
+      const { name, order, rankedItems, id, season, requestId } = req.body || {};
       const seasonStr = String(season || new Date().getFullYear());
+      const uniqueRequestId = requestId || `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
       if (!name || typeof name !== "string") {
         logIP(req, "SUBMIT_FAILED", { reason: "missing_name", season: seasonStr });
@@ -36,6 +38,16 @@ module.exports = function ({ ddb }) {
       // Create tracking key using userId + season
       const submissionKey = `${userId}_${seasonStr}`;
 
+      // Check for duplicate requestId (same request processed multiple times)
+      if (processedRequestIds.has(uniqueRequestId)) {
+        logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_requestId", userId, season: seasonStr, requestId: uniqueRequestId });
+        return res.status(409).json({
+          error: "Solicitud duplicada",
+          message: "Esta solicitud ya ha sido procesada. No se creará un registro duplicado.",
+          requestId: uniqueRequestId
+        });
+      }
+
       // Check for recent duplicate submission within cooldown period
       const lastSubmission = recentSubmissions.get(submissionKey);
       if (lastSubmission && (now - lastSubmission) < SUBMISSION_COOLDOWN_MS) {
@@ -43,7 +55,7 @@ module.exports = function ({ ddb }) {
         logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_submission", userId, season: seasonStr, remainingSeconds });
         return res.status(429).json({
           error: "Solicitud duplicada",
-          message: `Ya has enviado una solicitud recientemente. Espera ${remainingSeconds} segundo(s) antes de enviar otra.`,
+          message: `Ya has enviado una solicitud recientemente. Espera ${remainingSeconds} segundo(s) antes de enviar otra.\n\nEsto previene envíos duplicados por problemas de conexión.`,
           retryAfter: remainingSeconds
         });
       }
@@ -72,16 +84,28 @@ module.exports = function ({ ddb }) {
         order: parsedOrder,
         season: seasonStr,
         rankedItemsCount: rankedItems?.length || 0,
-        isUpdate: !!existing
+        isUpdate: !!existing,
+        requestId: uniqueRequestId
       });
 
       // Track this submission to prevent rapid duplicates
       recentSubmissions.set(submissionKey, now);
+      processedRequestIds.add(uniqueRequestId);
+      
+      // Invalidate allocation cache since new submission affects allocation results
+      if (invalidateAllocationCache) {
+        invalidateAllocationCache(seasonStr);
+      }
 
-      // Clean up old entries from the tracking map (keep only last 100 entries)
+      // Clean up old entries from the tracking maps (keep only last 100 entries)
       if (recentSubmissions.size > 100) {
         const oldestKey = recentSubmissions.keys().next().value;
         recentSubmissions.delete(oldestKey);
+      }
+      if (processedRequestIds.size > 1000) {
+        // Clear half of the processed request IDs (keep recent ones)
+        const idsToDelete = Array.from(processedRequestIds).slice(0, 500);
+        idsToDelete.forEach(id => processedRequestIds.delete(id));
       }
 
       return res.json({ ok: true, id: userId });

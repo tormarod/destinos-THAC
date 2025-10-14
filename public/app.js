@@ -652,6 +652,84 @@ let isSubmitting = false;
 let lastSubmitTime = 0;
 const SUBMIT_DEBOUNCE_MS = 10000; // 10 seconds
 
+// Enhanced duplicate prevention using localStorage
+const SUBMISSION_STORAGE_KEY = 'lastSubmission';
+const SUBMISSION_COOLDOWN_MS = 15000; // 15 seconds (longer than server)
+
+function getLastSubmissionTime() {
+  try {
+    const stored = localStorage.getItem(SUBMISSION_STORAGE_KEY);
+    return stored ? parseInt(stored, 10) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function setLastSubmissionTime() {
+  try {
+    localStorage.setItem(SUBMISSION_STORAGE_KEY, Date.now().toString());
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
+function isSubmissionTooRecent() {
+  const lastTime = getLastSubmissionTime();
+  const now = Date.now();
+  return (now - lastTime) < SUBMISSION_COOLDOWN_MS;
+}
+
+function getRemainingCooldownSeconds() {
+  const lastTime = getLastSubmissionTime();
+  const now = Date.now();
+  const remaining = SUBMISSION_COOLDOWN_MS - (now - lastTime);
+  return Math.max(0, Math.ceil(remaining / 1000));
+}
+
+function updateSubmitButtonState() {
+  const submitBtn = $("submitForm")?.querySelector('button[type="submit"]');
+  if (!submitBtn) return;
+  
+  if (isSubmissionTooRecent()) {
+    const remaining = getRemainingCooldownSeconds();
+    submitBtn.disabled = true;
+    submitBtn.textContent = `Espera ${remaining}s...`;
+    submitBtn.title = `Debes esperar ${remaining} segundos antes de enviar otra solicitud para prevenir duplicados.`;
+  } else {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Guardar mis destinos";
+    submitBtn.title = "";
+  }
+}
+
+// Global interval reference to prevent multiple timers
+let cooldownInterval = null;
+
+// Update button state every second when on cooldown
+function startCooldownTimer() {
+  // Clear any existing interval first
+  if (cooldownInterval) {
+    clearInterval(cooldownInterval);
+    cooldownInterval = null;
+  }
+  
+  // Only start timer if we're actually on cooldown
+  if (!isSubmissionTooRecent()) {
+    updateSubmitButtonState();
+    return;
+  }
+  
+  cooldownInterval = setInterval(() => {
+    if (!isSubmissionTooRecent()) {
+      clearInterval(cooldownInterval);
+      cooldownInterval = null;
+      updateSubmitButtonState();
+    } else {
+      updateSubmitButtonState();
+    }
+  }, 1000);
+}
+
 async function submitRanking(e) {
   e.preventDefault();
 
@@ -661,7 +739,14 @@ async function submitRanking(e) {
     return;
   }
 
-  // Check if too soon since last submission
+  // Enhanced duplicate prevention using localStorage
+  if (isSubmissionTooRecent()) {
+    const remaining = getRemainingCooldownSeconds();
+    alert(`Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.\n\nEsto previene envíos duplicados por problemas de conexión.`);
+    return;
+  }
+
+  // Check if too soon since last submission (legacy check)
   const now = Date.now();
   if (now - lastSubmitTime < SUBMIT_DEBOUNCE_MS) {
     const remaining = Math.ceil((SUBMIT_DEBOUNCE_MS - (now - lastSubmitTime)) / 1000);
@@ -700,6 +785,10 @@ async function submitRanking(e) {
   // Set submitting state
   isSubmitting = true;
   lastSubmitTime = now;
+  setLastSubmissionTime(); // Store submission time immediately
+  
+  // Generate unique request ID once for this submission attempt
+  const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
   
   // Disable submit button and show loading state
   const submitBtn = $("submitForm").querySelector('button[type="submit"]');
@@ -714,6 +803,7 @@ async function submitRanking(e) {
       rankedItems,
       id,
       season: state.season, // ✅ include season
+      requestId // Use the same requestId for this submission attempt
     });
 
     if (data.id) {
@@ -723,6 +813,9 @@ async function submitRanking(e) {
 
     await fetchState();
     alert("¡Guardado correctamente!");
+    
+    // Restart the cooldown timer after successful submission
+    startCooldownTimer();
   } catch (error) {
     console.error("Submit error:", error);
     
@@ -739,6 +832,9 @@ async function submitRanking(e) {
     isSubmitting = false;
     submitBtn.disabled = false;
     submitBtn.textContent = originalText;
+    
+    // Update button state based on cooldown
+    updateSubmitButtonState();
   }
 }
 
@@ -773,6 +869,14 @@ async function resetAll() {
 
 document.addEventListener("DOMContentLoaded", () => {
   populateSeasonSelect();
+
+  // Initialize submit button state and start cooldown timer
+  updateSubmitButtonState();
+  
+  // Only start timer if we're actually on cooldown
+  if (isSubmissionTooRecent()) {
+    startCooldownTimer();
+  }
 
   $("submitForm").addEventListener("submit", submitRanking);
   $("allocateBtn").addEventListener("click", async () => {

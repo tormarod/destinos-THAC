@@ -69,10 +69,15 @@ app.use(
   require("./src/routes/state")({ ddb, idField: ID_FIELD, getItemsForSeason }),
 );
 app.use("/api", require("./src/routes/orders")({ ddb }));
-app.use("/api", require("./src/routes/submit")({ ddb })); // POST /submit
-app.use("/api", require("./src/routes/resetUser")({ ddb })); // POST /reset-user
-app.use("/api", require("./src/routes/allocate")({ ddb })); // POST /allocate
-app.use("/api", require("./src/routes/resetUserAll")({ ddb })); // POST /reset-user-all
+
+// Create allocate router first to get cache invalidation function
+const allocateRouter = require("./src/routes/allocate")({ ddb });
+app.use("/api", allocateRouter); // POST /allocate
+
+// Pass cache invalidation function to routes that modify data
+app.use("/api", require("./src/routes/submit")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache })); // POST /submit
+app.use("/api", require("./src/routes/resetUser")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache })); // POST /reset-user
+app.use("/api", require("./src/routes/resetUserAll")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache })); // POST /reset-user-all
 
 // Configuration endpoint
 app.get("/api/config", (req, res) => {
