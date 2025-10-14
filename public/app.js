@@ -3,7 +3,7 @@
 const $ = (id) => document.getElementById(id);
 
 const state = {
-  idField: "Nº vacante",
+  idField: "Vacante",
   season: null,
   items: [],
   itemsById: new Map(),
@@ -16,7 +16,12 @@ const state = {
   pageSize: 10, // default page size,
   yearsAbove: 0, // years above current year to allow
   yearsBelow: 0, // years below current year to allow
+  blockedItems: { selectedLocalidades: [], selectedCentros: [] }, // in-memory storage for blocked items
+  competitionDepth: 3, // in-memory storage for competition depth
 };
+
+// Make state accessible globally for other scripts
+window.state = state;
 
 const LOCAL_KEY = "allocator:userId";
 const SEASON_KEY = "allocator:season";
@@ -812,35 +817,195 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Update competition depth parameter display when input changes
-  const competitionDepthInput = $("competitionDepthParameter");
-  if (competitionDepthInput) {
-    competitionDepthInput.addEventListener("input", (e) => {
-      let competitionDepthValue = parseInt(e.target.value) || 1;
+  // Scenario selection system
+  const scenarioSelect = $("scenarioSelect");
+  const scenarioDescription = $("scenarioDescription");
+  
+  // Scenario descriptions
+  const scenarioDescriptions = {
+    "0": "Estado actual de la asignación",
+    "1": "Si usuarios restantes se presentan",
+    "2": "Si destinos específicos se ocupan", 
+    "3": "Bloqueo de preferencias"
+  };
 
-      // Clamp value to valid range (1-20)
-      if (competitionDepthValue < 1) competitionDepthValue = 1;
-      if (competitionDepthValue > 20) competitionDepthValue = 20;
-
-      // Update the input field if it was clamped
-      if (parseInt(e.target.value) !== competitionDepthValue) {
-        e.target.value = competitionDepthValue;
+  if (scenarioSelect) {
+    scenarioSelect.addEventListener("change", (e) => {
+      const selectedValue = e.target.value;
+      if (scenarioDescription) {
+        scenarioDescription.textContent = scenarioDescriptions[selectedValue] || "Estado actual de la asignación";
       }
-
-      const competitionDepthValueElement = $("competitionDepthValue");
-      const competitionDepthValue2Element = $("competitionDepthValue2");
-
-      if (competitionDepthValueElement) competitionDepthValueElement.textContent = competitionDepthValue;
-      if (competitionDepthValue2Element) competitionDepthValue2Element.textContent = competitionDepthValue;
+      
+      // Show/hide location selection UI for scenario 2
+      const locationSelectionUI = document.getElementById("locationSelectionUI");
+      if (locationSelectionUI) {
+        if (selectedValue === "2") {
+          locationSelectionUI.style.display = "block";
+          loadLocationOptions();
+        } else {
+          locationSelectionUI.style.display = "none";
+        }
+      }
+      
+      // Show/hide competition depth UI for scenario 3
+      const competitionDepthUI = document.getElementById("competitionDepthUI");
+      if (competitionDepthUI) {
+        if (selectedValue === "3") {
+          competitionDepthUI.style.display = "block";
+        } else {
+          competitionDepthUI.style.display = "none";
+        }
+      }
     });
 
-    // Initialize competition depth parameter display on page load
-    const initialCompetitionDepthValue = competitionDepthInput.value || "1";
-    const competitionDepthValueElement = $("competitionDepthValue");
-    const competitionDepthValue2Element = $("competitionDepthValue2");
+    // Initialize scenario description on page load
+    const initialValue = scenarioSelect.value || "0";
+    if (scenarioDescription) {
+      scenarioDescription.textContent = scenarioDescriptions[initialValue] || "Estado actual de la asignación";
+    }
+    
+    // Initialize location selection UI visibility
+    const locationSelectionUI = document.getElementById("locationSelectionUI");
+    if (locationSelectionUI && initialValue === "2") {
+      locationSelectionUI.style.display = "block";
+      loadLocationOptions();
+    }
+    
+    // Initialize competition depth UI visibility
+    const competitionDepthUI = document.getElementById("competitionDepthUI");
+    if (competitionDepthUI && initialValue === "3") {
+      competitionDepthUI.style.display = "block";
+    }
+  }
 
-    if (competitionDepthValueElement) competitionDepthValueElement.textContent = initialCompetitionDepthValue;
-    if (competitionDepthValue2Element) competitionDepthValue2Element.textContent = initialCompetitionDepthValue;
+  // Load location and centro options for scenario 2
+  async function loadLocationOptions() {
+    try {
+      const season = new Date().getFullYear().toString();
+      const response = await fetch(`/api/state?season=${season}`);
+      const data = await response.json();
+      
+      if (data.items && data.items.length > 0) {
+        populateLocationSelects(data.items);
+      }
+    } catch (error) {
+      console.error("Error loading location options:", error);
+    }
+  }
+
+  // Populate the location and centro select elements
+  function populateLocationSelects(items) {
+    const localidadSelect = document.getElementById("localidadSelect");
+    const centroSelect = document.getElementById("centroSelect");
+    
+    if (!localidadSelect || !centroSelect) return;
+    
+    // Get unique localidades and centros
+    const localidades = [...new Set(items.map(item => item.Localidad).filter(Boolean))].sort();
+    const centros = [...new Set(items.map(item => item['Centro de destino']).filter(Boolean))].sort();
+    
+    // Populate localidad select
+    localidadSelect.innerHTML = "";
+    localidades.forEach(localidad => {
+      const option = document.createElement("option");
+      option.value = localidad;
+      option.textContent = localidad;
+      localidadSelect.appendChild(option);
+    });
+    
+    // Populate centro select
+    centroSelect.innerHTML = "";
+    centros.forEach(centro => {
+      const option = document.createElement("option");
+      option.value = centro;
+      option.textContent = centro;
+      centroSelect.appendChild(option);
+    });
+  }
+
+  // Handle preview blocked items button
+  const previewBlockedItemsBtn = document.getElementById("previewBlockedItems");
+  if (previewBlockedItemsBtn) {
+    previewBlockedItemsBtn.addEventListener("click", async () => {
+      const selectedLocalidades = Array.from(document.getElementById("localidadSelect").selectedOptions).map(opt => opt.value);
+      const selectedCentros = Array.from(document.getElementById("centroSelect").selectedOptions).map(opt => opt.value);
+      
+      if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
+        alert("Por favor selecciona al menos una localidad o centro para bloquear.");
+        return;
+      }
+      
+      try {
+        // Save selections to in-memory state
+        state.blockedItems = { selectedLocalidades, selectedCentros };
+        
+        const season = new Date().getFullYear().toString();
+        const response = await fetch(`/api/state?season=${season}`);
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+          const blockedItems = getBlockedItems(data.items, selectedLocalidades, selectedCentros);
+          showBlockedItemsPreview(blockedItems);
+        }
+      } catch (error) {
+        console.error("Error getting blocked items:", error);
+        alert("Error al obtener los destinos bloqueados.");
+      }
+    });
+  }
+
+  // Handle clear selection button
+  const clearSelectionBtn = document.getElementById("clearSelection");
+  if (clearSelectionBtn) {
+    clearSelectionBtn.addEventListener("click", () => {
+      document.getElementById("localidadSelect").selectedIndex = -1;
+      document.getElementById("centroSelect").selectedIndex = -1;
+      document.getElementById("blockedItemsPreview").style.display = "none";
+      // Clear in-memory state
+      state.blockedItems = { selectedLocalidades: [], selectedCentros: [] };
+    });
+  }
+
+  // Get blocked items based on selected localidades and centros
+  function getBlockedItems(items, selectedLocalidades, selectedCentros) {
+    return items.filter(item => {
+      const localidadMatch = selectedLocalidades.length === 0 || selectedLocalidades.includes(item.Localidad);
+      const centroMatch = selectedCentros.length === 0 || selectedCentros.includes(item['Centro de destino']);
+      return localidadMatch && centroMatch;
+    });
+  }
+
+  // Show blocked items preview
+  function showBlockedItemsPreview(blockedItems) {
+    const previewDiv = document.getElementById("blockedItemsPreview");
+    const listDiv = document.getElementById("blockedItemsList");
+    
+    if (!previewDiv || !listDiv) return;
+    
+    if (blockedItems.length === 0) {
+      listDiv.innerHTML = "No se encontraron destinos que coincidan con la selección.";
+    } else {
+      const itemsList = blockedItems.slice(0, 20).map(item => 
+        `• Vacante ${item.Vacante}: ${item.Localidad} - ${item['Centro de destino']}`
+      ).join("<br>");
+      
+      const moreText = blockedItems.length > 20 ? `<br><em>... y ${blockedItems.length - 20} destinos más</em>` : "";
+      
+      listDiv.innerHTML = `${itemsList}${moreText}`;
+    }
+    
+    previewDiv.style.display = "block";
+  }
+
+  // Get selected blocked items for allocation
+  function getSelectedBlockedItems() {
+    const selectedLocalidades = Array.from(document.getElementById("localidadSelect").selectedOptions).map(opt => opt.value);
+    const selectedCentros = Array.from(document.getElementById("centroSelect").selectedOptions).map(opt => opt.value);
+    
+    // Store in in-memory state for use in allocation
+    state.blockedItems = { selectedLocalidades, selectedCentros };
+    
+    return { selectedLocalidades, selectedCentros };
   }
 
   $("order").addEventListener("input", () => {
@@ -848,6 +1013,16 @@ document.addEventListener("DOMContentLoaded", () => {
     renderClickableItems();
     updateQuotaIndicators();
   });
+
+  // Handle competition depth input for scenario 3
+  const competitionDepthInput = document.getElementById("competitionDepthInput");
+  if (competitionDepthInput) {
+    competitionDepthInput.addEventListener("input", (e) => {
+      const value = Math.max(1, Math.min(20, Number(e.target.value) || 3));
+      state.competitionDepth = value;
+      e.target.value = value; // Ensure the input shows the clamped value
+    });
+  }
 
   // Re-render on window resize to switch between mobile/desktop layouts
   window.addEventListener("resize", () => {

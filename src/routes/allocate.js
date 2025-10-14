@@ -42,8 +42,10 @@ module.exports = function ({ ddb }) {
       const season = String(
         (req.body && req.body.season) || new Date().getFullYear(),
       );
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 0;
+      const scenario = parseInt(req.body && req.body.scenario) || 0;
       const userId = req.body && req.body.userId;
+      const blockedItems = req.body && req.body.blockedItems || {};
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 3;
 
       if (!userId || typeof userId !== "string") {
         logIP(req, "ALLOCATE_FAILED", { reason: "missing_userId", season });
@@ -60,7 +62,17 @@ module.exports = function ({ ddb }) {
 
       // Only fetch submissions above current user (much more efficient)
       const subsAbove = ddb.enabled ? await ddb.fetchSubmissionsAboveUser(season, currentUserSubmission.order) : [];
-      const userAllocation = allocateForUser(subsAbove, currentUserSubmission, competitionDepth);
+      
+      // Get items data for centro-based scenarios
+      let items = [];
+      try {
+        const { getItemsForSeason } = require("../lib/localItems");
+        items = await getItemsForSeason(season);
+      } catch (e) {
+        console.warn("Could not load items for centro scenario:", e.message);
+      }
+      
+      const userAllocation = allocateForUser(subsAbove, currentUserSubmission, scenario, items, blockedItems, competitionDepth);
 
       // Log successful allocation request
       logIP(req, "ALLOCATE_SUCCESS", {
@@ -68,7 +80,7 @@ module.exports = function ({ ddb }) {
         userName: userAllocation.name,
         order: userAllocation.order,
         season,
-        competitionDepth,
+        scenario,
         assignedCount: userAllocation.assignedItemIds.length,
         availableCount: userAllocation.availableByPreference.length
       });
@@ -77,7 +89,7 @@ module.exports = function ({ ddb }) {
       res.json({
         allocation: [userAllocation],
         season,
-        competitionDepth,
+        scenario,
         usersAboveCount: subsAbove.length, // Number of users with higher priority (lower order number)
       });
     } catch (e) {
@@ -94,19 +106,30 @@ module.exports = function ({ ddb }) {
       const season = String(
         (req.body && req.body.season) || new Date().getFullYear(),
       );
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 0;
+      const scenario = parseInt(req.body && req.body.scenario) || 0;
+      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 3;
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      const allocation = allocate(subs, competitionDepth);
+      
+      // Get items data for centro-based scenarios
+      let items = [];
+      try {
+        const { getItemsForSeason } = require("../lib/localItems");
+        items = await getItemsForSeason(season);
+      } catch (e) {
+        console.warn("Could not load items for centro scenario:", e.message);
+      }
+      
+      const allocation = allocate(subs, scenario, items, competitionDepth);
       
       // Log admin allocation request
       logIP(req, "ALLOCATE_ADMIN_SUCCESS", {
         season,
-        competitionDepth,
+        scenario,
         totalUsers: allocation.length,
         adminRequest: true
       });
       
-      res.json({ allocation, season, competitionDepth });
+      res.json({ allocation, season, scenario });
     } catch (e) {
       console.error("[/api/allocate-admin] error:", e);
       logIP(req, "ALLOCATE_ADMIN_ERROR", { error: e.message, season });
