@@ -41,7 +41,7 @@ function renderAllocation(payload) {
     0: "Estado actual de la asignación",
     1: "Simulación: usuarios restantes se presentan",
     2: "Simulación: destinos específicos se ocupan", 
-    3: "Simulación: peor caso posible"
+    3: "Simulación: bloqueo de preferencias"
   };
   
   const simulationText = scenario > 0 

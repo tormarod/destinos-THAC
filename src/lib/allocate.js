@@ -302,11 +302,11 @@ function getScenarioParams(scenario, submissionsAbove, targetUserOrder, userComp
         markSpecificItemsUnavailable: true
       };
     
-    case 3: // Peor caso posible
+    case 3: // Bloqueo de preferencias
       // Simulate worst case where users above get their top N preferences (user-configurable)
       return { 
         competitionDepth: userCompetitionDepth, 
-        description: `Peor caso posible (${userCompetitionDepth} opciones bloqueadas)`,
+        description: `(${userCompetitionDepth} opciones bloqueadas)`,
         includeFakeUsers: false
       };
     

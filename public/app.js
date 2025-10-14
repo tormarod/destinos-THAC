@@ -826,7 +826,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "0": "Estado actual de la asignación",
     "1": "Si usuarios restantes se presentan",
     "2": "Si destinos específicos se ocupan", 
-    "3": "Peor caso posible"
+    "3": "Bloqueo de preferencias"
   };
 
   if (scenarioSelect) {
