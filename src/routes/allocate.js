@@ -9,6 +9,57 @@ module.exports = function ({ ddb }) {
   const userRequests = new Map(); // userId -> lastRequestTime
   const RATE_LIMIT_MS = parseInt(process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30") * 1000; // Convert seconds to milliseconds
 
+  // Cache for submissions above user queries
+  const submissionsAboveCache = new Map(); // season+userOrder -> { submissions, timestamp }
+  const ALLOCATION_CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes cache TTL
+
+  // Invalidate allocation cache for a season (call after new submissions)
+  function invalidateAllocationCache(season) {
+    let invalidatedCount = 0;
+    for (const [key, value] of submissionsAboveCache.entries()) {
+      if (key.startsWith(`${season}+`)) {
+        submissionsAboveCache.delete(key);
+        invalidatedCount++;
+      }
+    }
+    if (invalidatedCount > 0) {
+      console.log(`[ALLOCATION-CACHE] INVALIDATED ${invalidatedCount} entries for season ${season}`);
+    }
+  }
+
+  // Get submissions above a specific user order (with caching)
+  async function getSubmissionsAboveUser(season, userOrder) {
+    if (!ddb.enabled) return [];
+    
+    const cacheKey = `${season}+${userOrder}`;
+    const cached = submissionsAboveCache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < ALLOCATION_CACHE_TTL_MS) {
+      console.log(`[ALLOCATION-CACHE] HIT for season ${season}, user order ${userOrder} (${cached.submissions.length} submissions)`);
+      return cached.submissions;
+    }
+    
+    // Cache miss - fetch from DynamoDB
+    console.log(`[ALLOCATION-CACHE] MISS for season ${season}, user order ${userOrder} - fetching from DynamoDB`);
+    const subsAbove = await ddb.fetchSubmissionsAboveUser(season, userOrder);
+    
+    // Cache the result
+    submissionsAboveCache.set(cacheKey, {
+      submissions: subsAbove,
+      timestamp: Date.now()
+    });
+    
+    // Clean up old cache entries (keep only last 100 entries)
+    if (submissionsAboveCache.size > 100) {
+      const oldestKey = submissionsAboveCache.keys().next().value;
+      submissionsAboveCache.delete(oldestKey);
+      console.log(`[ALLOCATION-CACHE] Cleaned up old cache entry: ${oldestKey}`);
+    }
+    
+    console.log(`[ALLOCATION-CACHE] CACHED ${subsAbove.length} submissions for season ${season}, user order ${userOrder} (should be ~${userOrder - 1})`);
+    return subsAbove;
+  }
+
   // Rate limiting middleware
   function rateLimit(req, res, next) {
     const userId = req.body && req.body.userId;
@@ -52,7 +103,7 @@ module.exports = function ({ ddb }) {
         return res.status(400).json({ error: "userId is required" });
       }
 
-      // Optimized: get current user's submission and submissions above them
+      // Get current user's submission first
       const currentUserSubmission = ddb.enabled ? await ddb.fetchUserSubmission(season, userId) : null;
 
       if (!currentUserSubmission) {
@@ -60,8 +111,8 @@ module.exports = function ({ ddb }) {
         return res.status(404).json({ error: "User not found in submissions" });
       }
 
-      // Only fetch submissions above current user (much more efficient)
-      const subsAbove = ddb.enabled ? await ddb.fetchSubmissionsAboveUser(season, currentUserSubmission.order) : [];
+      // Get only submissions above current user (efficient GSI query)
+      const subsAbove = await getSubmissionsAboveUser(season, currentUserSubmission.order);
       
       // Get items data for centro-based scenarios
       let items = [];
@@ -137,5 +188,8 @@ module.exports = function ({ ddb }) {
     }
   });
 
+  // Export cache invalidation function for use by other routes
+  router.invalidateAllocationCache = invalidateAllocationCache;
+  
   return router;
 };
