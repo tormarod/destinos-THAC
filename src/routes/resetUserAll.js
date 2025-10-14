@@ -18,7 +18,7 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
       }
 
       const removed = await ddb.deleteAllByUser(userId);
-      
+
       // Mark all affected seasons as active (data reset request)
       if (cacheManager) {
         const currentYear = new Date().getFullYear();
@@ -26,7 +26,7 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
           cacheManager.markSeasonActive(String(year));
         }
       }
-      
+
       // Invalidate allocation cache for all seasons since user was deleted across all seasons
       if (invalidateAllocationCache) {
         // Clear cache for common seasons (could be more sophisticated)
@@ -35,7 +35,7 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
           invalidateAllocationCache(String(year));
         }
       }
-      
+
       logIP(req, "RESET_USER_ALL_SUCCESS", { userId, removedCount: removed });
       return res.json({ ok: true, removed });
     } catch (e) {

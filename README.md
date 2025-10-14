@@ -54,7 +54,10 @@ destinos-THAC/
 ├── src/
 │   ├── lib/                 # Core library functions
 │   │   ├── allocate.js      # Allocation algorithm
+│   │   ├── allocate.test.js # Allocation algorithm tests
 │   │   ├── ddb.js           # DynamoDB operations
+│   │   ├── demandDrivenCache.js # Demand-driven caching system
+│   │   ├── ipLogger.js      # IP logging and monitoring
 │   │   ├── localItems.js    # Local catalog management
 │   │   └── requireEnv.js    # Environment validation
 │   └── routes/              # API route handlers
@@ -213,6 +216,7 @@ Runs the allocation algorithm for the specified season. This endpoint now suppor
 ```
 
 **Parameters:**
+
 - `season`: The allocation season/year
 - `userId`: User ID for user-specific allocation (required)
 - `scenario`: Simulation scenario (0-3, optional, default: 0)
@@ -382,6 +386,32 @@ The application implements an intelligent caching system that dramatically reduc
 
 Use the `/api/cache-stats` endpoint to monitor cache performance, hit rates, and season activity.
 
+## 🔄 Version Management System
+
+The application includes an automatic version management system to ensure users always have the latest code after deployments:
+
+### How It Works
+
+1. **Server-Side Version Injection**: The server injects the current version (from `APP_VERSION` environment variable) into the HTML
+2. **Client-Side Version Check**: The frontend checks for version changes on page load
+3. **Automatic Refresh**: If a version change is detected, users are automatically refreshed to get the latest code
+4. **Cache Busting**: All static assets get version parameters to prevent browser caching issues
+
+### Benefits
+
+- **Seamless Updates**: Users automatically get new versions without manual intervention
+- **Cache Prevention**: Eliminates issues with stale frontend code after deployments
+- **Zero Downtime**: Updates happen transparently in the background
+- **Reliable Deployment**: Ensures all users are running the same version
+
+### Configuration
+
+Set the `APP_VERSION` environment variable to trigger version updates:
+
+```bash
+APP_VERSION=1.5.0
+```
+
 ## 🛡️ Duplicate Prevention System
 
 The application implements a comprehensive multi-layer duplicate prevention system to handle network issues and user behavior:
@@ -480,6 +510,7 @@ The project includes Jest tests for the allocation algorithm and core functional
 - `ID_FIELD`: Field name for destination ID (default: "Vacante")
 - `ALLOCATION_RATE_LIMIT_SECONDS`: Rate limit for allocation requests in seconds (default: 30)
 - `ITEMS_CACHE_TTL_MS`: Cache TTL for local items (default: 15 minutes)
+- `APP_VERSION`: Application version for cache busting and user refresh (optional)
 - `PORT`: Server port (default: 3000)
 
 ## 🤝 Contributing

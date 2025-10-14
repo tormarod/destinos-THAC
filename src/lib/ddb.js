@@ -52,14 +52,15 @@ function createDdb(cfg) {
         new QueryCommand({
           TableName: tableName,
           KeyConditionExpression: "#pk = :pk",
-          ExpressionAttributeNames: { 
+          ExpressionAttributeNames: {
             "#pk": "pk",
             "#order": "order",
             "#ranked": "rankedItems",
-            "#name": "name"
+            "#name": "name",
           },
           ExpressionAttributeValues: { ":pk": makePk(season) },
-          ProjectionExpression: "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
+          ProjectionExpression:
+            "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
           ExclusiveStartKey,
         }),
       );
@@ -122,30 +123,33 @@ function createDdb(cfg) {
       new QueryCommand({
         TableName: tableName,
         KeyConditionExpression: "#pk = :pk AND #sk = :sk",
-        ExpressionAttributeNames: { 
+        ExpressionAttributeNames: {
           "#pk": "pk",
           "#sk": "sk",
           "#order": "order",
           "#ranked": "rankedItems",
-          "#name": "name"
+          "#name": "name",
         },
-        ExpressionAttributeValues: { 
+        ExpressionAttributeValues: {
           ":pk": makePk(season),
-          ":sk": String(userId)
+          ":sk": String(userId),
         },
-        ProjectionExpression: "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
+        ProjectionExpression:
+          "sk, #order, #ranked, #name, submittedAt, updatedAt, season",
       }),
     );
     const item = resp.Items && resp.Items[0];
-    return item ? {
-      id: item.sk,
-      name: item.name,
-      order: item.order,
-      rankedItems: item.rankedItems,
-      submittedAt: item.submittedAt,
-      updatedAt: item.updatedAt,
-      season: item.season,
-    } : null;
+    return item
+      ? {
+          id: item.sk,
+          name: item.name,
+          order: item.order,
+          rankedItems: item.rankedItems,
+          submittedAt: item.submittedAt,
+          updatedAt: item.updatedAt,
+          season: item.season,
+        }
+      : null;
   }
 
   /** Get submissions above a specific user order (optimized for allocation) */
@@ -159,15 +163,15 @@ function createDdb(cfg) {
           TableName: tableName,
           IndexName: "GSI1",
           KeyConditionExpression: "#pk = :pk AND #o < :userOrder",
-          ExpressionAttributeNames: { 
+          ExpressionAttributeNames: {
             "#pk": "pk",
             "#o": "order",
             "#ranked": "rankedItems",
-            "#name": "name"
+            "#name": "name",
           },
-          ExpressionAttributeValues: { 
+          ExpressionAttributeValues: {
             ":pk": makePk(season),
-            ":userOrder": Number(userOrder)
+            ":userOrder": Number(userOrder),
           },
           ProjectionExpression: "sk, #o, #ranked, #name, submittedAt, season",
           ExclusiveStartKey,

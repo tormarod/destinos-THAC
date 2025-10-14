@@ -13,7 +13,8 @@ const { getItemsForSeason } = require("./src/lib/localItems");
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, "public");
 const ID_FIELD = process.env.ID_FIELD || "Vacante";
-const ALLOCATION_RATE_LIMIT_SECONDS = process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30";
+const ALLOCATION_RATE_LIMIT_SECONDS =
+  process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30";
 
 const { requireEnv } = require("./src/lib/requireEnv");
 
@@ -46,28 +47,47 @@ app.use((req, res, next) => {
   next();
 });
 
-// serve static files from public directory
-app.use(express.static(PUBLIC_DIR));
-
-// Serve index.html with cache-busting version parameters
+// Serve index.html with cache-busting version parameters (BEFORE static file serving)
 app.get("/", (req, res) => {
   const version = process.env.APP_VERSION || Date.now();
-  const fs = require('fs');
-  const path = require('path');
-  
+  const fs = require("fs");
+  const path = require("path");
+
   try {
-    let html = fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8');
-    
+    let html = fs.readFileSync(path.join(PUBLIC_DIR, "index.html"), "utf8");
+
     // Add version parameters to all static assets
-    html = html.replace(/href="\/styles\.css"/g, `href="/styles.css?v=${version}"`);
-    html = html.replace(/src="\/(splash|api|allocation|app)\.js"/g, `src="/$1.js?v=${version}"`);
-    
+    html = html.replace(
+      /href="\/styles\.css"/g,
+      `href="/styles.css?v=${version}"`,
+    );
+    html = html.replace(
+      /src="\/(splash|api|allocation|app)\.js"/g,
+      `src="/$1.js?v=${version}"`,
+    );
+
+    // Inject the version into the HTML for client-side version checking
+    html = html.replace(
+      "</head>",
+      `<script>window.APP_VERSION = '${version}';</script></head>`,
+    );
+
+    // Set cache control headers to prevent caching of the HTML
+    res.set({
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
     res.send(html);
   } catch (error) {
-    console.error('Error serving index.html:', error);
-    res.status(500).send('Error loading page');
+    console.error("Error serving index.html:", error);
+    res.status(500).send("Error loading page");
   }
 });
+
+// serve static files from public directory (AFTER dynamic routes)
+app.use(express.static(PUBLIC_DIR));
 
 // API request logger for debugging and monitoring
 app.use("/api", (req, _res, next) => {
@@ -99,14 +119,35 @@ app.use("/api", allocateRouter); // POST /allocate
 
 // Routes that modify data - pass cache invalidation function and cache manager
 // This ensures cache is invalidated when data changes
-app.use("/api", require("./src/routes/submit")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache, cacheManager: allocateRouter.cacheManager })); // POST /submit
-app.use("/api", require("./src/routes/resetUser")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache, cacheManager: allocateRouter.cacheManager })); // POST /reset-user
-app.use("/api", require("./src/routes/resetUserAll")({ ddb, invalidateAllocationCache: allocateRouter.invalidateAllocationCache, cacheManager: allocateRouter.cacheManager })); // POST /reset-user-all
+app.use(
+  "/api",
+  require("./src/routes/submit")({
+    ddb,
+    invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
+    cacheManager: allocateRouter.cacheManager,
+  }),
+); // POST /submit
+app.use(
+  "/api",
+  require("./src/routes/resetUser")({
+    ddb,
+    invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
+    cacheManager: allocateRouter.cacheManager,
+  }),
+); // POST /reset-user
+app.use(
+  "/api",
+  require("./src/routes/resetUserAll")({
+    ddb,
+    invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
+    cacheManager: allocateRouter.cacheManager,
+  }),
+); // POST /reset-user-all
 
 // Configuration endpoint for frontend
 app.get("/api/config", (req, res) => {
   res.json({
-    allocationRateLimitSeconds: parseInt(ALLOCATION_RATE_LIMIT_SECONDS)
+    allocationRateLimitSeconds: parseInt(ALLOCATION_RATE_LIMIT_SECONDS),
   });
 });
 

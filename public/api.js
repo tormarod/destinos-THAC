@@ -27,7 +27,7 @@
   const api = {
     async getConfig() {
       if (configCache) return configCache;
-      
+
       const res = await fetch("/api/config");
       const data = await jsonOrThrow(res, "Error al cargar configuración");
       configCache = data;
@@ -88,7 +88,12 @@
 
       return result;
     },
-    async allocate(season, scenario = 0, blockedItems = {}, competitionDepth = 1) {
+    async allocate(
+      season,
+      scenario = 0,
+      blockedItems = {},
+      competitionDepth = 1,
+    ) {
       const userId = localStorage.getItem("allocator:userId");
       if (!userId) {
         throw new Error(
@@ -97,7 +102,13 @@
       }
 
       // Pure server-side allocation - no client-side caching or calculation
-      const payload = { season, scenario, userId, blockedItems, competitionDepth };
+      const payload = {
+        season,
+        scenario,
+        userId,
+        blockedItems,
+        competitionDepth,
+      };
       const res = await fetch("/api/allocate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

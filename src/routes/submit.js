@@ -11,19 +11,28 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
 
   router.post("/submit", async (req, res) => {
     try {
-      const { name, order, rankedItems, id, season, requestId } = req.body || {};
+      const { name, order, rankedItems, id, season, requestId } =
+        req.body || {};
       const seasonStr = String(season || new Date().getFullYear());
       // Generate unique requestId if not provided by frontend
-      const uniqueRequestId = requestId || `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const uniqueRequestId =
+        requestId || `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
       // Validate required fields
       if (!name || typeof name !== "string") {
-        logIP(req, "SUBMIT_FAILED", { reason: "missing_name", season: seasonStr });
+        logIP(req, "SUBMIT_FAILED", {
+          reason: "missing_name",
+          season: seasonStr,
+        });
         return res.status(400).json({ error: "Name is required." });
       }
       const parsedOrder = Number(order);
       if (!Number.isInteger(parsedOrder) || parsedOrder <= 0) {
-        logIP(req, "SUBMIT_FAILED", { reason: "invalid_order", season: seasonStr, name: name.trim() });
+        logIP(req, "SUBMIT_FAILED", {
+          reason: "invalid_order",
+          season: seasonStr,
+          name: name.trim(),
+        });
         return res
           .status(400)
           .json({ error: "Order must be a positive integer." });
@@ -33,32 +42,46 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
       const now = Date.now();
 
       // Generate userId (use provided id or generate new one)
-      const userId = id && typeof id === "string" && id.trim() !== ""
-        ? id
-        : `u_${Math.random().toString(36).slice(2)}`;
+      const userId =
+        id && typeof id === "string" && id.trim() !== ""
+          ? id
+          : `u_${Math.random().toString(36).slice(2)}`;
 
       // Create tracking key using userId + season for cooldown tracking
       const submissionKey = `${userId}_${seasonStr}`;
 
       // Layer 1: Check for duplicate requestId (exact same request processed multiple times)
       if (processedRequestIds.has(uniqueRequestId)) {
-        logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_requestId", userId, season: seasonStr, requestId: uniqueRequestId });
+        logIP(req, "SUBMIT_BLOCKED", {
+          reason: "duplicate_requestId",
+          userId,
+          season: seasonStr,
+          requestId: uniqueRequestId,
+        });
         return res.status(409).json({
           error: "Solicitud duplicada",
-          message: "Esta solicitud ya ha sido procesada. No se creará un registro duplicado.",
-          requestId: uniqueRequestId
+          message:
+            "Esta solicitud ya ha sido procesada. No se creará un registro duplicado.",
+          requestId: uniqueRequestId,
         });
       }
 
       // Layer 2: Check for recent duplicate submission within cooldown period
       const lastSubmission = recentSubmissions.get(submissionKey);
-      if (lastSubmission && (now - lastSubmission) < SUBMISSION_COOLDOWN_MS) {
-        const remainingSeconds = Math.ceil((SUBMISSION_COOLDOWN_MS - (now - lastSubmission)) / 1000);
-        logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_submission", userId, season: seasonStr, remainingSeconds });
+      if (lastSubmission && now - lastSubmission < SUBMISSION_COOLDOWN_MS) {
+        const remainingSeconds = Math.ceil(
+          (SUBMISSION_COOLDOWN_MS - (now - lastSubmission)) / 1000,
+        );
+        logIP(req, "SUBMIT_BLOCKED", {
+          reason: "duplicate_submission",
+          userId,
+          season: seasonStr,
+          remainingSeconds,
+        });
         return res.status(429).json({
           error: "Solicitud duplicada",
           message: `Ya has enviado una solicitud recientemente. Espera ${remainingSeconds} segundo(s) antes de enviar otra.\n\nEsto previene envíos duplicados por problemas de conexión.`,
-          retryAfter: remainingSeconds
+          retryAfter: remainingSeconds,
         });
       }
 
@@ -88,18 +111,18 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
         season: seasonStr,
         rankedItemsCount: rankedItems?.length || 0,
         isUpdate: !!existing,
-        requestId: uniqueRequestId
+        requestId: uniqueRequestId,
       });
 
       // Track this submission to prevent rapid duplicates (Layer 2)
       recentSubmissions.set(submissionKey, now);
       processedRequestIds.add(uniqueRequestId);
-      
+
       // Mark season as active in demand-driven cache (new submission request)
       if (cacheManager) {
         cacheManager.markSeasonActive(seasonStr);
       }
-      
+
       // Invalidate allocation cache since new submission affects allocation results
       if (invalidateAllocationCache) {
         invalidateAllocationCache(seasonStr);
@@ -113,7 +136,7 @@ module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
       if (processedRequestIds.size > 1000) {
         // Clear half of the processed request IDs (keep recent ones)
         const idsToDelete = Array.from(processedRequestIds).slice(0, 500);
-        idsToDelete.forEach(id => processedRequestIds.delete(id));
+        idsToDelete.forEach((id) => processedRequestIds.delete(id));
       }
 
       return res.json({ ok: true, id: userId });

@@ -5,36 +5,40 @@ const $ = (id) => document.getElementById(id);
 
 // Global application state
 const state = {
-  idField: "Vacante",                    // Field name for item identification
-  season: null,                          // Current selected season
-  items: [],                             // Available items for the season
-  itemsById: new Map(),                  // Fast lookup map for items by ID
-  ranking: [],                           // User's current ranking/preferences
-  quota: 0,                              // User's quota (number of items they can select)
-  maxClickable: 9999999,                 // Maximum number of clickable items
-  maxItemsTable: 9999999,                // Maximum items to display in table
-  searchTerm: "",                        // Current search filter
-  page: 1,                               // Current page for pagination
-  pageSize: 10,                          // Items per page
-  yearsAbove: 0,                         // Years above current year to allow
-  yearsBelow: 0,                         // Years below current year to allow
+  idField: "Vacante", // Field name for item identification
+  season: null, // Current selected season
+  items: [], // Available items for the season
+  itemsById: new Map(), // Fast lookup map for items by ID
+  ranking: [], // User's current ranking/preferences
+  quota: 0, // User's quota (number of items they can select)
+  maxClickable: 9999999, // Maximum number of clickable items
+  maxItemsTable: 9999999, // Maximum items to display in table
+  searchTerm: "", // Current search filter
+  page: 1, // Current page for pagination
+  pageSize: 10, // Items per page
+  yearsAbove: 0, // Years above current year to allow
+  yearsBelow: 0, // Years below current year to allow
   blockedItems: { selectedLocalidades: [], selectedCentros: [] }, // Blocked items for scenario 2
-  competitionDepth: 1,                   // Competition depth for scenario 3
+  competitionDepth: 1, // Competition depth for scenario 3
 };
 
 // Version check to force refresh after deployment
-const CURRENT_VERSION = '1.0.0'; // Update this on each deployment
-const STORAGE_KEY = 'allocator:version';
+const STORAGE_KEY = "allocator:version";
 
 function checkVersionAndRefresh() {
+  // Get the current version from the server-injected variable
+  const currentVersion = window.APP_VERSION || "1.0.0";
   const storedVersion = localStorage.getItem(STORAGE_KEY);
-  if (storedVersion && storedVersion !== CURRENT_VERSION) {
-    console.log(`Version changed from ${storedVersion} to ${CURRENT_VERSION}. Refreshing...`);
-    localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+
+  if (storedVersion && storedVersion !== currentVersion) {
+    console.log(
+      `Version changed from ${storedVersion} to ${currentVersion}. Refreshing...`,
+    );
+    localStorage.setItem(STORAGE_KEY, currentVersion);
     window.location.reload();
     return;
   }
-  localStorage.setItem(STORAGE_KEY, CURRENT_VERSION);
+  localStorage.setItem(STORAGE_KEY, currentVersion);
 }
 
 // Make state accessible globally for other scripts
@@ -171,7 +175,7 @@ function renderClickableItems() {
 
   // Check if mobile/tablet view (screen width <= 1024px)
   const isMobile = window.innerWidth <= 1024;
-  
+
   const rows = slice
     .map((o) => {
       const id = String(o[state.idField]);
@@ -340,7 +344,7 @@ function renderRankingTable() {
   const rows = ids
     .map((id, idx) => {
       const o = state.itemsById.get(String(id));
-      
+
       if (isMobile) {
         // Mobile card layout with drag functionality
         return `
@@ -446,35 +450,35 @@ function renderRankingTable() {
         card.addEventListener("touchmove", (e) => {
           e.preventDefault();
           if (!draggedCard) return;
-          
+
           const touchY = e.touches[0].clientY;
           const deltaY = touchY - touchStartY;
-          
+
           // Start dragging after 10px movement
           if (Math.abs(deltaY) > 10 && !isDragging) {
             isDragging = true;
             draggedCard.classList.add("dragging");
             draggedCard.style.transform = `translateY(${deltaY}px)`;
           }
-          
+
           if (isDragging) {
             draggedCard.style.transform = `translateY(${deltaY}px)`;
-            
+
             // Find which card we're over
             const cards = container.querySelectorAll(".mobile-ranking-card");
             let overIndex = -1;
-            
+
             cards.forEach((otherCard, index) => {
               if (otherCard === draggedCard) return;
-              
+
               const rect = otherCard.getBoundingClientRect();
               const cardCenter = rect.top + rect.height / 2;
-              
+
               if (touchY < cardCenter && touchY > rect.top) {
                 overIndex = index;
               }
             });
-            
+
             // Add visual feedback
             cards.forEach((otherCard, index) => {
               if (otherCard !== draggedCard) {
@@ -487,31 +491,31 @@ function renderRankingTable() {
         card.addEventListener("touchend", (e) => {
           e.preventDefault();
           if (!draggedCard) return;
-          
+
           const touchY = e.changedTouches[0].clientY;
           const deltaY = touchY - touchStartY;
-          
+
           // Remove visual feedback
-          container.querySelectorAll(".mobile-ranking-card").forEach(card => {
+          container.querySelectorAll(".mobile-ranking-card").forEach((card) => {
             card.classList.remove("drag-over");
           });
-          
+
           if (isDragging) {
             // Find drop target
             const cards = container.querySelectorAll(".mobile-ranking-card");
             let dropIndex = -1;
-            
+
             cards.forEach((otherCard, index) => {
               if (otherCard === draggedCard) return;
-              
+
               const rect = otherCard.getBoundingClientRect();
               const cardCenter = rect.top + rect.height / 2;
-              
+
               if (touchY < cardCenter && touchY > rect.top) {
                 dropIndex = index;
               }
             });
-            
+
             // Perform the reorder if we have a valid drop target
             if (dropIndex !== -1 && dropIndex !== draggedIndex) {
               const moved = state.ranking.splice(draggedIndex, 1)[0];
@@ -526,7 +530,7 @@ function renderRankingTable() {
             // Just a tap, no drag - reset position
             draggedCard.style.transform = "";
           }
-          
+
           // Reset drag state
           draggedCard.classList.remove("dragging");
           draggedCard.style.transform = "";
@@ -675,7 +679,7 @@ let lastSubmitTime = 0;
 const SUBMIT_DEBOUNCE_MS = 10000; // 10 seconds
 
 // Enhanced duplicate prevention using localStorage
-const SUBMISSION_STORAGE_KEY = 'lastSubmission';
+const SUBMISSION_STORAGE_KEY = "lastSubmission";
 const SUBMISSION_COOLDOWN_MS = 15000; // 15 seconds (longer than server)
 
 function getLastSubmissionTime() {
@@ -698,7 +702,7 @@ function setLastSubmissionTime() {
 function isSubmissionTooRecent() {
   const lastTime = getLastSubmissionTime();
   const now = Date.now();
-  return (now - lastTime) < SUBMISSION_COOLDOWN_MS;
+  return now - lastTime < SUBMISSION_COOLDOWN_MS;
 }
 
 function getRemainingCooldownSeconds() {
@@ -711,7 +715,7 @@ function getRemainingCooldownSeconds() {
 function updateSubmitButtonState() {
   const submitBtn = $("submitForm")?.querySelector('button[type="submit"]');
   if (!submitBtn) return;
-  
+
   if (isSubmissionTooRecent()) {
     const remaining = getRemainingCooldownSeconds();
     submitBtn.disabled = true;
@@ -735,13 +739,13 @@ function startCooldownTimer() {
     clearInterval(cooldownInterval);
     cooldownInterval = null;
   }
-  
+
   // Only start timer if we're actually on cooldown
   if (!isSubmissionTooRecent()) {
     updateSubmitButtonState();
     return;
   }
-  
+
   // Start countdown timer that updates every second
   cooldownInterval = setInterval(() => {
     if (!isSubmissionTooRecent()) {
@@ -767,15 +771,21 @@ async function submitRanking(e) {
   // Enhanced duplicate prevention using localStorage (persistent across page refreshes)
   if (isSubmissionTooRecent()) {
     const remaining = getRemainingCooldownSeconds();
-    alert(`Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.\n\nEsto previene envíos duplicados por problemas de conexión.`);
+    alert(
+      `Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.\n\nEsto previene envíos duplicados por problemas de conexión.`,
+    );
     return;
   }
 
   // Check if too soon since last submission (legacy check - in-memory only)
   const now = Date.now();
   if (now - lastSubmitTime < SUBMIT_DEBOUNCE_MS) {
-    const remaining = Math.ceil((SUBMIT_DEBOUNCE_MS - (now - lastSubmitTime)) / 1000);
-    alert(`Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.`);
+    const remaining = Math.ceil(
+      (SUBMIT_DEBOUNCE_MS - (now - lastSubmitTime)) / 1000,
+    );
+    alert(
+      `Por favor espera ${remaining} segundo(s) antes de enviar otra solicitud.`,
+    );
     return;
   }
 
@@ -811,11 +821,11 @@ async function submitRanking(e) {
   isSubmitting = true;
   lastSubmitTime = now;
   setLastSubmissionTime(); // Store submission time immediately in localStorage
-  
+
   // Generate unique request ID once for this submission attempt
   // This ID is used by the server to prevent processing the same request multiple times
   const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-  
+
   // Disable submit button and show loading state
   const submitBtn = $("submitForm").querySelector('button[type="submit"]');
   const originalText = submitBtn.textContent;
@@ -830,7 +840,7 @@ async function submitRanking(e) {
       rankedItems,
       id,
       season: state.season, // ✅ include season
-      requestId // Use the same requestId for this submission attempt
+      requestId, // Use the same requestId for this submission attempt
     });
 
     // Store user ID for future submissions
@@ -842,12 +852,12 @@ async function submitRanking(e) {
     // Refresh state and show success message
     await fetchState();
     alert("¡Guardado correctamente!");
-    
+
     // Restart the cooldown timer after successful submission
     startCooldownTimer();
   } catch (error) {
     console.error("Submit error:", error);
-    
+
     // Handle specific error cases
     if (error.status === 429) {
       // Rate limited - show specific message
@@ -861,7 +871,7 @@ async function submitRanking(e) {
     isSubmitting = false;
     submitBtn.disabled = false;
     submitBtn.textContent = originalText;
-    
+
     // Update button state based on cooldown
     updateSubmitButtonState();
   }
@@ -899,12 +909,12 @@ async function resetAll() {
 document.addEventListener("DOMContentLoaded", () => {
   // Check version and force refresh if needed
   checkVersionAndRefresh();
-  
+
   populateSeasonSelect();
 
   // Initialize submit button state and start cooldown timer
   updateSubmitButtonState();
-  
+
   // Only start timer if we're actually on cooldown
   if (isSubmissionTooRecent()) {
     startCooldownTimer();
@@ -956,24 +966,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Scenario selection system
   const scenarioSelect = $("scenarioSelect");
   const scenarioDescription = $("scenarioDescription");
-  
+
   // Scenario descriptions
   const scenarioDescriptions = {
-    "0": "Estado actual de la asignación",
-    "1": "Si usuarios restantes se presentan",
-    "2": "Si destinos específicos se ocupan", 
-    "3": "Bloqueo de preferencias"
+    0: "Estado actual de la asignación",
+    1: "Si usuarios restantes se presentan",
+    2: "Si destinos específicos se ocupan",
+    3: "Bloqueo de preferencias",
   };
 
   if (scenarioSelect) {
     scenarioSelect.addEventListener("change", (e) => {
       const selectedValue = e.target.value;
       if (scenarioDescription) {
-        scenarioDescription.textContent = scenarioDescriptions[selectedValue] || "Estado actual de la asignación";
+        scenarioDescription.textContent =
+          scenarioDescriptions[selectedValue] ||
+          "Estado actual de la asignación";
       }
-      
+
       // Show/hide location selection UI for scenario 2
-      const locationSelectionUI = document.getElementById("locationSelectionUI");
+      const locationSelectionUI = document.getElementById(
+        "locationSelectionUI",
+      );
       if (locationSelectionUI) {
         if (selectedValue === "2") {
           locationSelectionUI.style.display = "block";
@@ -982,7 +996,7 @@ document.addEventListener("DOMContentLoaded", () => {
           locationSelectionUI.style.display = "none";
         }
       }
-      
+
       // Show/hide competition depth UI for scenario 3
       const competitionDepthUI = document.getElementById("competitionDepthUI");
       if (competitionDepthUI) {
@@ -997,16 +1011,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize scenario description on page load
     const initialValue = scenarioSelect.value || "0";
     if (scenarioDescription) {
-      scenarioDescription.textContent = scenarioDescriptions[initialValue] || "Estado actual de la asignación";
+      scenarioDescription.textContent =
+        scenarioDescriptions[initialValue] || "Estado actual de la asignación";
     }
-    
+
     // Initialize location selection UI visibility
     const locationSelectionUI = document.getElementById("locationSelectionUI");
     if (locationSelectionUI && initialValue === "2") {
       locationSelectionUI.style.display = "block";
       loadLocationOptions();
     }
-    
+
     // Initialize competition depth UI visibility
     const competitionDepthUI = document.getElementById("competitionDepthUI");
     if (competitionDepthUI && initialValue === "3") {
@@ -1020,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const season = new Date().getFullYear().toString();
       const response = await fetch(`/api/state?season=${season}`);
       const data = await response.json();
-      
+
       if (data.items && data.items.length > 0) {
         populateLocationSelects(data.items);
       }
@@ -1033,25 +1048,31 @@ document.addEventListener("DOMContentLoaded", () => {
   function populateLocationSelects(items) {
     const localidadSelect = document.getElementById("localidadSelect");
     const centroSelect = document.getElementById("centroSelect");
-    
+
     if (!localidadSelect || !centroSelect) return;
-    
+
     // Get unique localidades and centros
-    const localidades = [...new Set(items.map(item => item.Localidad).filter(Boolean))].sort();
-    const centros = [...new Set(items.map(item => item['Centro de destino']).filter(Boolean))].sort();
-    
+    const localidades = [
+      ...new Set(items.map((item) => item.Localidad).filter(Boolean)),
+    ].sort();
+    const centros = [
+      ...new Set(
+        items.map((item) => item["Centro de destino"]).filter(Boolean),
+      ),
+    ].sort();
+
     // Populate localidad select
     localidadSelect.innerHTML = "";
-    localidades.forEach(localidad => {
+    localidades.forEach((localidad) => {
       const option = document.createElement("option");
       option.value = localidad;
       option.textContent = localidad;
       localidadSelect.appendChild(option);
     });
-    
+
     // Populate centro select
     centroSelect.innerHTML = "";
-    centros.forEach(centro => {
+    centros.forEach((centro) => {
       const option = document.createElement("option");
       option.value = centro;
       option.textContent = centro;
@@ -1063,24 +1084,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewBlockedItemsBtn = document.getElementById("previewBlockedItems");
   if (previewBlockedItemsBtn) {
     previewBlockedItemsBtn.addEventListener("click", async () => {
-      const selectedLocalidades = Array.from(document.getElementById("localidadSelect").selectedOptions).map(opt => opt.value);
-      const selectedCentros = Array.from(document.getElementById("centroSelect").selectedOptions).map(opt => opt.value);
-      
+      const selectedLocalidades = Array.from(
+        document.getElementById("localidadSelect").selectedOptions,
+      ).map((opt) => opt.value);
+      const selectedCentros = Array.from(
+        document.getElementById("centroSelect").selectedOptions,
+      ).map((opt) => opt.value);
+
       if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
-        alert("Por favor selecciona al menos una localidad o centro para bloquear.");
+        alert(
+          "Por favor selecciona al menos una localidad o centro para bloquear.",
+        );
         return;
       }
-      
+
       try {
         // Save selections to in-memory state
         state.blockedItems = { selectedLocalidades, selectedCentros };
-        
+
         const season = new Date().getFullYear().toString();
         const response = await fetch(`/api/state?season=${season}`);
         const data = await response.json();
-        
+
         if (data.items && data.items.length > 0) {
-          const blockedItems = getBlockedItems(data.items, selectedLocalidades, selectedCentros);
+          const blockedItems = getBlockedItems(
+            data.items,
+            selectedLocalidades,
+            selectedCentros,
+          );
           showBlockedItemsPreview(blockedItems);
         }
       } catch (error) {
@@ -1104,9 +1135,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Get blocked items based on selected localidades and centros
   function getBlockedItems(items, selectedLocalidades, selectedCentros) {
-    return items.filter(item => {
-      const localidadMatch = selectedLocalidades.length === 0 || selectedLocalidades.includes(item.Localidad);
-      const centroMatch = selectedCentros.length === 0 || selectedCentros.includes(item['Centro de destino']);
+    return items.filter((item) => {
+      const localidadMatch =
+        selectedLocalidades.length === 0 ||
+        selectedLocalidades.includes(item.Localidad);
+      const centroMatch =
+        selectedCentros.length === 0 ||
+        selectedCentros.includes(item["Centro de destino"]);
       return localidadMatch && centroMatch;
     });
   }
@@ -1115,32 +1150,44 @@ document.addEventListener("DOMContentLoaded", () => {
   function showBlockedItemsPreview(blockedItems) {
     const previewDiv = document.getElementById("blockedItemsPreview");
     const listDiv = document.getElementById("blockedItemsList");
-    
+
     if (!previewDiv || !listDiv) return;
-    
+
     if (blockedItems.length === 0) {
-      listDiv.innerHTML = "No se encontraron destinos que coincidan con la selección.";
+      listDiv.innerHTML =
+        "No se encontraron destinos que coincidan con la selección.";
     } else {
-      const itemsList = blockedItems.slice(0, 20).map(item => 
-        `• Vacante ${item.Vacante}: ${item.Localidad} - ${item['Centro de destino']}`
-      ).join("<br>");
-      
-      const moreText = blockedItems.length > 20 ? `<br><em>... y ${blockedItems.length - 20} destinos más</em>` : "";
-      
+      const itemsList = blockedItems
+        .slice(0, 20)
+        .map(
+          (item) =>
+            `• Vacante ${item.Vacante}: ${item.Localidad} - ${item["Centro de destino"]}`,
+        )
+        .join("<br>");
+
+      const moreText =
+        blockedItems.length > 20
+          ? `<br><em>... y ${blockedItems.length - 20} destinos más</em>`
+          : "";
+
       listDiv.innerHTML = `${itemsList}${moreText}`;
     }
-    
+
     previewDiv.style.display = "block";
   }
 
   // Get selected blocked items for allocation
   function getSelectedBlockedItems() {
-    const selectedLocalidades = Array.from(document.getElementById("localidadSelect").selectedOptions).map(opt => opt.value);
-    const selectedCentros = Array.from(document.getElementById("centroSelect").selectedOptions).map(opt => opt.value);
-    
+    const selectedLocalidades = Array.from(
+      document.getElementById("localidadSelect").selectedOptions,
+    ).map((opt) => opt.value);
+    const selectedCentros = Array.from(
+      document.getElementById("centroSelect").selectedOptions,
+    ).map((opt) => opt.value);
+
     // Store in in-memory state for use in allocation
     state.blockedItems = { selectedLocalidades, selectedCentros };
-    
+
     return { selectedLocalidades, selectedCentros };
   }
 
@@ -1151,7 +1198,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Handle competition depth input for scenario 3
-  const competitionDepthInput = document.getElementById("competitionDepthInput");
+  const competitionDepthInput = document.getElementById(
+    "competitionDepthInput",
+  );
   if (competitionDepthInput) {
     competitionDepthInput.addEventListener("input", (e) => {
       const value = Math.max(1, Math.min(20, Number(e.target.value) || 3));

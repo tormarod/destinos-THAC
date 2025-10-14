@@ -86,8 +86,10 @@
         contrario tendrás que volver a enviar tu ranking y se creará un registro
         duplicado.
       </p>
-      <p class="muted" style="color: #666; font-size: 12px; margin-top: 8px;">
-        💡 <strong>Protección anti-duplicados:</strong> Si tienes problemas de conexión, espera 15 segundos entre envíos para evitar registros duplicados.
+      <p class="muted" style="color: #666; font-size: 12px; margin-top: 8px">
+        💡 <strong>Protección anti-duplicados:</strong> Si tienes problemas de
+        conexión, espera 15 segundos entre envíos para evitar registros
+        duplicados.
       </p>
     </form>
 
@@ -97,12 +99,19 @@
         <label for="scenarioSelect"
           >Escenario de simulación
           <i class="muted"
-            ><span id="scenarioDescription">Estado actual de la asignación</span></i
+            ><span id="scenarioDescription"
+              >Estado actual de la asignación</span
+            ></i
           ></label
         >
         <select
           id="scenarioSelect"
-          style="width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"
+          style="
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+          "
         >
           <option value="0">Estado actual</option>
           <option value="1">Usuarios restantes se presentan</option>
@@ -111,84 +120,219 @@
         </select>
       </div>
       <p class="muted" style="margin-top: 8px; font-size: 14px">
-        <strong>Estado actual:</strong> Asignación normal con los usuarios reales existentes<br>
-        <strong>Usuarios restantes:</strong> Si las personas que no han contestado presentaran sus solicitudes (los usuarios falsos generados tienen una mezcla de destinos populares y algo de aleatoriedad)<br>
-        <strong>Destinos específicos:</strong> Si destinos específicos (por localidad y centro) se ocuparan<br>
-        <strong>Bloqueo de preferencias:</strong> Si todos los usuarios por encima de ti obtuvieran sus X primeras opciones
+        <strong>Estado actual:</strong> Asignación normal con los usuarios
+        reales existentes<br />
+        <strong>Usuarios restantes:</strong> Si las personas que no han
+        contestado presentaran sus solicitudes (los usuarios falsos generados
+        tienen una mezcla de destinos populares y algo de aleatoriedad)<br />
+        <strong>Destinos específicos:</strong> Si destinos específicos (por
+        localidad y centro) se ocuparan<br />
+        <strong>Bloqueo de preferencias:</strong> Si todos los usuarios por
+        encima de ti obtuvieran sus X primeras opciones
       </p>
-      
+
       <!-- Location/Centro Selection UI (hidden by default) -->
-      <div id="locationSelectionUI" style="display: none; margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
-        <h4 style="margin: 0 0 12px 0; color: #333;">Seleccionar destinos a bloquear:</h4>
-        <p style="margin: 0 0 12px 0; font-size: 14px; color: #666; font-style: italic;">
-          Se bloquearán solo los destinos que coincidan con AMBAS selecciones (localidad Y centro).
+      <div
+        id="locationSelectionUI"
+        style="
+          display: none;
+          margin-top: 16px;
+          padding: 16px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+        "
+      >
+        <h4 style="margin: 0 0 12px 0; color: #333">
+          Seleccionar destinos a bloquear:
+        </h4>
+        <p
+          style="
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+          "
+        >
+          Se bloquearán solo los destinos que coincidan con AMBAS selecciones
+          (localidad Y centro).
         </p>
-        
-        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+        <div style="display: flex; gap: 20px; flex-wrap: wrap">
           <!-- Localidad Selection -->
-          <div style="flex: 1; min-width: 200px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Por Localidad:</label>
-            <select id="localidadSelect" multiple style="width: 100%; height: 120px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+          <div style="flex: 1; min-width: 200px">
+            <label
+              style="
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                color: #555;
+              "
+              >Por Localidad:</label
+            >
+            <select
+              id="localidadSelect"
+              multiple
+              style="
+                width: 100%;
+                height: 120px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            >
               <!-- Options will be populated by JavaScript -->
             </select>
-            <small style="color: #666; font-size: 12px;">Mantén Ctrl/Cmd para seleccionar múltiples</small>
+            <small style="color: #666; font-size: 12px"
+              >Mantén Ctrl/Cmd para seleccionar múltiples</small
+            >
           </div>
-          
+
           <!-- Centro Selection -->
-          <div style="flex: 1; min-width: 200px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Por Centro de Destino:</label>
-            <select id="centroSelect" multiple style="width: 100%; height: 120px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+          <div style="flex: 1; min-width: 200px">
+            <label
+              style="
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                color: #555;
+              "
+              >Por Centro de Destino:</label
+            >
+            <select
+              id="centroSelect"
+              multiple
+              style="
+                width: 100%;
+                height: 120px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            >
               <!-- Options will be populated by JavaScript -->
             </select>
-            <small style="color: #666; font-size: 12px;">Mantén Ctrl/Cmd para seleccionar múltiples</small>
+            <small style="color: #666; font-size: 12px"
+              >Mantén Ctrl/Cmd para seleccionar múltiples</small
+            >
           </div>
         </div>
-        
-        <div style="margin-top: 12px;">
-          <button id="previewBlockedItems" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+
+        <div style="margin-top: 12px">
+          <button
+            id="previewBlockedItems"
+            style="
+              padding: 8px 16px;
+              background-color: #007bff;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+            "
+          >
             Ver destinos que se bloquearían
           </button>
-          <button id="clearSelection" style="padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 8px;">
+          <button
+            id="clearSelection"
+            style="
+              padding: 8px 16px;
+              background-color: #6c757d;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+              margin-left: 8px;
+            "
+          >
             Limpiar selección
           </button>
         </div>
-        
-        <div id="blockedItemsPreview" style="margin-top: 12px; padding: 12px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px; display: none;">
-          <h5 style="margin: 0 0 8px 0; color: #333;">Destinos que se bloquearían:</h5>
-          <div id="blockedItemsList" style="font-size: 14px; color: #666;">
+
+        <div
+          id="blockedItemsPreview"
+          style="
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+          "
+        >
+          <h5 style="margin: 0 0 8px 0; color: #333">
+            Destinos que se bloquearían:
+          </h5>
+          <div id="blockedItemsList" style="font-size: 14px; color: #666">
             <!-- Blocked items will be listed here -->
           </div>
         </div>
       </div>
-      
+
       <!-- Competition Depth UI for Scenario 3 (hidden by default) -->
-      <div id="competitionDepthUI" style="display: none; margin-top: 16px; padding: 16px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
-        <h4 style="margin: 0 0 12px 0; color: #333;">Configurar bloqueo:</h4>
-        <p style="margin: 0 0 12px 0; font-size: 14px; color: #666; font-style: italic;">
-          Especifica cuántas primeras opciones de cada usuario por encima de ti se simularán como ocupadas.
+      <div
+        id="competitionDepthUI"
+        style="
+          display: none;
+          margin-top: 16px;
+          padding: 16px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+        "
+      >
+        <h4 style="margin: 0 0 12px 0; color: #333">Configurar bloqueo:</h4>
+        <p
+          style="
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+          "
+        >
+          Especifica cuántas primeras opciones de cada usuario por encima de ti
+          se simularán como ocupadas.
         </p>
-        
-        <div style="display: flex; gap: 20px; align-items: center;">
+
+        <div style="display: flex; gap: 20px; align-items: center">
           <div>
-            <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Número de opciones a bloquear:</label>
-            <input 
-              id="competitionDepthInput" 
-              type="number" 
-              min="1" 
-              max="20" 
-              value="1" 
-              style="width: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;"
+            <label
+              style="
+                display: block;
+                margin-bottom: 8px;
+                font-weight: bold;
+                color: #555;
+              "
+              >Número de opciones a bloquear:</label
+            >
+            <input
+              id="competitionDepthInput"
+              type="number"
+              min="1"
+              max="20"
+              value="1"
+              style="
+                width: 80px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+              "
             />
           </div>
-          <div style="flex: 1;">
-            <p style="margin: 0; font-size: 14px; color: #666;">
-              <strong>Ejemplo:</strong> Si seleccionas "3", se simulará que cada usuario por encima de ti 
-              obtiene sus 3 primeras opciones, reduciendo las opciones disponibles para ti.
+          <div style="flex: 1">
+            <p style="margin: 0; font-size: 14px; color: #666">
+              <strong>Ejemplo:</strong> Si seleccionas "3", se simulará que cada
+              usuario por encima de ti obtiene sus 3 primeras opciones,
+              reduciendo las opciones disponibles para ti.
             </p>
           </div>
         </div>
       </div>
-      
+
       <div class="row">
         <button class="primary" id="allocateBtn">Repartir</button>
         <button class="ghost" id="resetAllBtn">
@@ -208,7 +352,6 @@
       </div>
       <div id="allocationResult" class="mt-12"></div>
     </div>
-
 
     <div class="card">
       <h2>Destinos enviados</h2>

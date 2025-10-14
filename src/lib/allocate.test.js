@@ -276,16 +276,20 @@ describe("allocateForUser() - optimized single user allocation", () => {
     ];
 
     // Test u2 allocation using optimized method
-    const subsAboveU2 = submissions.filter(s => s.order < 2);
-    const u2Submission = submissions.find(s => s.id === "u2");
+    const subsAboveU2 = submissions.filter((s) => s.order < 2);
+    const u2Submission = submissions.find((s) => s.id === "u2");
     const optimizedResult = allocateForUser(subsAboveU2, u2Submission, 0);
 
     // Test u2 allocation using full method
     const fullResult = allocate(submissions, 0);
-    const u2FullResult = fullResult.find(r => r.userId === "u2");
+    const u2FullResult = fullResult.find((r) => r.userId === "u2");
 
-    expect(optimizedResult.assignedItemIds).toEqual(u2FullResult.assignedItemIds);
-    expect(optimizedResult.availableByPreference).toEqual(u2FullResult.availableByPreference);
+    expect(optimizedResult.assignedItemIds).toEqual(
+      u2FullResult.assignedItemIds,
+    );
+    expect(optimizedResult.availableByPreference).toEqual(
+      u2FullResult.availableByPreference,
+    );
     expect(optimizedResult.userId).toEqual(u2FullResult.userId);
   });
 
@@ -309,15 +313,19 @@ describe("allocateForUser() - optimized single user allocation", () => {
 
     // Test u1 allocation (first user, no users above)
     const subsAboveU1 = []; // No users above u1
-    const u1Submission = submissions.find(s => s.id === "u1");
+    const u1Submission = submissions.find((s) => s.id === "u1");
     const optimizedResult = allocateForUser(subsAboveU1, u1Submission, 0);
 
     // Test u1 allocation using full method
     const fullResult = allocate(submissions, 0);
-    const u1FullResult = fullResult.find(r => r.userId === "u1");
+    const u1FullResult = fullResult.find((r) => r.userId === "u1");
 
-    expect(optimizedResult.assignedItemIds).toEqual(u1FullResult.assignedItemIds);
-    expect(optimizedResult.availableByPreference).toEqual(u1FullResult.availableByPreference);
+    expect(optimizedResult.assignedItemIds).toEqual(
+      u1FullResult.assignedItemIds,
+    );
+    expect(optimizedResult.availableByPreference).toEqual(
+      u1FullResult.availableByPreference,
+    );
   });
 
   test("should work with competition depth simulation", () => {
@@ -339,15 +347,19 @@ describe("allocateForUser() - optimized single user allocation", () => {
     ];
 
     // Test u2 allocation with competition depth = 1
-    const subsAboveU2 = submissions.filter(s => s.order < 2);
-    const u2Submission = submissions.find(s => s.id === "u2");
+    const subsAboveU2 = submissions.filter((s) => s.order < 2);
+    const u2Submission = submissions.find((s) => s.id === "u2");
     const optimizedResult = allocateForUser(subsAboveU2, u2Submission, 1);
 
     // Test u2 allocation using full method
     const fullResult = allocate(submissions, 1);
-    const u2FullResult = fullResult.find(r => r.userId === "u2");
+    const u2FullResult = fullResult.find((r) => r.userId === "u2");
 
-    expect(optimizedResult.assignedItemIds).toEqual(u2FullResult.assignedItemIds);
-    expect(optimizedResult.availableByPreference).toEqual(u2FullResult.availableByPreference);
+    expect(optimizedResult.assignedItemIds).toEqual(
+      u2FullResult.assignedItemIds,
+    );
+    expect(optimizedResult.availableByPreference).toEqual(
+      u2FullResult.availableByPreference,
+    );
   });
 });

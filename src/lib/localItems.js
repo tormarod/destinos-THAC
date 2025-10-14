@@ -8,11 +8,12 @@ const cache = new Map(); // season -> { ts, items }
 
 async function loadSeasonFromLocal(season) {
   const filePath = path.join(__dirname, "../../", `${season}.json`);
-  
+
   try {
     const text = await fs.readFile(filePath, "utf8");
     const items = JSON.parse(text);
-    if (!Array.isArray(items)) throw new Error(`File ${season}.json is not an array`);
+    if (!Array.isArray(items))
+      throw new Error(`File ${season}.json is not an array`);
     return items;
   } catch (error) {
     if (error.code === "ENOENT") {

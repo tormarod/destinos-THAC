@@ -35,26 +35,30 @@ function renderAllocation(payload) {
 
   const scenario = payload.scenario || 0;
   const usersAboveCount = payload.usersAboveCount || 0;
-  
+
   // Scenario descriptions
   const scenarioDescriptions = {
     0: "Estado actual de la asignación",
     1: "Simulación: usuarios restantes se presentan",
-    2: "Simulación: destinos específicos se ocupan", 
-    3: "Simulación: bloqueo de preferencias"
+    2: "Simulación: destinos específicos se ocupan",
+    3: "Simulación: bloqueo de preferencias",
   };
-  
-  const simulationText = scenario > 0 
-    ? ` (${scenarioDescriptions[scenario] || "Simulación"})`
-    : " (Estado actual)";
-  
-  const positionInfo = usersAboveCount > 0 
-    ? `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> Han contestado <strong>${usersAboveCount}</strong> persona${usersAboveCount === 1 ? '' : 's'} por encima de ti.</p>`
-    : `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> ¡Eres la primera persona en la lista de prioridades!</p>`;
+
+  const simulationText =
+    scenario > 0
+      ? ` (${scenarioDescriptions[scenario] || "Simulación"})`
+      : " (Estado actual)";
+
+  const positionInfo =
+    usersAboveCount > 0
+      ? `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> Han contestado <strong>${usersAboveCount}</strong> persona${usersAboveCount === 1 ? "" : "s"} por encima de ti.</p>`
+      : `<p class="muted" style="margin-bottom: 16px;"><strong>Posición en la cola:</strong> ¡Eres la primera persona en la lista de prioridades!</p>`;
 
   // Get the actual count of available items from the first user's data
-  const actualAvailableCount = mine.length > 0 ? (mine[0].availableByPreference || []).length : 0;
-  const availableCountText = actualAvailableCount > 0 ? actualAvailableCount : "destinos";
+  const actualAvailableCount =
+    mine.length > 0 ? (mine[0].availableByPreference || []).length : 0;
+  const availableCountText =
+    actualAvailableCount > 0 ? actualAvailableCount : "destinos";
 
   const rows = mine
     .map((r) => {
@@ -102,53 +106,68 @@ async function runAllocation(season) {
   showLuckOverlay();
 
   try {
-          // Get the scenario from the select field
-          const scenarioSelect = document.getElementById("scenarioSelect");
-          let scenario = scenarioSelect ? parseInt(scenarioSelect.value) || 0 : 0;
-          
-          // Get blocked items for scenario 2 and competition depth for scenario 3
-          let blockedItems = [];
-          let competitionDepth = 1; // default value
-          
-          if (scenario === 2) {
-            // Get current selections from dropdowns (in case user didn't click preview)
-            const localidadSelect = document.getElementById("localidadSelect");
-            const centroSelect = document.getElementById("centroSelect");
-            
-            // Try to get from in-memory state first, then from dropdowns
-            let selectedLocalidades = window.state?.blockedItems?.selectedLocalidades || [];
-            let selectedCentros = window.state?.blockedItems?.selectedCentros || [];
-            
-            // If in-memory state is empty, get from current dropdown selections
-            if (selectedLocalidades.length === 0 && localidadSelect) {
-              selectedLocalidades = Array.from(localidadSelect.selectedOptions).map(opt => opt.value);
-            }
-            if (selectedCentros.length === 0 && centroSelect) {
-              selectedCentros = Array.from(centroSelect.selectedOptions).map(opt => opt.value);
-            }
-            
-            // If no items are selected to block, treat as scenario 0 (current state)
-            if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
-              scenario = 0; // Override scenario to 0
-              blockedItems = {};
-            } else {
-              blockedItems = { selectedLocalidades, selectedCentros };
-            }
-          } else if (scenario === 3) {
-            // Get competition depth from in-memory state or input
-            competitionDepth = window.state?.competitionDepth || 1;
-            const competitionDepthInput = document.getElementById("competitionDepthInput");
-            if (competitionDepthInput) {
-              const inputValue = Math.max(1, Math.min(20, Number(competitionDepthInput.value) || 1));
-              competitionDepth = inputValue;
-              // Update state with current input value
-              if (window.state) {
-                window.state.competitionDepth = competitionDepth;
-              }
-            }
-          }
+    // Get the scenario from the select field
+    const scenarioSelect = document.getElementById("scenarioSelect");
+    let scenario = scenarioSelect ? parseInt(scenarioSelect.value) || 0 : 0;
 
-          const data = await window.api.allocate(season, scenario, blockedItems, competitionDepth);
+    // Get blocked items for scenario 2 and competition depth for scenario 3
+    let blockedItems = [];
+    let competitionDepth = 1; // default value
+
+    if (scenario === 2) {
+      // Get current selections from dropdowns (in case user didn't click preview)
+      const localidadSelect = document.getElementById("localidadSelect");
+      const centroSelect = document.getElementById("centroSelect");
+
+      // Try to get from in-memory state first, then from dropdowns
+      let selectedLocalidades =
+        window.state?.blockedItems?.selectedLocalidades || [];
+      let selectedCentros = window.state?.blockedItems?.selectedCentros || [];
+
+      // If in-memory state is empty, get from current dropdown selections
+      if (selectedLocalidades.length === 0 && localidadSelect) {
+        selectedLocalidades = Array.from(localidadSelect.selectedOptions).map(
+          (opt) => opt.value,
+        );
+      }
+      if (selectedCentros.length === 0 && centroSelect) {
+        selectedCentros = Array.from(centroSelect.selectedOptions).map(
+          (opt) => opt.value,
+        );
+      }
+
+      // If no items are selected to block, treat as scenario 0 (current state)
+      if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
+        scenario = 0; // Override scenario to 0
+        blockedItems = {};
+      } else {
+        blockedItems = { selectedLocalidades, selectedCentros };
+      }
+    } else if (scenario === 3) {
+      // Get competition depth from in-memory state or input
+      competitionDepth = window.state?.competitionDepth || 1;
+      const competitionDepthInput = document.getElementById(
+        "competitionDepthInput",
+      );
+      if (competitionDepthInput) {
+        const inputValue = Math.max(
+          1,
+          Math.min(20, Number(competitionDepthInput.value) || 1),
+        );
+        competitionDepth = inputValue;
+        // Update state with current input value
+        if (window.state) {
+          window.state.competitionDepth = competitionDepth;
+        }
+      }
+    }
+
+    const data = await window.api.allocate(
+      season,
+      scenario,
+      blockedItems,
+      competitionDepth,
+    );
     renderAllocation(data);
 
     // Start countdown after successful allocation to prevent immediate second request

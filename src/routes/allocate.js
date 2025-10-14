@@ -5,10 +5,10 @@ const DemandDrivenCacheManager = require("../lib/demandDrivenCache");
 
 module.exports = function ({ ddb }) {
   const router = express.Router();
-  
+
   // Initialize demand-driven cache manager for season data
   const cacheManager = new DemandDrivenCacheManager();
-  
+
   // Items cache: load items once at server startup (not on every cache refresh)
   // This is separate from the demand-driven cache because items are static data
   const itemsCache = new Map(); // season -> items array
@@ -17,16 +17,21 @@ module.exports = function ({ ddb }) {
       // Return cached items (loaded once at server startup)
       return itemsCache.get(season);
     }
-    
+
     try {
       // Load items from local JSON file (2025.json, etc.)
       const { getItemsForSeason } = require("../lib/localItems");
       const items = await getItemsForSeason(season);
       itemsCache.set(season, items);
-      console.log(`[ITEMS-CACHE] Loaded ${items.length} items for season ${season} (server startup)`);
+      console.log(
+        `[ITEMS-CACHE] Loaded ${items.length} items for season ${season} (server startup)`,
+      );
       return items;
     } catch (e) {
-      console.warn(`[ITEMS-CACHE] Could not load items for season ${season}:`, e.message);
+      console.warn(
+        `[ITEMS-CACHE] Could not load items for season ${season}:`,
+        e.message,
+      );
       itemsCache.set(season, []);
       return [];
     }
@@ -36,48 +41,58 @@ module.exports = function ({ ddb }) {
   const preloadItems = async () => {
     try {
       const currentYear = new Date().getFullYear();
-      
+
       // Preload only current year (matches frontend default selection)
       // This ensures items are available immediately when server starts
       await loadItemsForSeason(currentYear);
     } catch (error) {
-      console.error(`[ITEMS-CACHE] Failed to preload items at server startup:`, error);
+      console.error(
+        `[ITEMS-CACHE] Failed to preload items at server startup:`,
+        error,
+      );
     }
   };
 
   // Start preloading immediately when this module loads
   preloadItems();
-  
+
   // Implement the refresh function for the cache manager
   // This is called when demand-driven cache needs fresh data from DynamoDB
-  cacheManager.refreshSeasonData = async function(season) {
+  cacheManager.refreshSeasonData = async function (season) {
     try {
       // Get all submissions for the season from DynamoDB
-      const allSubmissions = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      
+      const allSubmissions = ddb.enabled
+        ? await ddb.fetchAllSubmissions(season)
+        : [];
+
       // Get items from items cache (loaded once at server startup)
       const items = await loadItemsForSeason(season);
-      
+
       // Create season data object with both submissions and items
       const seasonData = {
         submissions: allSubmissions,
         items: items,
-        lastRefresh: Date.now()
+        lastRefresh: Date.now(),
       };
-      
+
       // Store in demand-driven cache
       this.setCachedData(season, seasonData);
-      console.log(`[DEMAND-CACHE] Season ${season} refreshed: ${allSubmissions.length} submissions, ${items.length} items`);
-      
+      console.log(
+        `[DEMAND-CACHE] Season ${season} refreshed: ${allSubmissions.length} submissions, ${items.length} items`,
+      );
     } catch (error) {
-      console.error(`[DEMAND-CACHE] Failed to refresh season ${season}:`, error);
+      console.error(
+        `[DEMAND-CACHE] Failed to refresh season ${season}:`,
+        error,
+      );
       throw error;
     }
   };
 
   // Simple in-memory rate limiting to prevent abuse
   const userRequests = new Map(); // userId -> lastRequestTime
-  const RATE_LIMIT_MS = parseInt(process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30") * 1000; // Convert seconds to milliseconds
+  const RATE_LIMIT_MS =
+    parseInt(process.env.ALLOCATION_RATE_LIMIT_SECONDS || "30") * 1000; // Convert seconds to milliseconds
 
   // Legacy cache for real submissions above user queries (fallback when demand-driven cache misses)
   // Fake users are generated fresh each time, never cached
@@ -89,7 +104,7 @@ module.exports = function ({ ddb }) {
   function invalidateAllocationCache(season) {
     // Invalidate demand-driven cache (main cache)
     cacheManager.invalidateSeason(season);
-    
+
     // Invalidate legacy cache (fallback cache)
     let invalidatedCount = 0;
     for (const [key, value] of submissionsAboveCache.entries()) {
@@ -99,67 +114,86 @@ module.exports = function ({ ddb }) {
       }
     }
     if (invalidatedCount > 0) {
-      console.log(`[ALLOCATION-CACHE] INVALIDATED ${invalidatedCount} legacy cache entries for season ${season}`);
+      console.log(
+        `[ALLOCATION-CACHE] INVALIDATED ${invalidatedCount} legacy cache entries for season ${season}`,
+      );
     }
-    
-    console.log(`[CACHE-INVALIDATION] Season ${season} cache invalidated (demand-driven + legacy)`);
+
+    console.log(
+      `[CACHE-INVALIDATION] Season ${season} cache invalidated (demand-driven + legacy)`,
+    );
   }
 
   // Get submissions above a specific user order (using demand-driven cache + legacy cache for user-specific queries)
   // This function implements a two-tier caching strategy for optimal performance
   async function getSubmissionsAboveUser(season, userOrder, scenario = 0) {
     if (!ddb.enabled) return [];
-    
+
     // First, try to get from demand-driven cache (full season data)
     const seasonData = cacheManager.getCachedData(season);
     let realSubsAbove;
-    
+
     if (seasonData && seasonData.submissions) {
       // Use cached season data and filter for submissions above user order
       // This is the most efficient path - no DynamoDB call needed
-      realSubsAbove = seasonData.submissions.filter(s => s.order < userOrder);
-      console.log(`[DEMAND-CACHE] Using cached season data for user order ${userOrder}: ${realSubsAbove.length} submissions above`);
+      realSubsAbove = seasonData.submissions.filter((s) => s.order < userOrder);
+      console.log(
+        `[DEMAND-CACHE] Using cached season data for user order ${userOrder}: ${realSubsAbove.length} submissions above`,
+      );
     } else {
       // Fallback to legacy cache for user-specific queries when demand-driven cache misses
       const cacheKey = `${season}+${userOrder}`;
       const cached = submissionsAboveCache.get(cacheKey);
-      
+
       if (cached && Date.now() - cached.timestamp < ALLOCATION_CACHE_TTL_MS) {
         // Legacy cache hit - use cached real submissions
-        console.log(`[LEGACY-CACHE] HIT for real submissions: season ${season}, user order ${userOrder} (${cached.realSubmissions.length} real submissions)`);
+        console.log(
+          `[LEGACY-CACHE] HIT for real submissions: season ${season}, user order ${userOrder} (${cached.realSubmissions.length} real submissions)`,
+        );
         realSubsAbove = cached.realSubmissions;
       } else {
         // Legacy cache miss - fetch real submissions from DynamoDB using GSI
-        console.log(`[LEGACY-CACHE] MISS for real submissions: season ${season}, user order ${userOrder} - fetching from DynamoDB`);
+        console.log(
+          `[LEGACY-CACHE] MISS for real submissions: season ${season}, user order ${userOrder} - fetching from DynamoDB`,
+        );
         realSubsAbove = await ddb.fetchSubmissionsAboveUser(season, userOrder);
-        
+
         // Cache only the real submissions (not fake users)
         submissionsAboveCache.set(cacheKey, {
           realSubmissions: realSubsAbove,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
-        
+
         // Clean up old cache entries (keep only last 100 entries to prevent memory leaks)
         if (submissionsAboveCache.size > 100) {
           const oldestKey = submissionsAboveCache.keys().next().value;
           submissionsAboveCache.delete(oldestKey);
-          console.log(`[LEGACY-CACHE] Cleaned up old cache entry: ${oldestKey}`);
+          console.log(
+            `[LEGACY-CACHE] Cleaned up old cache entry: ${oldestKey}`,
+          );
         }
-        
-        console.log(`[LEGACY-CACHE] CACHED ${realSubsAbove.length} real submissions for season ${season}, user order ${userOrder}`);
+
+        console.log(
+          `[LEGACY-CACHE] CACHED ${realSubsAbove.length} real submissions for season ${season}, user order ${userOrder}`,
+        );
       }
     }
-    
+
     // Generate fresh fake users if scenario 1 (always fresh, never cached)
     // This ensures realistic simulation data that changes each time
     if (scenario === 1) {
       const { generateFakeSubmissions } = require("../lib/allocate");
-      const finalSubmissions = generateFakeSubmissions(realSubsAbove, userOrder);
+      const finalSubmissions = generateFakeSubmissions(
+        realSubsAbove,
+        userOrder,
+      );
       const fakeCount = finalSubmissions.length - realSubsAbove.length;
-      console.log(`[FAKE-USERS] Generated ${fakeCount} fresh fake users for scenario 1 (total: ${finalSubmissions.length} submissions)`);
+      console.log(
+        `[FAKE-USERS] Generated ${fakeCount} fresh fake users for scenario 1 (total: ${finalSubmissions.length} submissions)`,
+      );
       return finalSubmissions;
     }
-    
+
     // Return real submissions for other scenarios (0, 2, 3)
     return realSubsAbove;
   }
@@ -201,8 +235,9 @@ module.exports = function ({ ddb }) {
       );
       const scenario = parseInt(req.body && req.body.scenario) || 0;
       const userId = req.body && req.body.userId;
-      const blockedItems = req.body && req.body.blockedItems || {};
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 1;
+      const blockedItems = (req.body && req.body.blockedItems) || {};
+      const competitionDepth =
+        parseInt(req.body && req.body.competitionDepth) || 1;
 
       if (!userId || typeof userId !== "string") {
         logIP(req, "ALLOCATE_FAILED", { reason: "missing_userId", season });
@@ -220,18 +255,24 @@ module.exports = function ({ ddb }) {
       // Get current user's submission (try from cache first, then DynamoDB as fallback)
       let currentUserSubmission = null;
       const seasonData = cacheManager.getCachedData(season);
-      
+
       if (seasonData && seasonData.submissions) {
         // Find user in cached submissions (most efficient path)
-        currentUserSubmission = seasonData.submissions.find(s => s.id === userId);
+        currentUserSubmission = seasonData.submissions.find(
+          (s) => s.id === userId,
+        );
         if (currentUserSubmission) {
-          console.log(`[DEMAND-CACHE] Found user ${userId} in cached submissions (order: ${currentUserSubmission.order})`);
+          console.log(
+            `[DEMAND-CACHE] Found user ${userId} in cached submissions (order: ${currentUserSubmission.order})`,
+          );
         }
       }
-      
+
       // Fallback to DynamoDB if not found in cache (should be rare)
       if (!currentUserSubmission && ddb.enabled) {
-        console.log(`[DEMAND-CACHE] User ${userId} not found in cache, fetching from DynamoDB`);
+        console.log(
+          `[DEMAND-CACHE] User ${userId} not found in cache, fetching from DynamoDB`,
+        );
         currentUserSubmission = await ddb.fetchUserSubmission(season, userId);
       }
 
@@ -241,17 +282,28 @@ module.exports = function ({ ddb }) {
       }
 
       // Get submissions above current user (using demand-driven cache + legacy cache)
-      const subsAbove = await getSubmissionsAboveUser(season, currentUserSubmission.order, scenario);
-      
+      const subsAbove = await getSubmissionsAboveUser(
+        season,
+        currentUserSubmission.order,
+        scenario,
+      );
+
       // For position display, count only real submissions (not fake users)
       // This ensures accurate queue position for the user
-      const realUsersAboveCount = subsAbove.filter(s => !s.isFake).length;
-      
+      const realUsersAboveCount = subsAbove.filter((s) => !s.isFake).length;
+
       // Get items data (from items cache - loaded once at server startup)
       const items = await loadItemsForSeason(season);
-      
+
       // Perform allocation for this specific user
-      const userAllocation = allocateForUser(subsAbove, currentUserSubmission, scenario, items, blockedItems, competitionDepth);
+      const userAllocation = allocateForUser(
+        subsAbove,
+        currentUserSubmission,
+        scenario,
+        items,
+        blockedItems,
+        competitionDepth,
+      );
 
       // Log successful allocation request for monitoring
       logIP(req, "ALLOCATE_SUCCESS", {
@@ -261,7 +313,7 @@ module.exports = function ({ ddb }) {
         season,
         scenario,
         assignedCount: userAllocation.assignedItemIds.length,
-        availableCount: userAllocation.availableByPreference.length
+        availableCount: userAllocation.availableByPreference.length,
       });
 
       // Return only the user's own data (no other users' information for security)
@@ -287,25 +339,26 @@ module.exports = function ({ ddb }) {
         (req.body && req.body.season) || new Date().getFullYear(),
       );
       const scenario = parseInt(req.body && req.body.scenario) || 0;
-      const competitionDepth = parseInt(req.body && req.body.competitionDepth) || 1;
-      
+      const competitionDepth =
+        parseInt(req.body && req.body.competitionDepth) || 1;
+
       // Fetch all submissions directly from DynamoDB (bypasses caching for admin)
       const subs = ddb.enabled ? await ddb.fetchAllSubmissions(season) : [];
-      
+
       // Get items data (from items cache - loaded once at server startup)
       const items = await loadItemsForSeason(season);
-      
+
       // Perform full allocation for all users
       const allocation = allocate(subs, scenario, items, competitionDepth);
-      
+
       // Log admin allocation request for monitoring
       logIP(req, "ALLOCATE_ADMIN_SUCCESS", {
         season,
         scenario,
         totalUsers: allocation.length,
-        adminRequest: true
+        adminRequest: true,
       });
-      
+
       res.json({ allocation, season, scenario });
     } catch (e) {
       console.error("[/api/allocate-admin] error:", e);
@@ -320,11 +373,11 @@ module.exports = function ({ ddb }) {
     try {
       const stats = cacheManager.getStats();
       const cacheStatus = cacheManager.getCacheStatus();
-      
+
       res.json({
         stats: stats,
         cacheStatus: cacheStatus,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     } catch (e) {
       console.error("[/api/cache-stats] error:", e);
@@ -336,6 +389,6 @@ module.exports = function ({ ddb }) {
   // This allows other routes (submit, reset) to invalidate cache when data changes
   router.invalidateAllocationCache = invalidateAllocationCache;
   router.cacheManager = cacheManager;
-  
+
   return router;
 };
