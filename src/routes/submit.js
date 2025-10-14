@@ -1,20 +1,22 @@
 const express = require("express");
 const { logIP } = require("../lib/ipLogger");
 
-module.exports = function ({ ddb, invalidateAllocationCache }) {
+module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
   const router = express.Router();
 
-  // Track recent submissions to prevent duplicates
-  const recentSubmissions = new Map(); // userId+season -> timestamp
-  const processedRequestIds = new Set(); // Track processed requestIds to prevent duplicates
-  const SUBMISSION_COOLDOWN_MS = 15000; // 15 seconds (increased for better protection)
+  // Multi-layer duplicate prevention system
+  const recentSubmissions = new Map(); // userId+season -> timestamp (cooldown tracking)
+  const processedRequestIds = new Set(); // Track processed requestIds to prevent exact duplicates
+  const SUBMISSION_COOLDOWN_MS = 15000; // 15 seconds cooldown between submissions
 
   router.post("/submit", async (req, res) => {
     try {
       const { name, order, rankedItems, id, season, requestId } = req.body || {};
       const seasonStr = String(season || new Date().getFullYear());
+      // Generate unique requestId if not provided by frontend
       const uniqueRequestId = requestId || `req_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
+      // Validate required fields
       if (!name || typeof name !== "string") {
         logIP(req, "SUBMIT_FAILED", { reason: "missing_name", season: seasonStr });
         return res.status(400).json({ error: "Name is required." });
@@ -30,15 +32,15 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
       const trimmedName = name.trim();
       const now = Date.now();
 
-      // Generate userId
+      // Generate userId (use provided id or generate new one)
       const userId = id && typeof id === "string" && id.trim() !== ""
         ? id
         : `u_${Math.random().toString(36).slice(2)}`;
 
-      // Create tracking key using userId + season
+      // Create tracking key using userId + season for cooldown tracking
       const submissionKey = `${userId}_${seasonStr}`;
 
-      // Check for duplicate requestId (same request processed multiple times)
+      // Layer 1: Check for duplicate requestId (exact same request processed multiple times)
       if (processedRequestIds.has(uniqueRequestId)) {
         logIP(req, "SUBMIT_BLOCKED", { reason: "duplicate_requestId", userId, season: seasonStr, requestId: uniqueRequestId });
         return res.status(409).json({
@@ -48,7 +50,7 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
         });
       }
 
-      // Check for recent duplicate submission within cooldown period
+      // Layer 2: Check for recent duplicate submission within cooldown period
       const lastSubmission = recentSubmissions.get(submissionKey);
       if (lastSubmission && (now - lastSubmission) < SUBMISSION_COOLDOWN_MS) {
         const remainingSeconds = Math.ceil((SUBMISSION_COOLDOWN_MS - (now - lastSubmission)) / 1000);
@@ -67,17 +69,18 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
       const existing = allSubmissions.find((s) => s.id === userId);
       if (existing) submittedAt = existing.submittedAt || now;
 
+      // Save submission to DynamoDB
       await ddb.upsertSubmission({
         season: seasonStr,
         userId,
         name: trimmedName,
         order: parsedOrder,
-        rankedItems: Array.from(new Set((rankedItems || []).map(String))),
+        rankedItems: Array.from(new Set((rankedItems || []).map(String))), // Remove duplicates
         submittedAt,
         updatedAt: now, // Always set updatedAt to current timestamp
       });
 
-      // Log successful submission with IP
+      // Log successful submission with IP for monitoring
       logIP(req, "SUBMIT_SUCCESS", {
         userId,
         name: trimmedName,
@@ -88,16 +91,21 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
         requestId: uniqueRequestId
       });
 
-      // Track this submission to prevent rapid duplicates
+      // Track this submission to prevent rapid duplicates (Layer 2)
       recentSubmissions.set(submissionKey, now);
       processedRequestIds.add(uniqueRequestId);
+      
+      // Mark season as active in demand-driven cache (new submission request)
+      if (cacheManager) {
+        cacheManager.markSeasonActive(seasonStr);
+      }
       
       // Invalidate allocation cache since new submission affects allocation results
       if (invalidateAllocationCache) {
         invalidateAllocationCache(seasonStr);
       }
 
-      // Clean up old entries from the tracking maps (keep only last 100 entries)
+      // Memory management: clean up old entries from tracking maps
       if (recentSubmissions.size > 100) {
         const oldestKey = recentSubmissions.keys().next().value;
         recentSubmissions.delete(oldestKey);

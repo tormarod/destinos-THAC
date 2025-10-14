@@ -2,7 +2,7 @@
 const express = require("express");
 const { logIP } = require("../lib/ipLogger");
 
-module.exports = function ({ ddb, invalidateAllocationCache }) {
+module.exports = function ({ ddb, invalidateAllocationCache, cacheManager }) {
   const router = express.Router();
 
   router.post("/reset-user-all", async (req, res) => {
@@ -18,6 +18,14 @@ module.exports = function ({ ddb, invalidateAllocationCache }) {
       }
 
       const removed = await ddb.deleteAllByUser(userId);
+      
+      // Mark all affected seasons as active (data reset request)
+      if (cacheManager) {
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear - 2; year <= currentYear + 2; year++) {
+          cacheManager.markSeasonActive(String(year));
+        }
+      }
       
       // Invalidate allocation cache for all seasons since user was deleted across all seasons
       if (invalidateAllocationCache) {
