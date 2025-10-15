@@ -59,17 +59,17 @@ app.get("/", (req, res) => {
     // Add version parameters to all static assets
     html = html.replace(
       /href="\/styles\.css"/g,
-      `href="/styles.css?v=${version}"`,
+      `href="/styles.css?v=${version}"`
     );
     html = html.replace(
       /src="\/(splash|api|allocation|app)\.js"/g,
-      `src="/$1.js?v=${version}"`,
+      `src="/$1.js?v=${version}"`
     );
 
     // Inject the version into the HTML for client-side version checking
     html = html.replace(
       "</head>",
-      `<script>window.APP_VERSION = '${version}';</script></head>`,
+      `<script>window.APP_VERSION = '${version}';</script></head>`
     );
 
     // Set cache control headers to prevent caching of the HTML
@@ -109,7 +109,7 @@ const ddb = createDdb({
 // Basic routes (no cache dependencies)
 app.use(
   "/api",
-  require("./src/routes/state")({ ddb, idField: ID_FIELD, getItemsForSeason }),
+  require("./src/routes/state")({ ddb, idField: ID_FIELD, getItemsForSeason })
 );
 app.use("/api", require("./src/routes/orders")({ ddb }));
 
@@ -125,7 +125,7 @@ app.use(
     ddb,
     invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
     cacheManager: allocateRouter.cacheManager,
-  }),
+  })
 ); // POST /submit
 app.use(
   "/api",
@@ -133,7 +133,7 @@ app.use(
     ddb,
     invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
     cacheManager: allocateRouter.cacheManager,
-  }),
+  })
 ); // POST /reset-user
 app.use(
   "/api",
@@ -141,7 +141,7 @@ app.use(
     ddb,
     invalidateAllocationCache: allocateRouter.invalidateAllocationCache,
     cacheManager: allocateRouter.cacheManager,
-  }),
+  })
 ); // POST /reset-user-all
 
 // Configuration endpoint for frontend

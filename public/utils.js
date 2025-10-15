@@ -31,8 +31,8 @@ async function isOrderTakenRemote(order) {
  */
 async function fetchState() {
   try {
-    // Get user ID from localStorage or form
-    const userId = getLocalUserId() || document.getElementById("userId")?.value;
+    // Get user ID from localStorage only (never use form field as fallback for security)
+    const userId = getLocalUserId();
     const url = userId ? `/api/state?season=${window.state.season}&userId=${userId}` : `/api/state?season=${window.state.season}`;
     
     const response = await fetch(url);

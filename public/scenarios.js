@@ -52,8 +52,8 @@ async function setSeason(season, retryCount = 0) {
   window.state.season = String(season);
   
   try {
-    // Get user ID from localStorage or form
-    const userId = window.utilsModule.getLocalUserId() || document.getElementById("userId")?.value;
+    // Get user ID from localStorage only (never use form field as fallback for security)
+    const userId = window.utilsModule.getLocalUserId();
     const url = userId ? `/api/state?season=${season}&userId=${userId}` : `/api/state?season=${season}`;
     
     console.log(`Fetching data for season: ${season} (attempt ${retryCount + 1})${userId ? ` for user: ${userId}` : ''}`);
@@ -109,13 +109,10 @@ async function setSeason(season, retryCount = 0) {
       if (userIdEl) userIdEl.value = storedUserId;
       console.log(`Loaded user ID from localStorage: ${storedUserId}`);
     } else {
-      // If no user ID in localStorage, check if it's in the form
-      const formUserId = document.getElementById("userId")?.value;
-      if (formUserId) {
-        console.log(`User ID found in form: ${formUserId}`);
-        // Store it in localStorage for future use
-        window.utilsModule.setLocalUserId(formUserId);
-      }
+      // Clear any existing form value for security (don't auto-populate from form)
+      const userIdEl = document.getElementById("userId");
+      if (userIdEl) userIdEl.value = "";
+      console.log(`No user ID in localStorage - form cleared for security`);
     }
     
     // Trigger UI updates after all data is loaded
@@ -276,7 +273,84 @@ function showBlockedItemsPreview(blockedItems) {
  * Returns the current blocked items configuration for scenario 2
  */
 function getSelectedBlockedItems() {
-  return window.state.blockedItems || { selectedLocalidades: [], selectedCentros: [] };
+  // Try to get from in-memory state first
+  let blockedItems = window.state.blockedItems || { selectedLocalidades: [], selectedCentros: [] };
+  
+  // If in-memory state is empty, get from current dropdown selections
+  if (blockedItems.selectedLocalidades.length === 0 && blockedItems.selectedCentros.length === 0) {
+    const localidadSelect = document.getElementById("localidadSelect");
+    const centroSelect = document.getElementById("centroSelect");
+    
+    if (localidadSelect) {
+      blockedItems.selectedLocalidades = Array.from(localidadSelect.selectedOptions).map(opt => opt.value);
+    }
+    if (centroSelect) {
+      blockedItems.selectedCentros = Array.from(centroSelect.selectedOptions).map(opt => opt.value);
+    }
+    
+    // Update state with current selections
+    if (window.state) {
+      window.state.blockedItems = blockedItems;
+    }
+  }
+  
+  return blockedItems;
+}
+
+/**
+ * Handle scenario selection changes
+ * Shows/hides appropriate UI panels based on selected scenario
+ */
+function handleScenarioChange(selectedValue) {
+  const scenarioDescription = document.getElementById("scenarioDescription");
+  
+  // Scenario descriptions
+  const scenarioDescriptions = {
+    "0": "Estado actual de la asignación",
+    "1": "Si usuarios restantes se presentan",
+    "2": "Si destinos específicos se ocupan", 
+    "3": "Bloqueo de preferencias"
+  };
+
+  if (scenarioDescription) {
+    scenarioDescription.textContent = scenarioDescriptions[selectedValue] || "Estado actual de la asignación";
+  }
+  
+  // Show/hide location selection UI for scenario 2
+  const locationSelectionUI = document.getElementById("locationSelectionUI");
+  if (locationSelectionUI) {
+    if (selectedValue === "2") {
+      locationSelectionUI.style.display = "block";
+      loadLocationOptions();
+    } else {
+      locationSelectionUI.style.display = "none";
+    }
+  }
+  
+  // Show/hide competition depth UI for scenario 3
+  const competitionDepthUI = document.getElementById("competitionDepthUI");
+  if (competitionDepthUI) {
+    if (selectedValue === "3") {
+      competitionDepthUI.style.display = "block";
+    } else {
+      competitionDepthUI.style.display = "none";
+    }
+  }
+}
+
+/**
+ * Initialize scenario UI on page load
+ * Sets up initial visibility and descriptions
+ */
+function initializeScenarioUI() {
+  const scenarioSelect = document.getElementById("scenarioSelect");
+  const scenarioDescription = document.getElementById("scenarioDescription");
+  
+  if (!scenarioSelect) return;
+
+  // Initialize scenario description on page load
+  const initialValue = scenarioSelect.value || "0";
+  handleScenarioChange(initialValue);
 }
 
 // Export functions for use by other modules
@@ -289,4 +363,6 @@ window.scenariosModule = {
   getBlockedItems,
   showBlockedItemsPreview,
   getSelectedBlockedItems,
+  handleScenarioChange,
+  initializeScenarioUI,
 };

@@ -1,4 +1,5 @@
 const express = require("express");
+const { logIP } = require("../lib/ipLogger");
 
 module.exports = function ({ ddb, idField, getItemsForSeason }) {
   const router = express.Router();
@@ -6,6 +7,13 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
   router.get("/state", async (req, res) => {
     const season = String(req.query.season || new Date().getFullYear());
     const userId = req.query.userId;
+
+    // Log access attempts for security monitoring
+    if (userId && typeof userId === "string") {
+      logIP(req, "STATE_ACCESS_USER", { userId, season });
+    } else {
+      logIP(req, "STATE_ACCESS_ALL", { season });
+    }
 
     try {
       let items = [];
@@ -29,16 +37,19 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
       }
 
       // If userId is provided, only return that user's submission
-      // Otherwise, return all submissions (for admin/backward compatibility)
+      // Otherwise, return NO submissions for security (no admin access without proper auth)
+      // SECURITY WARNING: No authorization checks - anyone can access any user's data by providing userId
       let submissions = [];
       if (ddb.enabled) {
         if (userId && typeof userId === "string") {
           // User-specific: directly fetch only their submission (more efficient)
+          // TODO: Add authorization check to ensure user can only access their own data
           const userSubmission = await ddb.fetchUserSubmission(season, userId);
           submissions = userSubmission ? [userSubmission] : [];
         } else {
-          // Admin/backward compatibility: return all submissions
-          submissions = await ddb.fetchAllSubmissions(season);
+          // SECURITY FIX: Return no submissions when no userId provided
+          // This prevents unauthorized access to all user data
+          submissions = [];
         }
       }
 

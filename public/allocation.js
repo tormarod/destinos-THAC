@@ -115,33 +115,15 @@ async function runAllocation(season) {
     let competitionDepth = 1; // default value
 
     if (scenario === 2) {
-      // Get current selections from dropdowns (in case user didn't click preview)
-      const localidadSelect = document.getElementById("localidadSelect");
-      const centroSelect = document.getElementById("centroSelect");
-
-      // Try to get from in-memory state first, then from dropdowns
-      let selectedLocalidades =
-        window.state?.blockedItems?.selectedLocalidades || [];
-      let selectedCentros = window.state?.blockedItems?.selectedCentros || [];
-
-      // If in-memory state is empty, get from current dropdown selections
-      if (selectedLocalidades.length === 0 && localidadSelect) {
-        selectedLocalidades = Array.from(localidadSelect.selectedOptions).map(
-          (opt) => opt.value,
-        );
-      }
-      if (selectedCentros.length === 0 && centroSelect) {
-        selectedCentros = Array.from(centroSelect.selectedOptions).map(
-          (opt) => opt.value,
-        );
-      }
-
+      // Get blocked items from scenarios module
+      const blockedItemsConfig = window.scenariosModule.getSelectedBlockedItems();
+      
       // If no items are selected to block, treat as scenario 0 (current state)
-      if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
+      if (blockedItemsConfig.selectedLocalidades.length === 0 && blockedItemsConfig.selectedCentros.length === 0) {
         scenario = 0; // Override scenario to 0
         blockedItems = {};
       } else {
-        blockedItems = { selectedLocalidades, selectedCentros };
+        blockedItems = blockedItemsConfig;
       }
     } else if (scenario === 3) {
       // Get competition depth from in-memory state or input

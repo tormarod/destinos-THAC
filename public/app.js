@@ -26,6 +26,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Set up all event listeners
   window.eventsModule.setupEventListeners();
 
+  // Initialize scenario UI (shows/hides panels based on initial selection)
+  window.scenariosModule.initializeScenarioUI();
+
   // Load location options for scenario 2
   window.scenariosModule.loadLocationOptions();
 

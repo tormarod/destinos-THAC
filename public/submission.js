@@ -132,7 +132,7 @@ async function submitRanking(e) {
   const orderRaw = document.getElementById("order").value;
   const orderVal = window.utilsModule.normalizeOrder(orderRaw);
   const rankedItems = [...window.state.ranking];
-  const id = document.getElementById("userId").value || window.utilsModule.getLocalUserId() || undefined;
+  const id = window.utilsModule.getLocalUserId() || undefined;
 
   if (!name) return alert("Por favor, introduce tu nombre.");
   if (orderVal === null)

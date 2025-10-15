@@ -246,27 +246,15 @@ function setupEventListeners() {
 
   // Scenario selection
   const scenarioSelect = document.getElementById("scenarioSelect");
-  const scenarioDescription = document.getElementById("scenarioDescription");
   if (scenarioSelect) {
     scenarioSelect.addEventListener("change", (e) => {
       const selectedValue = e.target.value;
-      if (scenarioDescription) {
-        scenarioDescription.textContent =
-          selectedValue === "0"
-            ? "Estado actual de la asignación"
-            : selectedValue === "1"
-            ? "Si usuarios restantes contestasen"
-            : selectedValue === "2"
-            ? "Si destinos específicos se ocupan"
-            : selectedValue === "3"
-            ? "Bloqueo de preferencias"
-            : "Estado actual de la asignación";
-      }
+      window.scenariosModule.handleScenarioChange(selectedValue);
     });
   }
 
   // Preview blocked items button
-  const previewBlockedItemsBtn = document.getElementById("previewBlockedItemsBtn");
+  const previewBlockedItemsBtn = document.getElementById("previewBlockedItems");
   if (previewBlockedItemsBtn) {
     previewBlockedItemsBtn.addEventListener("click", async () => {
       const selectedLocalidades = Array.from(
@@ -277,26 +265,42 @@ function setupEventListeners() {
       ).map((opt) => opt.value);
 
       if (selectedLocalidades.length === 0 && selectedCentros.length === 0) {
-        alert("Por favor selecciona al menos una localidad o centro.");
+        alert("Por favor selecciona al menos una localidad o centro para bloquear.");
         return;
       }
 
-      const blockedItems = {
-        selectedLocalidades,
-        selectedCentros,
-      };
-
-      showBlockedItemsPreview(blockedItems);
+      try {
+        // Save selections to in-memory state
+        window.state.blockedItems = { selectedLocalidades, selectedCentros };
+        
+        const season = window.state.season || new Date().getFullYear().toString();
+        const response = await fetch(`/api/state?season=${season}`);
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+          const blockedItems = window.scenariosModule.getBlockedItems(
+            data.items, 
+            selectedLocalidades, 
+            selectedCentros
+          );
+          window.scenariosModule.showBlockedItemsPreview(blockedItems);
+        }
+      } catch (error) {
+        console.error("Error getting blocked items:", error);
+        alert("Error al obtener los destinos bloqueados.");
+      }
     });
   }
 
   // Clear selection button
-  const clearSelectionBtn = document.getElementById("clearSelectionBtn");
+  const clearSelectionBtn = document.getElementById("clearSelection");
   if (clearSelectionBtn) {
     clearSelectionBtn.addEventListener("click", () => {
       document.getElementById("localidadSelect").selectedIndex = -1;
       document.getElementById("centroSelect").selectedIndex = -1;
       document.getElementById("blockedItemsPreview").style.display = "none";
+      // Clear in-memory state
+      window.state.blockedItems = { selectedLocalidades: [], selectedCentros: [] };
     });
   }
 
