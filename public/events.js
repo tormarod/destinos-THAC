@@ -329,6 +329,55 @@ function setupEventListeners() {
     window.uiModule.renderClickableItems();
     window.uiModule.renderRankingTable();
   });
+
+  // Changelog modal event handlers
+  const changelogClose = document.getElementById("changelogClose");
+  const changelogGotIt = document.getElementById("changelogGotIt");
+  const changelogModal = document.getElementById("changelogModal");
+  const dontShowAgain = document.getElementById("dontShowAgain");
+  const whatsNewButton = document.getElementById("whatsNewButton");
+
+  // Close button
+  if (changelogClose) {
+    changelogClose.addEventListener("click", () => {
+      window.changelogModule.hideChangelogModal();
+    });
+  }
+
+  // Got it button
+  if (changelogGotIt) {
+    changelogGotIt.addEventListener("click", () => {
+      // Mark as seen if "Don't show again" is checked
+      if (dontShowAgain && dontShowAgain.checked) {
+        window.changelogModule.markChangelogAsSeen();
+      }
+      window.changelogModule.hideChangelogModal();
+      window.changelogModule.updateWhatsNewButtonVisibility();
+    });
+  }
+
+  // Click backdrop to close
+  if (changelogModal) {
+    changelogModal.addEventListener("click", (e) => {
+      if (e.target === changelogModal || e.target.classList.contains("changelog-backdrop")) {
+        window.changelogModule.hideChangelogModal();
+      }
+    });
+  }
+
+  // What's New button
+  if (whatsNewButton) {
+    whatsNewButton.addEventListener("click", () => {
+      window.changelogModule.showChangelogModal();
+    });
+  }
+
+  // Escape key to close modal
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && changelogModal && changelogModal.style.display === "flex") {
+      window.changelogModule.hideChangelogModal();
+    }
+  });
 }
 
 // Export functions for use by other modules

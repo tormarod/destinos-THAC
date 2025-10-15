@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Small delay to ensure all modules are loaded
   await new Promise(resolve => setTimeout(resolve, 50));
 
+  // Initialize changelog system (shows modal if new version detected)
+  window.changelogModule.initializeChangelog();
+
   // Initialize season selection
   await window.scenariosModule.populateSeasonSelect();
 

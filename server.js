@@ -144,6 +144,9 @@ app.use(
   })
 ); // POST /reset-user-all
 
+// Changelog endpoint
+app.use("/api", require("./src/routes/changelog")()); // GET /changelog
+
 // Configuration endpoint for frontend
 app.get("/api/config", (req, res) => {
   res.json({

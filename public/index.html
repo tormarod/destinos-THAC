@@ -395,6 +395,32 @@
       </div>
     </div>
 
+    <!-- Changelog Modal -->
+    <div id="changelogModal" class="changelog-modal" style="display: none;">
+      <div class="changelog-backdrop"></div>
+      <div class="changelog-content">
+        <div class="changelog-header">
+          <h2>¿Qué hay nuevo?</h2>
+          <button id="changelogClose" class="changelog-close">&times;</button>
+        </div>
+        <div id="changelogContent" class="changelog-body">
+          <!-- Changelog content will be loaded here -->
+        </div>
+        <div class="changelog-footer">
+          <label class="changelog-checkbox">
+            <input type="checkbox" id="dontShowAgain">
+            No mostrar esto de nuevo
+          </label>
+          <button id="changelogGotIt" class="changelog-button">¡Entendido!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's New Button (floating) -->
+    <button id="whatsNewButton" class="whats-new-button" style="display: none;" title="¿Qué hay de nuevo?">
+      <span class="whats-new-icon">📢</span>
+    </button>
+
     <!-- Scripts: splash first, then app -->
     <script src="/splash.js"></script>
     <script src="/api.js"></script>
@@ -405,6 +431,7 @@
     <script src="/events.js"></script>
     <script src="/scenarios.js"></script>
     <script src="/submission.js"></script>
+    <script src="/changelog.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>

@@ -45,6 +45,17 @@ function checkVersionAndRefresh() {
   localStorage.setItem(STORAGE_KEY, currentVersion);
 }
 
+/**
+ * Check if changelog should be shown for current version
+ * Returns true if user hasn't seen the changelog for current version
+ */
+function shouldShowChangelog() {
+  const currentVersion = window.APP_VERSION || "1.0.0";
+  const lastSeenVersion = localStorage.getItem("allocator:changelogSeen");
+  
+  return lastSeenVersion !== currentVersion;
+}
+
 // Make state accessible globally for other scripts
 window.state = state;
 
@@ -57,6 +68,7 @@ const LAST_SUBMIT_TIME_KEY = "allocator:lastSubmitTime";
 window.stateModule = {
   state,
   checkVersionAndRefresh,
+  shouldShowChangelog,
   STORAGE_KEY,
   LOCAL_KEY,
   SEASON_KEY,
