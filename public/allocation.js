@@ -106,9 +106,24 @@ async function runAllocation(season) {
   showLuckOverlay();
 
   try {
-    // Get the scenario from the select field
+    // Get the scenario from the select field, force scenario 0 if nothing selected
     const scenarioSelect = document.getElementById("scenarioSelect");
-    let scenario = scenarioSelect ? parseInt(scenarioSelect.value) || 0 : 0;
+    let scenario = 0; // Default to scenario 0
+    
+    if (scenarioSelect && scenarioSelect.value !== "") {
+      const parsedScenario = parseInt(scenarioSelect.value);
+      if (!isNaN(parsedScenario) && parsedScenario >= 0 && parsedScenario <= 3) {
+        scenario = parsedScenario;
+      }
+    }
+    
+    // Ensure scenario is always valid (fallback to 0)
+    if (isNaN(scenario) || scenario < 0 || scenario > 3) {
+      console.log("Invalid scenario detected, falling back to scenario 0");
+      scenario = 0;
+    }
+    
+    console.log(`Running allocation with scenario: ${scenario}`);
 
     // Get blocked items for scenario 2 and competition depth for scenario 3
     let blockedItems = [];

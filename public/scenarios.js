@@ -354,6 +354,11 @@ function initializeScenarioUI() {
   
   if (!scenarioSelect) return;
 
+  // Ensure scenario 0 is selected if nothing is selected (caching issues)
+  if (!scenarioSelect.value || scenarioSelect.value === "") {
+    scenarioSelect.value = "0";
+  }
+
   // Initialize scenario description on page load
   const initialValue = scenarioSelect.value || "0";
   handleScenarioChange(initialValue);
