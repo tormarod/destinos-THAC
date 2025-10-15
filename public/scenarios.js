@@ -152,17 +152,23 @@ async function setSeason(season, retryCount = 0) {
 
 /**
  * Load location and centro options for scenario 2
- * Fetches items data and populates location selectors
+ * Populates location selectors using already loaded items (avoids redundant API calls)
  */
 async function loadLocationOptions() {
   try {
-    const season = new Date().getFullYear().toString();
-    // Only fetch items, not user submissions, so we don't need userId parameter
-    const response = await fetch(`/api/state?season=${season}`);
-    const data = await response.json();
+    // Use items already loaded in window.state instead of making new API call
+    if (window.state && window.state.items && window.state.items.length > 0) {
+      populateLocationSelects(window.state.items);
+    } else {
+      // Fallback: only fetch if items not available (shouldn't happen in normal flow)
+      console.log("Items not available in state, fetching...");
+      const season = window.state?.season || new Date().getFullYear().toString();
+      const response = await fetch(`/api/state?season=${season}`);
+      const data = await response.json();
 
-    if (data.items && data.items.length > 0) {
-      populateLocationSelects(data.items);
+      if (data.items && data.items.length > 0) {
+        populateLocationSelects(data.items);
+      }
     }
   } catch (error) {
     console.error("Error loading location options:", error);
