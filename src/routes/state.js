@@ -9,9 +9,7 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
     const userId = req.query.userId;
 
     // Log access attempts for security monitoring
-    if (userId && typeof userId === "string") {
-      logIP(req, "STATE_ACCESS_USER", { userId, season });
-    } else {
+    if (!userId || typeof userId !== "string") {
       logIP(req, "STATE_ACCESS_ALL", { season });
     }
 
@@ -46,6 +44,19 @@ module.exports = function ({ ddb, idField, getItemsForSeason }) {
           // TODO: Add authorization check to ensure user can only access their own data
           const userSubmission = await ddb.fetchUserSubmission(season, userId);
           submissions = userSubmission ? [userSubmission] : [];
+
+          // Log with user details (align with allocate logs) when available
+          if (userSubmission) {
+            logIP(req, "STATE_ACCESS_USER", {
+              userId,
+              userName: userSubmission.name,
+              userOrder: userSubmission.order,
+              season,
+            });
+          } else {
+            // User not found; still log the attempt
+            logIP(req, "STATE_ACCESS_USER", { userId, season });
+          }
         } else {
           // SECURITY FIX: Return no submissions when no userId provided
           // This prevents unauthorized access to all user data
